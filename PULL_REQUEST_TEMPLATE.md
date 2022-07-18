@@ -7,4 +7,4 @@
 
 Closes
 
-## Thank you for contributing to our wiki
+### Thank you for contributing to our wiki
