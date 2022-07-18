@@ -1,6 +1,9 @@
-# AzerothCore WIKI
+# Firelands Wiki
 
 Leer en: [Ingles :gb:](README.md) | [Español :es:](README_es.md)
+
+- Ingles: https://firelandsproject.github.io/firelands-wiki/home
+- Español: https://firelandsproject.github.io/firelands-wiki/es/home
 
 Wiki para el proyecto AzerothCore disponible aquí: http://azerothcore.github.io/wiki/es
 
