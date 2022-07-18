@@ -2,8 +2,8 @@
 
 Read in: [English :gb:](README.md) | [Spanish :es:](README_es.md)
 
-- English: https://firelandsproject.github.io/firelands-wiki/home
-- Spanish: https://firelandsproject.github.io/firelands-wiki/es/home
+- English: https://firelandsproject.github.io/wiki/home
+- Spanish: https://firelandsproject.github.io/wiki/es/home
 
 ## How to install locally (development)
 
@@ -32,4 +32,4 @@ bundle exec jekyll serve
 
 If everything succeds, you can visit your web app at `http://127.0.0.1:4000/`.
 
-Any problems? [Open a issue](https://github.com/azerothcore/wiki/issues/new).
+Any problems? [Open a issue](https://github.com/FirelandsProject/wiki/issues/new).
