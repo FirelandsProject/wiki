@@ -1,8 +1,9 @@
-# AzerothCore WIKI
+# Firelands Wiki
 
 Read in: [English :gb:](README.md) | [Spanish :es:](README_es.md)
 
-Wiki for the AzerothCore Project available here: http://azerothcore.github.io/wiki
+- English: https://firelandsproject.github.io/firelands-wiki/home
+- Spanish: https://firelandsproject.github.io/firelands-wiki/es/home
 
 ## How to install locally (development)
 
