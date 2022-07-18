@@ -4,9 +4,9 @@ ac_wiki_version: 2.0.5
 # based on latest (master) git-wiki-theme
 remote_theme: Drassil/git-wiki-theme@master
 # (string) Title of your wiki
-title: AzerothCore
+title: Firelands
 # (string) Description of your wiki
-description: Wiki and Documentation of the AzerothCore project
+description: Wiki and Documentation of the Firelands Project
 # (boolean) Enable/disable wiki page list in sidebar
 show_wiki_pages: true
 # (integer) Maximum number of wiki page to shown in sidebar
@@ -58,7 +58,7 @@ google_cse_token:
 # git-wiki includes some internal themes that you can choose
 # check _layouts folder
 #
-markdown: GFM
+markdown: kramdown
 highlighter: rouge
 encoding: UTF-8
 

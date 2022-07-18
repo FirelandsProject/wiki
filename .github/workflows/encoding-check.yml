@@ -11,6 +11,7 @@ jobs:
       - name: run the checkout action
         uses: actions/checkout@v2
         with:
+          nojekyll: true
           fetch-depth: 0
       - name: All changed files
         run: |
