@@ -20,14 +20,25 @@ jobs:
     steps:
       - name: Checkout your repository using git
         uses: actions/checkout@v3
-      - name: Install, build, and upload your site
-        uses: withastro/action@v0
-        #with:
-            # path: . # The root location of your Astro project inside the repository. (optional)
-            # node-version: 16 # The specific version of Node that should be used to build your site. Defaults to 16. (optional)
-            # package-manager: pnpm # The Node package manager that should be used to install dependencies and build your site. Automatically detected based on your lockfile. (optional)
+
+      - name: Use Node 18.17.0
+        uses: actions/setup-node@v2
+        with:
+          node-version: 18.17.0
+
+      - name: Install dependencies
+        run: pnpm i
+
+      - name: Build
+        run: pnpm run build
+      
+      - name: Upload artifact to Pages
+          uses: actions/upload-pages-artifact@v1
+          with:
+            path: ./dist
+
   deploy:
-    needs: build
+    needs: Build
     runs-on: ubuntu-latest
     environment:
       name: github-pages
