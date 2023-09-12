@@ -1,5 +1,6 @@
 ---
-title: 'Installation Guide Mac'
+title: 'Installation Guide (Mac)'
+author: "Seobryn"
 description: 'Step by Step How to steup Firelands Cata for Mac'
 pubDate: 'Sep 11 2023'
 ---

@@ -1,12 +1,13 @@
 ---
 title: "Passive Anti Cheat System Documentation"
+author: "M'Dic"
 description: "How to configure and use the passive anti cheat system"
 pubDate: "Sep 11 2023"
 ---
 
-## Fireland Passive Anticheat
+## Firelands Passive Anticheat
 
-### **Features**
+### Features
 
 Ported and continued by M'Dic (acidmanifesto || c4eva)
 Original implementation LordPsyian (TC TBC Era to TC WOTLK)
