@@ -98,7 +98,7 @@ const posts = (await getCollection("docs")).sort(
 					{
 						posts.map((post) => (
 							<li>
-								<a href={`/wiki/docs/${post.slug}/`} class="doc-card">
+								<a href={`/wiki/docs/${post.id}/`} class="doc-card">
 									<h4 class="title">{post.data.title}</h4>
 									<p class="date">
 										<FormattedDate

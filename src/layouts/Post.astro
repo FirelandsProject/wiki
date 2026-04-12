@@ -5,29 +5,45 @@ import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import FormattedDate from "../components/FormattedDate.astro";
 
-type Props = CollectionEntry<"docs">["data"] & { headings?: { depth: number; slug: string; text: string }[] };
+type Heading = {
+    depth: number;
+    slug: string;
+    text: string;
+};
 
-const { title, description, pubDate, updatedDate, author, headings } = Astro.props;
+type Props = CollectionEntry<"docs">["data"] & {
+    headings?: Heading[];
+};
+
+const { title, description, pubDate, updatedDate, author, headings } =
+    Astro.props;
+const hasToc = headings && headings.length > 0;
 ---
 
 <html lang="en">
-	<head>
-		<BaseHead title={title} description={description} />
-		<style>
-			main {
-				flex: 1;
-				width: 100%;
-				max-width: 1300px;
-				margin: 0 auto;
+    <head>
+        <BaseHead title={title} description={description} />
+        <style>
+            main {
+                flex: 1;
+                width: 100%;
+                max-width: 1300px;
+                margin: 0 auto;
                 padding: 4rem 2rem;
                 display: grid;
                 grid-template-columns: minmax(0, 1fr) 300px;
                 gap: 4rem;
                 align-items: flex-start;
-			}
-            
+            }
+
+            main.no-toc {
+                grid-template-columns: 1fr;
+                max-width: 1000px;
+            }
+
             @media (max-width: 1100px) {
-                main {
+                main,
+                main.no-toc {
                     grid-template-columns: 1fr;
                     padding: 2rem 1rem;
                     max-width: 900px;
@@ -37,16 +53,26 @@ const { title, description, pubDate, updatedDate, author, headings } = Astro.pro
                 }
             }
 
-			article {
+            article {
                 width: 100%;
                 min-width: 0;
             }
 
-			.prose {
-				width: 100%;
+            main.no-toc .title {
+                text-align: center;
+            }
+            main.no-toc .metadata {
+                justify-content: center;
+            }
+            main.no-toc .breadcrumb {
+                text-align: center;
+            }
+
+            .prose {
+                width: 100%;
                 max-width: 100%;
-				padding: 3.5rem;
-				color: rgb(var(--gray-dark));
+                padding: 3.5rem;
+                color: rgb(var(--gray-dark));
                 background: rgba(20, 20, 20, 0.7);
                 backdrop-filter: blur(16px);
                 border-radius: 16px;
@@ -54,22 +80,27 @@ const { title, description, pubDate, updatedDate, author, headings } = Astro.pro
                 box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
                 position: relative;
                 overflow: hidden;
-			}
+            }
 
             .prose::before {
-                content: '';
+                content: "";
                 position: absolute;
                 top: 0;
                 left: 0;
                 right: 0;
                 height: 4px;
-                background: linear-gradient(to right, transparent, rgb(var(--accent)), transparent);
+                background: linear-gradient(
+                    to right,
+                    transparent,
+                    rgb(var(--accent)),
+                    transparent
+                );
                 border-radius: 16px 16px 0 0;
             }
 
             .breadcrumb {
                 margin-bottom: 2rem;
-                font-family: 'Metamorphous', serif;
+                font-family: "Metamorphous", serif;
                 font-size: 0.9rem;
             }
             .breadcrumb a {
@@ -81,29 +112,29 @@ const { title, description, pubDate, updatedDate, author, headings } = Astro.pro
                 margin: 0 0.5rem;
             }
 
-			.title {
-				margin-bottom: 3rem;
-				text-align: left;
-				line-height: 1.2;
+            .title {
+                margin-bottom: 3rem;
+                text-align: left;
+                line-height: 1.2;
                 border-bottom: 1px solid rgba(var(--accent), 0.1);
                 padding-bottom: 2rem;
-			}
-			.title h1 {
-				margin: 0 0 0.75rem 0;
+            }
+            .title h1 {
+                margin: 0 0 0.75rem 0;
                 color: rgb(var(--gold));
-                font-family: 'Metamorphous', serif;
+                font-family: "Metamorphous", serif;
                 font-size: 3.5rem;
                 text-transform: capitalize;
                 letter-spacing: 1px;
-                text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-			}
-            
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            }
+
             .metadata {
                 display: flex;
                 gap: 2rem;
                 color: rgb(var(--gray));
                 font-size: 0.9rem;
-                font-family: 'Inter', sans-serif;
+                font-family: "Inter", sans-serif;
             }
             .meta-item {
                 display: flex;
@@ -126,7 +157,7 @@ const { title, description, pubDate, updatedDate, author, headings } = Astro.pro
                 border: 1px solid rgba(var(--accent), 0.1);
             }
             .toc-title {
-                font-family: 'Metamorphous', serif;
+                font-family: "Metamorphous", serif;
                 color: rgb(var(--gold));
                 font-size: 1.1rem;
                 margin-bottom: 1.5rem;
@@ -137,7 +168,7 @@ const { title, description, pubDate, updatedDate, author, headings } = Astro.pro
                 gap: 0.5rem;
             }
             .toc-title::before {
-                content: '';
+                content: "";
                 width: 4px;
                 height: 1.2em;
                 background: rgb(var(--accent));
@@ -189,82 +220,153 @@ const { title, description, pubDate, updatedDate, author, headings } = Astro.pro
                     gap: 0.5rem;
                 }
             }
-		</style>
-	</head>
+        </style>
+    </head>
 
-	<body>
-		<Header />
-		<main>
-			<article>
+    <body>
+        <Header />
+        <main class={!hasToc ? "no-toc" : ""}>
+            <article>
                 <div class="breadcrumb">
-                    <a href="/wiki">Wiki</a> <span>&raquo;</span> <a href="/wiki/docs">Docs</a> <span>&raquo;</span> {title}
+                    <a href="/wiki">Wiki</a>
+                    <span>&raquo;</span>
+                    <a href="/wiki/docs">Docs</a>
+                    <span>&raquo;</span>
+                    {title}
                 </div>
-				<div class="prose">
-					<div class="title">
-						<h1>{title}</h1>
-						<div class="metadata">
+                <div class="prose">
+                    <div class="title">
+                        <h1>{title}</h1>
+                        <div class="metadata">
                             <div class="meta-item">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-							    <FormattedDate date={pubDate} />
+                                <svg
+                                    width="16"
+                                    height="16"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    ><rect
+                                        x="3"
+                                        y="4"
+                                        width="18"
+                                        height="18"
+                                        rx="2"
+                                        ry="2"></rect><line
+                                        x1="16"
+                                        y1="2"
+                                        x2="16"
+                                        y2="6"></line><line
+                                        x1="8"
+                                        y1="2"
+                                        x2="8"
+                                        y2="6"></line><line
+                                        x1="3"
+                                        y1="10"
+                                        x2="21"
+                                        y2="10"></line></svg
+                                >
+                                <FormattedDate date={pubDate} />
                             </div>
-							{author && (
-                                <div class="meta-item">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                                    <span>{author}</span>
-                                </div>
-                            )}
-							{updatedDate && (
-								<div class="meta-item">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6"></path><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
-									<span>Updated <FormattedDate date={updatedDate} /></span>
-								</div>
-							)}
-						</div>
-					</div>
-					<slot />
-				</div>
-			</article>
-            
-            {headings && headings.length > 0 && (
-                <aside class="toc-container">
-                    <div class="toc-title">On This Page</div>
-                    <ul class="toc-list">
-                        {headings.filter(h => h.depth <= 3).map(h => (
-                            <li>
-                                <a href={`#${h.slug}`} class={`toc-link depth-${h.depth}`}>
-                                    {h.text}
-                                </a>
-                                
-                            </li>
-                        ))}
-                    </ul>
-                </aside>
-            )}
-		</main>
-		<Footer />
+                            {
+                                author && (
+                                    <div class="meta-item">
+                                        <svg
+                                            width="16"
+                                            height="16"
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            stroke-width="2"
+                                        >
+                                            <>
+                                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                                                <circle cx="12" cy="7" r="4" />
+                                            </>
+                                        </svg>
+                                        <span>{author}</span>
+                                    </div>
+                                )
+                            }
+                            {
+                                updatedDate && (
+                                    <div class="meta-item">
+                                        <svg
+                                            width="16"
+                                            height="16"
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            stroke-width="2"
+                                        >
+                                            <>
+                                                <path d="M23 4v6h-6" />
+                                                <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
+                                            </>
+                                        </svg>
+                                        <span>
+                                            Updated{" "}
+                                            <FormattedDate date={updatedDate} />
+                                        </span>
+                                    </div>
+                                )
+                            }
+                        </div>
+                    </div>
+                    <slot />
+                </div>
+            </article>
+
+            {
+                headings && headings.length > 0 && (
+                    <aside class="toc-container">
+                        <div class="toc-title">On This Page</div>
+                        <ul class="toc-list">
+                            {headings
+                                .filter((h: Heading) => h.depth <= 3)
+                                .map((h: Heading) => (
+                                    <li>
+                                        <a
+                                            href={`#${h.slug}`}
+                                            class={`toc-link depth-${h.depth}`}
+                                        >
+                                            {h.text}
+                                        </a>
+                                    </li>
+                                ))}
+                        </ul>
+                    </aside>
+                )
+            }
+        </main>
+        <Footer />
 
         <script>
             const observerOptions = {
                 root: null,
-                rootMargin: '0px 0px -80% 0px',
-                threshold: 0
+                rootMargin: "0px 0px -80% 0px",
+                threshold: 0,
             };
 
             const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    const id = entry.target.getAttribute('id');
-                    const tocLink = document.querySelector(`.toc-link[href="#${id}"]`);
-                    
+                entries.forEach((entry) => {
+                    const id = entry.target.getAttribute("id");
+                    const tocLink = document.querySelector(
+                        `.toc-link[href="#${id}"]`,
+                    );
+
                     if (entry.isIntersecting) {
-                        document.querySelectorAll('.toc-link').forEach(link => link.classList.remove('active'));
-                        tocLink?.classList.add('active');
+                        document
+                            .querySelectorAll(".toc-link")
+                            .forEach((link) => link.classList.remove("active"));
+                        tocLink?.classList.add("active");
                     }
                 });
             }, observerOptions);
 
-            document.querySelectorAll('h2, h3').forEach((section) => {
+            document.querySelectorAll("h2, h3").forEach((section) => {
                 observer.observe(section);
             });
         </script>
-	</body>
+    </body>
 </html>
