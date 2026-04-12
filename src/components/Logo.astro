@@ -1,0 +1,78 @@
+---
+interface Props {
+	class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<svg 
+    viewBox="0 0 100 100" 
+    class={className}
+    style="overflow: visible"
+    xmlns="http://www.w3.org/2000/svg"
+>
+    <!-- Background Glow -->
+    <!-- Background Glow -->
+    <circle cx="50" cy="50" r="45" fill="#ff7b00" fill-opacity="0.2" />
+    
+    <!-- Stylized Mountain -->
+    <path 
+        d="M20 80 L50 20 L80 80 Z" 
+        fill="#000000" 
+        stroke="#ff7b00" 
+        stroke-width="3" 
+    />
+    
+    <!-- Lava Cracks -->
+    <path 
+        d="M50 25 L45 45 L55 55 L50 75" 
+        fill="none" 
+        stroke="#ffd700" 
+        stroke-width="3" 
+        stroke-linecap="round"
+        class="lava-flow"
+    />
+    <path 
+        d="M40 60 L45 70" 
+        fill="none" 
+        stroke="#ff7b00" 
+        stroke-width="2" 
+        stroke-linecap="round"
+    />
+    <path 
+        d="M60 60 L55 70" 
+        fill="none" 
+        stroke="#ff7b00" 
+        stroke-width="2" 
+        stroke-linecap="round"
+    />
+
+    <!-- Small Phoenix/Flame Wings -->
+    <path 
+        d="M15 75 Q10 60 25 45" 
+        fill="none" 
+        stroke="#ff7b00" 
+        stroke-width="4" 
+        stroke-linecap="round"
+    />
+    <path 
+        d="M85 75 Q90 60 75 45" 
+        fill="none" 
+        stroke="#ff7b00" 
+        stroke-width="4" 
+        stroke-linecap="round"
+    />
+</svg>
+
+<style>
+    .lava-flow {
+        filter: drop-shadow(0 0 3px #ffcc00);
+        animation: pulse 2s infinite ease-in-out;
+    }
+
+    @keyframes pulse {
+        0%, 100% { opacity: 0.8; filter: drop-shadow(0 0 2px #ffcc00); }
+        50% { opacity: 1; filter: drop-shadow(0 0 5px #ffcc00); }
+    }
+</style>

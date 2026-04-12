@@ -5,7 +5,93 @@ import { SITE_TITLE } from "../consts";
 
 <header>
 	<nav>
-		<h2><a href="/">{SITE_TITLE}</a></h2>
+		<a href="/" class="logo-link">
+			<svg 
+                viewBox="0 0 100 100" 
+                class="logo-svg"
+                style="overflow: visible"
+                xmlns="http://www.w3.org/2000/svg"
+            >
+                <!-- Outer Aura -->
+                <circle cx="50" cy="50" r="48" fill="none" stroke="#ff4d00" stroke-width="0.5" stroke-dasharray="2 4" opacity="0.3" />
+                <circle cx="50" cy="50" r="42" fill="none" stroke="#ff9500" stroke-opacity="0.2" stroke-width="1" />
+
+                <!-- Glow Layer -->
+                <defs>
+                    <filter id="glow-effect">
+                        <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                        <feMerge>
+                            <feMergeNode in="coloredBlur"/>
+                            <feMergeNode in="SourceGraphic"/>
+                        </feMerge>
+                    </filter>
+                </defs>
+
+                <!-- Detailed Jagged Mountain Container -->
+                <g filter="url(#glow-effect)">
+                    <!-- Back Mountain Layer -->
+                    <path 
+                        d="M15 85 L35 45 L50 60 L65 35 L85 85 Z" 
+                        fill="#0a0a0a" 
+                        stroke="#ff4d00" 
+                        stroke-width="1"
+                    />
+                    
+                    <!-- Main Volcanic Peak -->
+                    <path 
+                        d="M10 90 L30 65 L40 75 L55 30 L70 55 L75 45 L95 90 Z" 
+                        fill="#111111" 
+                        stroke="#ff7b00" 
+                        stroke-width="2.5" 
+                        stroke-linejoin="round"
+                    />
+
+                    <!-- Lava Secondary Glow -->
+                    <path 
+                        d="M55 35 L52 50 L58 65 L54 85" 
+                        fill="none" 
+                        stroke="#ffcc00" 
+                        stroke-width="2" 
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        opacity="0.8"
+                    />
+                    
+                    <!-- Lava Highlights -->
+                    <path 
+                        d="M55 32 L53 45 M58 60 L56 75" 
+                        fill="none" 
+                        stroke="#fff" 
+                        stroke-width="1" 
+                        stroke-linecap="round"
+                        opacity="0.6"
+                    />
+
+                    <!-- Flame Wings / Phoenix Motif -->
+                    <path 
+                        d="M20 75 C10 65 5 45 30 40 M80 75 C90 65 95 45 70 40" 
+                        fill="none" 
+                        stroke="#ff4d00" 
+                        stroke-width="4" 
+                        stroke-linecap="round"
+                        opacity="0.7"
+                    />
+                    <path 
+                        d="M25 65 C15 55 12 40 35 35 M75 65 C85 55 88 40 65 35" 
+                        fill="none" 
+                        stroke="#ff9500" 
+                        stroke-width="2" 
+                        stroke-linecap="round"
+                        opacity="0.5"
+                    />
+                </g>
+
+                <!-- Top Ember -->
+                <circle cx="55" cy="30" r="2" fill="#fff">
+                    <animate attributeName="opacity" values="0.4;1;0.4" dur="1s" repeatCount="indefinite" />
+                </circle>
+            </svg>
+		</a>
 		<div class="internal-links">
 			<HeaderLink href="/wiki">Home</HeaderLink>
 			<HeaderLink href="/wiki/docs">Docs</HeaderLink>
@@ -31,41 +117,75 @@ import { SITE_TITLE } from "../consts";
 <style>
 	header {
 		margin: 0;
-		padding: 0 1em;
-		background: white;
-		box-shadow: 0 2px 8px rgba(var(--black), 5%);
+		padding: 1em 2em;
+		background: rgba(var(--black), 0.9);
+		border-bottom: 2px solid rgb(var(--gray-light));
+		box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+		backdrop-filter: blur(5px);
+		position: sticky;
+		top: 0;
+		z-index: 100;
 	}
-	h2 {
-		margin: 0;
-		font-size: 1em;
+	.logo-link {
+		display: flex;
+		align-items: center;
+		text-decoration: none;
+		transition: all 0.3s ease;
+		border-bottom: none !important;
+	}
+	.logo-link:hover {
+		transform: scale(1.1) rotate(5deg);
+		border-bottom: none !important;
+		text-shadow: none !important;
+	}
+	.logo-svg {
+		width: 60px;
+		height: 60px;
+		display: block;
+		filter: drop-shadow(0 0 10px rgba(255, 120, 0, 0.6));
 	}
 
-	h2 a,
-	h2 a.active {
-		text-decoration: none;
-	}
+
+	
 	nav {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
 	}
-	nav a {
-		padding: 1em 0.5em;
-		color: var(--black);
-		border-bottom: 4px solid transparent;
-		text-decoration: none;
+	.internal-links {
+		display: flex;
+		gap: 1.5rem;
 	}
-	nav a.active {
+	nav a {
+		padding: 0.5em 0;
+		color: #ccc;
 		text-decoration: none;
-		border-bottom-color: var(--accent);
+		font-family: 'Metamorphous', serif;
+		font-size: 0.9em;
+		transition: all 0.3s ease;
+		border-bottom: 2px solid transparent;
+	}
+	nav a:hover,
+	nav a.active {
+		color: rgb(var(--accent));
+		text-shadow: 0 0 8px rgb(var(--accent));
+		border-bottom-color: rgb(var(--accent));
 	}
 	.social-links,
 	.social-links a {
 		display: flex;
+		align-items: center;
+		color: #ccc;
 	}
+    .social-links a:hover {
+        color: rgb(var(--gold));
+        filter: drop-shadow(0 0 5px rgb(var(--gold)));
+    }
+
 	@media (max-width: 720px) {
 		.social-links {
 			display: none;
 		}
 	}
 </style>
+

@@ -1,58 +1,63 @@
-# Firelands Core Project Official documentation website
+# 🔥 Firelands Wiki
+> The official repository for the Firelands Core Project documentation.
 
-This website was created using **Astro** with a Blog template.
+Welcome, Chronicler. This sanctuary holds all the knowledge required to build, maintain, and expand the Firelands Core. Built with **Astro**, this wiki is designed for speed, clarity, and ease of contribution.
 
-Features  that are included:
+---
 
-- ✅ Minimal styling (make it your own!)
-- ✅ 100/100 Lighthouse performance
-- ✅ SEO-friendly with canonical URLs and OpenGraph data
-- ✅ Sitemap support
-- ✅ RSS Feed support
-- ✅ Markdown & MDX support
+## ✨ Features
 
-## 🚀 Project Structure
+- **🚀 Legendary Speed**: 100/100 Lighthouse performance.
+- **🔍 SEO Optimized**: Canonical URLs, OpenGraph meta tags, and structured data.
+- **📜 Semantic Markdown**: Full support for Markdown & MDX with custom callouts.
+- **📻 RSS & Sitemaps**: Automatic feed generation for the latest updates.
+- **📱 Responsive Design**: Optimized for scrolls of all sizes (mobile, tablet, desktop).
 
-Inside of your Astro project, you'll see the following folders and files:
+---
 
-```
-├── public/
+## 🗺️ Project Cartography
+
+Explore the structure of the repository:
+
+```text
+├── public/          # 🖼️ Static relics (images, icons)
 ├── src/
-│   ├── components/
-│   ├── content/
-│   ├── layouts/
-│   └── pages/
-├── astro.config.mjs
-├── README.md
-├── package.json
-└── tsconfig.json
+│   ├── components/  # 🧩 Modular fragments of the UI
+│   ├── content/     # 📚 The Great Library (Markdown/MDX documents)
+│   ├── layouts/     # 🏛️ Architectural blueprints for pages
+│   └── pages/       # 🌐 Navigable realms and routes
+├── astro.config.mjs # ⚙️ The Core's configuration
+└── package.json    # 📦 Required materials and spells
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+### 📚 Contributing to the Library
+The `src/content/` directory contains "collections" of related documents.
+- Use `getCollection()` to retrieve documents from `src/content/docs/`.
+- Type-check your frontmatter using the schemas defined in `src/content/config.ts`.
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+---
 
-The `src/content/` directory contains "collections" of related Markdown and MDX documents. Use `getCollection()` to retrieve posts from `src/content/docs/`, and type-check your frontmatter using an optional schema. See [Astro's Content Collections docs](https://docs.astro.build/en/guides/content-collections/) to learn more.
+## 🧞 Command Spells
 
-Any static assets, like images, can be placed in the `public/` directory.
+Run these commands from the root of the project to manipulate the wiki:
 
-## 🧞 Commands
+| Ritual | Effect |
+| :--- | :--- |
+| `pnpm install` | Gather the required dependencies. |
+| `pnpm run dev` | Summon the local preview at `localhost:4321`. |
+| `pnpm run build` | Forge the production-ready scrolls. |
+| `pnpm run preview` | Inspect the forged scrolls before deployment. |
+| `pnpm run astro ...` | Invoke specific CLI incantations. |
 
-All commands are run from the root of the project, from a terminal:
+---
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `pnpm install`             | Installs dependencies                            |
-| `pnpm run dev`             | Starts local dev server at `localhost:4321`      |
-| `pnpm run build`           | Build your production site to `./dist/`          |
-| `pnpm run preview`         | Preview your build locally, before deploying     |
-| `pnpm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `pnpm run astro -- --help` | Get help using the Astro CLI                     |
+## 👀 Additional Wisdom
 
-## 👀 Want to learn more?
+- 📖 [Astro Documentation](https://docs.astro.build)
+- 💬 [Firelands Discord](https://discord.gg/firelandsproject)
+- 🏗️ [Firelands Core Repository](https://github.com/FirelandsProject)
 
-Check out [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+---
 
-## Credit
-
-This theme is based off of the lovely [Bear Blog](https://github.com/HermanMartinus/bearblog/).
+## 🎨 Credit
+This theme is inspired by the elegant [Bear Blog](https://github.com/HermanMartinus/bearblog/). Refined for the Firelands Project adventuring party.

@@ -1,47 +1,63 @@
 ---
-title: 'Installation Guide (Mac)'
+title: ' Installation Guide (macOS)'
 author: "Seobryn"
-description: 'Step by Step How to steup Firelands Cata for Mac'
+description: 'Step-by-step ritual to configure the Firelands Core on macOS.'
 pubDate: 'Sep 11 2023'
 ---
 
-## Prerequisites
+# 🗺️ Quest: Initializing the Mac Core
 
-Before start all this guide we recomend to instal Brew, which is a Package manager for Mac Terminal, you can learn more about it following this [Link](https://brew.sh/)
+Welcome, adventurer. Before you can harness the power of Firelands, you must prepare your machine. This guide will walk you through the ritual of compilation on macOS, ensuring your core is forged with precision.
 
-To Compile Firelands Cata, you have to install the Following Libraries:
+---
 
-1. Cmake (3.27.1+)
-2. Boost (1.82.0)
-3. Readline (8.2.1+)
-4. Mysql (8.x+)
-5. Clang
-6. Git 2.7+
-7. OpenSSL 1.1 +
+## 🛑 Stage 1: The Gathering (Prerequisites)
 
-## Workspace preparation
+Every great architect needs the right tools. First, ensure you have **Homebrew** installed (The legendary package manager for Mac). If you don't have it, retrieve it from [brew.sh](https://brew.sh/).
 
-Once you have installed all of this Libraries, you have to create your workspace folder, in our example, we create our workspace in the main User Folder.
+### 📦 Required Materials
+Open your terminal and gather these libraries:
+
+1. **Cmake** (3.27.1+) - *The Master Blueprint*
+2. **Boost** (1.82.0) - *The Power Source*
+3. **Readline** (8.2.1+) - *The Command Interface*
+4. **MySQL** (8.x+) - *The Ancient Archive*
+5. **Clang** - *The Great Refiner*
+6. **Git** (2.7+) - *The Chronicler*
+7. **OpenSSL** (1.1+) - *The Shield of Encryption*
+
+---
+
+## 🛠️ Stage 2: The Forge (Workspace Preparation)
+
+Designate a sacred space for your project. We suggest your home directory.
+
 ```zsh
+# Create the base directory
 mkdir ~/Firelands
 cd ~/Firelands
-```
-After this, you can donwload our main source code from [Firelands Cata Github](https://github.com/FirelandsProject/firelands-cata).
-```zsh
+
+# Clone the Ancient Source
 git clone https://github.com/FirelandsProject/firelands-cata
 ```
 
-After you download the code, you have to create a dedicated folders for the **build** and **release**:
+### 🧱 Preparing the Chambers
+Create dedicated chambers for the building process and the final release:
+
 ```zsh
 mkdir firelands-release firelands-build
 cd firelands-build
 ```
 
-## Core compilation
+---
 
-Once you have those folders, you are able to compile the source, so you have to configure your solution with Cmake:
+## 🔥 Stage 3: The Incantation (Core Compilation)
+
+Now, we invoke the `cmake` commands to weave the source into reality.
+
 ```zsh
 export OPENSSL_ROOT_DIR="$(brew --prefix openssl@1.1)"
+
 cmake "../firelands-cata" \
 -DCMAKE_INSTALL_PREFIX=../firelands-release  \
 -DSCRIPTS=static \
@@ -58,38 +74,32 @@ cmake "../firelands-cata" \
 -DCMAKE_BUILD_TYPE=RelWithDebInfo
 ```
 
-With this configuration, you are able to build the game server without Game tools, which is the tools needed to extract maps, vmaps, mmaps, etc.
+> [!TIP]
+> **Seeking Game Tools?** Change `-DTOOLS=0` to `-DTOOLS=1` to extract your own maps and data!
 
-If you want to compile the Tools, the Only thing you need is change the variable `-DTOOLS` to 1 to enable the Tools build.
-
-After the cmake configuration, you are able to compile your code, to do this you have to run this command:
+### 🔨 Commencing the Build
+Execute the final strike of the hammer:
 
 ```zsh
-make -j $(nproc)
+make -j $(sysctl -n hw.ncpu)
 make install
 ```
 
-Once this command finish, you code are compiled and ready to start.
+---
 
-## Core configuration
+## 📜 Stage 4: Attunement (Core Configuration)
 
-To configure the core properties, you have to move to the release folder, using this command:
+Your core is forged, but it must be attuned to your realm.
+
 ```zsh
 cd ../firelands-release/etc
-```
-
-Inside this folder you can see two files:  `worldserver.conf.dist` and `authserver.conf.dist`, this files has the base configuration of the server, and if you want to run your server, you have to rename those files running the following command:
-
-```zsh
 cp worldserver.conf.dist worldserver.conf
 cp authserver.conf.dist authserver.conf
 ```
 
-Now you can open it and confiigure some things that are required before run the **worldserver** file.
+### ⚙️ Database Binding
+Open `worldserver.conf` and bind your databases:
 
-### Worldserver Config
-
-You have to configure some things before start worldserver application:
 ```conf
 DataDir = "~/Firelands/Data"
 
@@ -99,46 +109,28 @@ CharacterDatabaseInfo = "127.0.0.1;3306;firelands;firelands;firelands_characters
 HotfixDatabaseInfo    = "127.0.0.1;3306;firelands;firelands;firelands_hotfixes"
 ```
 
-Here's the explanation about this variables:
+---
 
-- **DataDir:** Is the path of the folder that contains the Game Data Extracted, to be able to use inside the core, you can download it from [HERE.](https://github.com/seobryn/cata-client-data/releases/download/v.10/FC_V10.zip)
+## 🚀 Stage 5: Ascension (Application Run)
 
-- **LoginDatabaseInfo:** This is the configuration of your Auth Database, you have to put here your DB Credentials and the name of the Database.
+The moment of truth. Open two scrolls (terminal windows) and cast these spells:
 
-- **WorldDatabaseInfo:** This is the configuration of your World Database, you have to put here your DB Credentials and the name of the Database.
-
-- **CharacterDatabaseInfo:** This is the configuration of your Characters Database, you have to put here your DB Credentials and the name of the Database.
-
-- **HotfixDatabaseInfo:** This is the configuration of your Hotfix Database, you have to put here your DB Credentials and the name of the Database.
-
-### Authserver Config
-
-You have to configure the database info before start **Authserver** application:
-
-```conf
-LoginDatabaseInfo = "127.0.0.1;3306;firelands;firelands;firelands_auth"
-```
-
-Here's the explanation about this variable:
-
-- **LoginDatabaseInfo:** This is the configuration of your Auth Database, you have to put here your DB Credentials and the name of the Database.
-
-## Application run
-
-To run the applications, you have to be open 2 terminals, and run the following commands staying inside the `firelands-release/bin` folder:
-
+### 1. The Gatekeeper (Authserver)
 ```zsh
 cd ../bin/
-```
-
-In the first Terminal, you can run the **Authserver**:
-```zsh
 ./authserver
 ```
 
-In the second Terminal, you can run the **Worldserver**:
+### 2. The Realm (Worldserver)
 ```zsh
 ./worldserver
 ```
 
-Afther run this commands, you have your code Running!, and you are ready to run the game and Enjoy!.
+---
+
+## 🏆 Victory: Quest Complete
+
+**Glory awaits!** Your server is now part of the Firelands Project. You have successfully navigated the trial of macOS compilation.
+
+> [!IMPORTANT]
+> Join our [Discord](https://discord.gg/firelandsproject) to share your progress and connect with other developers!

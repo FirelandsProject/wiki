@@ -15,75 +15,80 @@ const posts = (await getCollection("docs")).sort(
 <html lang="en">
 	<head>
 		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-		<style>
+<style>
 			main {
-				width: 960px;
+				flex: 1;
+				width: 1000px;
+                max-width: calc(100% - 2rem);
+                margin: auto;
+                padding: 4rem 1rem;
 			}
 			ul {
-				display: flex;
-				flex-wrap: wrap;
+				display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 				gap: 2rem;
 				list-style-type: none;
 				margin: 0;
 				padding: 0;
 			}
 			ul li {
-				width: calc(50% - 1rem);
+				transition: all 0.3s ease;
 			}
-			ul li * {
-				text-decoration: none;
-				transition: 0.2s ease;
-			}
-			ul li:first-child {
-				width: 100%;
-				margin-bottom: 1rem;
-				text-align: center;
-			}
-			ul li:first-child img {
-				width: 100%;
-			}
-			ul li:first-child .title {
-				font-size: 2.369rem;
-			}
-			ul li img {
-				margin-bottom: 0.5rem;
-				border-radius: 12px;
-			}
-			ul li a {
+			.doc-card {
 				display: block;
+				text-decoration: none;
+                background: rgba(26, 26, 26, 0.8);
+                border: 1px solid rgba(var(--accent), 0.3);
+                padding: 2rem;
+                border-radius: 8px;
+                height: 100%;
+                transition: all 0.3s ease;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+                position: relative;
+                overflow: hidden;
+			}
+            .doc-card::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 4px;
+                height: 100%;
+                background: rgb(var(--accent));
+                opacity: 0.5;
+            }
+			.doc-card:hover {
+				transform: translateY(-5px);
+                border-color: rgb(var(--accent));
+                box-shadow: 0 0 25px rgba(var(--accent), 0.3);
+                background: rgba(var(--accent), 0.05);
 			}
 			.title {
-				margin: 0;
-				color: rgb(var(--black));
-				line-height: 1;
+				margin: 0 0 0.5rem 0;
+				color: rgb(var(--gold));
+				line-height: 1.2;
+                font-family: 'Metamorphous', serif;
+                font-size: 1.5rem;
 			}
 			.date {
 				margin: 0;
 				color: rgb(var(--gray));
+                font-size: 0.9rem;
+                font-family: 'Inter', sans-serif;
 			}
-			ul li a:hover h4,
-			ul li a:hover .date {
-				color: rgb(var(--accent));
-			}
-			ul a:hover img {
-				box-shadow: var(--box-shadow);
-			}
+            .description {
+                margin-top: 1rem;
+                color: rgb(var(--gray-dark));
+                font-size: 0.95rem;
+                line-height: 1.5;
+            }
 			@media (max-width: 720px) {
 				ul {
-					gap: 0.5em;
-				}
-				ul li {
-					width: 100%;
-					text-align: center;
-				}
-				ul li:first-child {
-					margin-bottom: 0;
-				}
-				ul li:first-child .title {
-					font-size: 1.563em;
+                    grid-template-columns: 1fr;
 				}
 			}
 		</style>
+
 	</head>
 	<body>
 		<Header />
@@ -93,17 +98,19 @@ const posts = (await getCollection("docs")).sort(
 					{
 						posts.map((post) => (
 							<li>
-								<a href={`/wiki/docs/${post.slug}/`}>
+								<a href={`/wiki/docs/${post.slug}/`} class="doc-card">
 									<h4 class="title">{post.data.title}</h4>
 									<p class="date">
 										<FormattedDate
 											date={post.data.pubDate}
 										/>
 									</p>
+                                    <p class="description">{post.data.description}</p>
 								</a>
 							</li>
 						))
 					}
+
 				</ul>
 			</section>
 		</main>

@@ -13,29 +13,40 @@ import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 	<body>
 		<Header title={SITE_TITLE} />
 		<main>
-			<h1>We are an Open Source and Modular Solution for MMO Games</h1>
-			<p>
-				This are our value added features:
-				<ul>
-					<li>
-						<b>Playable:</b> Our Idea is to offer a working and
-						Playable server application. We have a strict piplelines
-						to try to ensure the best code quality before mergin new
-						code or customizations.
-					</li>
-					<li>
-						<b>Open Source:</b> We are an Open Source community, Our
-						modules and Core are relesed under the [GNU AGPL
-						V3.0](https://github.com/FirelandsProject/firelands-cata/blob/master/LICENSE).
-					</li>
-					<li>
-						<b>Modular:</b> We Have modules!, so you can extend your
-						core as far as you can, without touching the Blizzlike
-						stuff regarding the Basis of the core.
-					</li>
-				</ul>
-			</p>
+            <div class="hero">
+                <h1 class="glow-text">Firelands Core Wiki</h1>
+                <p class="subtitle">The Ultimate Open Source & Modular Solution for MMO Development</p>
+            </div>
+            
+            <div class="prose">
+                <h2>Project Pillars</h2>
+                <p>
+                    Firelands Core is an educational project aimed at understanding the architecture and mechanics of MMORPG servers, specifically focused on the World of Warcraft: Cataclysm expansion.
+                </p>
+                
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <h3>🔥 Playable</h3>
+                        <p>A stable, production-ready server application with strict CI/CD pipelines to ensure code excellence.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>🛡️ Open Source</h3>
+                        <p>Fully licensed under GNU AGPL V3.0. Community-driven development for the future of MMO emulation.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>🧩 Modular</h3>
+                        <p>Extend your core with custom modules without touching the blizzlike base. Pure flexibility.</p>
+                    </div>
+                </div>
+
+                <hr />
+                
+                <p style="text-align: center;">
+                    <a href="/wiki/docs" class="cta-button">Enter Knowledge Base</a>
+                </p>
+            </div>
 		</main>
+
 		<Footer />
 	</body>
 </html>
