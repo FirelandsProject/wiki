@@ -1,6 +1,6 @@
 # 🔥 Firelands Wiki
 
-<img src="./public/firelands_core_logo.jpg" width="200" alt="Firelands Core Logo" />
+<img src="./public/firelands_core_logo.jpg" width="600" alt="Firelands Core Logo" />
 
 > The official repository for the Firelands Core Project documentation.
 
