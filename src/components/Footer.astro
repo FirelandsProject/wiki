@@ -1,4 +1,6 @@
 ---
+import { getBasePath } from "../consts";
+const base = getBasePath();
 const today = new Date();
 ---
 
@@ -23,8 +25,8 @@ const today = new Date();
 			<div class="footer-section links">
 				<h3>Resources</h3>
 				<ul>
-					<li><a href="/wiki/">Wiki Home</a></li>
-					<li><a href="/wiki/docs/">Documentation</a></li>
+					<li><a href={base || '/'}>Wiki Home</a></li>
+					<li><a href={`${base}/docs/`}>Documentation</a></li>
 				</ul>
 			</div>
 

@@ -1,18 +1,19 @@
 ---
 import HeaderLink from "./HeaderLink.astro";
 import Logo from "./Logo.astro";
-import { SITE_TITLE } from "../consts";
+import { SITE_TITLE, getBasePath } from "../consts";
+const base = getBasePath();
 ---
 
 <header>
 	<nav>
-		<a href="/" class="logo-link">
+		<a href={base || '/'} class="logo-link">
 			<Logo class="logo-svg" />
 		</a>
 		<div class="internal-links">
-			<HeaderLink href="/wiki">Home</HeaderLink>
-			<HeaderLink href="/wiki/docs">Docs</HeaderLink>
-			<HeaderLink href="/wiki/about">About</HeaderLink>
+			<HeaderLink href={base || '/'}>Home</HeaderLink>
+			<HeaderLink href={`${base}/docs`}>Docs</HeaderLink>
+			<HeaderLink href={`${base}/about`}>About</HeaderLink>
 		</div>
 		<div class="social-links">
 			<a href="https://github.com/FirelandsProject" target="_blank">

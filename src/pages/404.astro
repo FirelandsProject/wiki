@@ -2,7 +2,8 @@
 import BaseHead from "../components/BaseHead.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
-import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
+import { SITE_TITLE, SITE_DESCRIPTION, getBasePath } from "../consts";
+const base = getBasePath();
 ---
 
 <!doctype html>
@@ -181,7 +182,7 @@ import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
                         It seems you have wandered beyond the Firelands. The knowledge you seek has evaporated into the magmatic void.
                     </p>
 
-                    <a href="/wiki/" class="cta-button">
+                    <a href={base || '/'} class="cta-button">
                         🌋 Return to Safety
                     </a>
                 </div>

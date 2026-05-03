@@ -4,6 +4,7 @@ import BaseHead from "../components/BaseHead.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import FormattedDate from "../components/FormattedDate.astro";
+import { getBasePath } from "../consts";
 
 type Heading = {
     depth: number;
@@ -14,6 +15,8 @@ type Heading = {
 type Props = CollectionEntry<"docs">["data"] & {
     headings?: Heading[];
 };
+
+const base = getBasePath();
 
 const { title, description, pubDate, updatedDate, author, headings } =
     Astro.props;
@@ -228,9 +231,9 @@ const hasToc = headings && headings.length > 0;
         <main class={!hasToc ? "no-toc" : ""}>
             <article>
                 <div class="breadcrumb">
-                    <a href="/wiki">Wiki</a>
+                    <a href={base || '/'}>Wiki</a>
                     <span>&raquo;</span>
-                    <a href="/wiki/docs">Docs</a>
+                    <a href={`${base}/docs`}>Docs</a>
                     <span>&raquo;</span>
                     {title}
                 </div>

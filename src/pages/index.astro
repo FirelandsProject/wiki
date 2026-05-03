@@ -2,7 +2,8 @@
 import BaseHead from "../components/BaseHead.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
-import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
+import { SITE_TITLE, SITE_DESCRIPTION, getBasePath } from "../consts";
+const base = getBasePath();
 ---
 
 <!doctype html>
@@ -42,7 +43,7 @@ import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
                 <hr />
                 
                 <p style="text-align: center;">
-                    <a href="/wiki/docs" class="cta-button">Enter Knowledge Base</a>
+                    <a href={`${base}/docs`} class="cta-button">Enter Knowledge Base</a>
                 </p>
             </div>
 		</main>
