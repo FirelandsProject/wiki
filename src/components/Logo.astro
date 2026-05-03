@@ -4,7 +4,7 @@ interface Props {
 }
 
 const { class: className } = Astro.props;
-const base = "/wiki";
+const base = Astro.site?.origin === 'https://firelands-core.github.io' ? '/wiki' : '';
 ---
 
 <img
