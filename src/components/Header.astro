@@ -51,9 +51,11 @@ import { SITE_TITLE } from "../consts";
 		border-bottom: none !important;
 	}
 	.logo-link:hover {
-		transform: scale(1.1) rotate(5deg);
-		border-bottom: none !important;
-		text-shadow: none !important;
+		transform: scale(1.15);
+		filter: drop-shadow(0 0 15px rgba(255, 123, 0, 0.6));
+	}
+	.logo-link::before {
+		display: none;
 	}
 	.logo-svg {
 		width: 40px;
@@ -79,24 +81,43 @@ import { SITE_TITLE } from "../consts";
 		text-decoration: none;
 		font-family: 'Metamorphous', serif;
 		font-size: 0.9em;
-		transition: all 0.3s ease;
+		transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 		border-bottom: 2px solid transparent;
+		position: relative;
+	}
+	nav a::before {
+		content: '';
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		height: 2px;
+		background: linear-gradient(90deg, var(--accent), var(--gold));
+		transform: scaleX(0);
+		transform-origin: center;
+		transition: transform 0.3s ease;
 	}
 	nav a:hover,
 	nav a.active {
-		color: rgb(var(--accent));
-		text-shadow: 0 0 8px rgb(var(--accent));
-		border-bottom-color: rgb(var(--accent));
+		color: rgb(var(--gold));
+		text-shadow: 0 0 12px rgb(var(--accent));
+		border-bottom-color: transparent;
+	}
+	nav a:hover::before,
+	nav a.active::before {
+		transform: scaleX(1);
 	}
 	.social-links,
 	.social-links a {
 		display: flex;
 		align-items: center;
 		color: #ccc;
+		transition: all 0.3s ease;
 	}
     .social-links a:hover {
         color: rgb(var(--gold));
-        filter: drop-shadow(0 0 5px rgb(var(--gold)));
+        filter: drop-shadow(0 0 8px rgb(var(--gold)));
+        transform: scale(1.1);
     }
 
 	@media (max-width: 720px) {
