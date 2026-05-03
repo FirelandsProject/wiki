@@ -118,11 +118,51 @@ const sortedPosts = posts.sort((a, b) => {
 					column-count: 1;
 				}
 			}
+			.intro {
+				text-align: center;
+				margin-bottom: 3rem;
+				padding: 2rem;
+				background: rgba(0, 0, 0, 0.3);
+				border-radius: 12px;
+				border: 1px solid rgba(212, 175, 55, 0.1);
+			}
+			.intro h1 {
+				margin: 0 0 1rem 0;
+				color: rgb(var(--gold));
+			}
+			.intro-text {
+				font-size: 1.2rem;
+				color: #ccc;
+				max-width: 600px;
+				margin: 0 auto 1.5rem;
+				line-height: 1.6;
+			}
+			.intro-hint {
+				display: inline-block;
+				background: rgba(255, 123, 0, 0.1);
+				border: 1px solid rgba(255, 123, 0, 0.3);
+				padding: 0.75rem 1.5rem;
+				border-radius: 8px;
+				color: rgb(var(--gold));
+				font-size: 0.95rem;
+			}
+			.intro-hint strong {
+				color: rgb(var(--accent));
+			}
 		</style>
 	</head>
 	<body>
 		<Header />
 		<main>
+			<div class="intro">
+				<h1>Documentation</h1>
+				<p class="intro-text">
+					Explore the complete Firelands Core documentation. Click any card below to dive into the topic you need.
+				</p>
+				<div class="intro-hint">
+					<span>💡 Pro tip: Start with <strong>Getting Started</strong> if you're new!</span>
+				</div>
+			</div>
 			<section class="masonry-wrapper">
 				{
 					sortedPosts.map((post, index) => (
