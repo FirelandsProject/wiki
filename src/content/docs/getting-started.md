@@ -42,9 +42,9 @@ src/
 
 ## Documentation
 
-- [Developer Setup](/docs/developer-setup) - Environment setup and build
-- [Architecture](/docs/architecture) - Hexagonal architecture
-- [Database](/docs/database) - Schema and migrations
-- [Lua Scripting](/docs/lua-scripting) - Gameplay scripting
-- [Testing](/docs/testing) - Unit tests and TDD
-- [GM Commands](/docs/gm-commands) - GM command reference
+- [Developer Setup](/wiki/docs/developer-setup/) - Environment setup and build
+- [Architecture](/wiki/docs/architecture/) - Hexagonal architecture
+- [Database](/wiki/docs/database/) - Schema and migrations
+- [Lua Scripting](/wiki/docs/lua-scripting/) - Gameplay scripting
+- [Testing](/wiki/docs/testing/) - Unit tests and TDD
+- [GM Commands](/wiki/docs/gm-commands/) - GM command reference
