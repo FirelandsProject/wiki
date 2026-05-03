@@ -1,4 +1,7 @@
 # 🔥 Firelands Wiki
+
+<img src="./public/firelands_core_logo.jpg" width="200" alt="Firelands Core Logo" />
+
 > The official repository for the Firelands Core Project documentation.
 
 Welcome, Chronicler. This sanctuary holds all the knowledge required to build, maintain, and expand the Firelands Core. Built with **Astro**, this wiki is designed for speed, clarity, and ease of contribution.
