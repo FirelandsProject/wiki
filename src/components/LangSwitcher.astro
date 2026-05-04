@@ -1,31 +1,31 @@
 <!-- Language Switcher -->
-<div class="lang-switcher" id="lang-switcher">
-  <button class="lang-btn active" data-lang="en" aria-label="English">EN</button>
-  <button class="lang-btn" data-lang="es" aria-label="Español">ES</button>
+<div class="lang-switcher">
+  <button class="lang-btn" data-lang="en">EN</button>
+  <button class="lang-btn" data-lang="es">ES</button>
 </div>
 
-<script>
-  const langSwitcher = document.getElementById('lang-switcher');
-  const langBtns = langSwitcher?.querySelectorAll('.lang-btn');
-  
-  function setLang(lang) {
-    document.body.setAttribute('data-lang', lang);
-    localStorage.setItem('wiki-lang', lang);
-    document.documentElement.lang = lang;
+<script is:inline>
+  (function() {
+    const container = document.currentScript?.previousElementSibling;
+    const btns = container?.querySelectorAll('.lang-btn');
+    const body = document.body;
     
-    langBtns?.forEach(btn => {
-      btn.classList.toggle('active', btn.dataset.lang === lang);
+    function setLang(lang) {
+      body.setAttribute('data-lang', lang);
+      localStorage.setItem('wiki-lang', lang);
+      
+      btns?.forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.lang === lang);
+      });
+    }
+    
+    const saved = localStorage.getItem('wiki-lang') || 'en';
+    setLang(saved);
+    
+    btns?.forEach(btn => {
+      btn.addEventListener('click', () => setLang(btn.dataset.lang));
     });
-  }
-
-  // Initialize from saved preference
-  const savedLang = localStorage.getItem('wiki-lang') || 'en';
-  setLang(savedLang);
-
-  // Handle button clicks
-  langBtns?.forEach(btn => {
-    btn.addEventListener('click', () => setLang(btn.dataset.lang));
-  });
+  })();
 </script>
 
 <style>
@@ -53,8 +53,4 @@
     background: rgba(255, 123, 0, 0.2);
     color: rgb(255, 215, 0);
   }
-
-  /* Show/hide content based on language */
-  [data-lang="en"] .lang-es { display: none; }
-  [data-lang="es"] .lang-en { display: none; }
 </style>
