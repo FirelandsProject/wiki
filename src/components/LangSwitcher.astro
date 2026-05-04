@@ -1,32 +1,8 @@
 <!-- Language Switcher -->
 <div class="lang-switcher">
-  <button class="lang-btn" data-lang="en">EN</button>
-  <button class="lang-btn" data-lang="es">ES</button>
+  <button type="button" class="lang-btn" data-lang-toggle data-lang="en">EN</button>
+  <button type="button" class="lang-btn" data-lang-toggle data-lang="es">ES</button>
 </div>
-
-<script is:inline>
-  (function() {
-    const container = document.currentScript?.previousElementSibling;
-    const btns = container?.querySelectorAll('.lang-btn');
-    const body = document.body;
-    
-    function setLang(lang) {
-      body.setAttribute('data-lang', lang);
-      localStorage.setItem('wiki-lang', lang);
-      
-      btns?.forEach(btn => {
-        btn.classList.toggle('active', btn.dataset.lang === lang);
-      });
-    }
-    
-    const saved = localStorage.getItem('wiki-lang') || 'en';
-    setLang(saved);
-    
-    btns?.forEach(btn => {
-      btn.addEventListener('click', () => setLang(btn.dataset.lang));
-    });
-  })();
-</script>
 
 <style>
   .lang-switcher {
@@ -49,8 +25,25 @@
     transition: all 0.2s ease;
   }
   .lang-btn:hover { color: #ccc; }
-  .lang-btn.active {
+  .lang-btn.active, .lang-btn[data-lang-toggle][data-lang-toggle="active"] {
     background: rgba(255, 123, 0, 0.2);
     color: rgb(255, 215, 0);
   }
 </style>
+
+<script is:inline>
+  // Sync button states when language changes
+  function updateButtons() {
+    var lang = localStorage.getItem('wiki-lang') || 'en';
+    var btns = document.querySelectorAll('[data-lang-toggle]');
+    btns.forEach(function(btn) {
+      btn.classList.toggle('active', btn.dataset.lang === lang);
+    });
+  }
+  
+  // Update on load
+  updateButtons();
+  
+  // Update on language change
+  window.addEventListener('lang-changed', updateButtons);
+</script>

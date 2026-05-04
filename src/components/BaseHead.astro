@@ -35,6 +35,17 @@ const {
 <!-- Canonical URL -->
 <link rel="canonical" href={canonicalURL} />
 
+<!-- i18n initialization -->
+<script is:inline>
+(function() {
+  var saved = localStorage.getItem('wiki-lang') || 'en';
+  document.documentElement.setAttribute('data-lang', saved);
+  window.addEventListener('lang-changed', function(e) {
+    document.documentElement.setAttribute('data-lang', e.detail.lang);
+  });
+})();
+</script>
+
 <!-- Primary Meta Tags -->
 <title>{title}</title>
 <meta name="title" content={title} />

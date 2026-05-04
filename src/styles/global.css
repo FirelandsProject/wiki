@@ -394,8 +394,8 @@ button:active, .btn:active {
 }
 
 /* Bilingual content toggle */
-body[data-lang="en"] .lang-es { display: none !important; }
-body[data-lang="es"] .lang-en { display: none !important; }
+[data-lang="en"] .lang-es { display: none !important; }
+[data-lang="es"] .lang-en { display: none !important; }
 .card-shine::after {
     content: '';
     position: absolute;

@@ -1,0 +1,43 @@
+<script is:inline>
+  (function() {
+    // Global i18n state
+    var currentLang = localStorage.getItem('wiki-lang') || 'en';
+    document.documentElement.setAttribute('data-lang', currentLang);
+    
+    // Listen for storage changes from other tabs/windows
+    window.addEventListener('storage', function(e) {
+      if (e.key === 'wiki-lang') {
+        setLanguage(e.newValue || 'en', false);
+      }
+    });
+    
+    // Function to set language globally
+    function setLanguage(lang, save) {
+      currentLang = lang;
+      if (save !== false) {
+        localStorage.setItem('wiki-lang', lang);
+      }
+      document.documentElement.setAttribute('data-lang', lang);
+      
+      // Dispatch custom event for components to listen
+      window.dispatchEvent(new CustomEvent('lang-changed', { detail: { lang: lang } }));
+    }
+    
+    // Expose globally
+    window.setLanguage = setLanguage;
+    
+    // Listen for clicks on language buttons
+    document.addEventListener('click', function(e) {
+      var btn = e.target.closest('[data-lang-toggle]');
+      if (btn) {
+        setLanguage(btn.dataset.lang);
+      }
+    });
+  })();
+</script>
+
+<style is:global>
+  /* Bilingual content toggle */
+  [data-lang="en"] .lang-es { display: none !important; }
+  [data-lang="es"] .lang-en { display: none !important; }
+</style>
