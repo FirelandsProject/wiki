@@ -1,10 +1,10 @@
 ---
-title: 'Getting Started / Comenzar'
+title: 'Getting Started'
 description: 'Introduction to Firelands - WoW Cataclysm Emulator'
 pubDate: '2025-01-01'
 ---
 
-# Getting Started<span class="lang-es"> / Comenzar</span>
+# <span class="lang-en">Getting Started</span><span class="lang-es">Comenzar</span>
 
 <span class="lang-en">
 
@@ -17,7 +17,9 @@ Firelands es un **Emulador de WoW Cataclysm** (4.3.4) construido con prácticas 
 
 </span>
 
-## Tech Stack
+## <span class="lang-en">Tech Stack</span><span class="lang-es">Tecnologías</span>
+
+<span class="lang-en">
 
 | | |
 |---|---|
@@ -26,6 +28,19 @@ Firelands es un **Emulador de WoW Cataclysm** (4.3.4) construido con prácticas 
 | **Database** | MySQL 8.0 |
 | **Testing** | GoogleTest |
 | **Scripting** | Lua 5.4 |
+
+</span>
+<span class="lang-es">
+
+| | |
+|---|---|
+| **Lenguaje** | C++17 |
+| **Build** | CMake + Ninja |
+| **Base de datos** | MySQL 8.0 |
+| **Pruebas** | GoogleTest |
+| **Scripting** | Lua 5.4 |
+
+</span>
 
 <span class="lang-en">
 
@@ -74,7 +89,9 @@ src/
 
 </span>
 
-## Documentation
+## <span class="lang-en">Documentation</span><span class="lang-es">Documentación</span>
+
+<span class="lang-en">
 
 - [Developer Setup](/wiki/docs/developer-setup/) - Environment and build
 - [Architecture](/wiki/docs/architecture/) - Hexagonal architecture
@@ -82,3 +99,15 @@ src/
 - [Lua Scripting](/wiki/docs/lua-scripting/) - Gameplay scripting
 - [Testing](/wiki/docs/testing/) - Unit tests
 - [GM Commands](/wiki/docs/gm-commands/) - GM commands
+
+</span>
+<span class="lang-es">
+
+- [Developer Setup](/wiki/docs/developer-setup/) - Entorno y construcción
+- [Architecture](/wiki/docs/architecture/) - Arquitectura hexagonal
+- [Database](/wiki/docs/database/) - Esquema y migraciones
+- [Lua Scripting](/wiki/docs/lua-scripting/) - Scripting de juego
+- [Testing](/wiki/docs/testing/) - Pruebas unitarias
+- [GM Commands](/wiki/docs/gm-commands/) - Comandos de GM
+
+</span>

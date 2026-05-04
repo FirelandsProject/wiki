@@ -16,11 +16,13 @@ type Props = CollectionEntry<"docs">["data"] & {
     headings?: Heading[];
     prevPost?: CollectionEntry<"docs"> | null;
     nextPost?: CollectionEntry<"docs"> | null;
+    titleEn?: string;
+    titleEs?: string;
 };
 
 const base = getBasePath();
 
-const { title, description, pubDate, updatedDate, author, headings, prevPost, nextPost } =
+const { title, description, pubDate, updatedDate, author, headings, prevPost, nextPost, titleEn, titleEs } =
     Astro.props;
 const hasToc = headings && headings.length > 0;
 ---
@@ -320,11 +322,23 @@ const hasToc = headings && headings.length > 0;
                     <span>&raquo;</span>
                     <a href={`${base}/docs`}>Docs</a>
                     <span>&raquo;</span>
-                    {title}
+                    {titleEn && titleEs ? (
+                        <>
+                            <span class="lang-en">{titleEn}</span>
+                            <span class="lang-es">{titleEs}</span>
+                        </>
+                    ) : title}
                 </div>
                 <div class="prose">
                     <div class="title">
-                        <h1>{title}</h1>
+                        <h1>
+                            {titleEn && titleEs ? (
+                                <>
+                                    <span class="lang-en">{titleEn}</span>
+                                    <span class="lang-es">{titleEs}</span>
+                                </>
+                            ) : title}
+                        </h1>
                         <div class="metadata">
                             <div class="meta-item">
                                 <svg

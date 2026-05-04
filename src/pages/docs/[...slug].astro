@@ -23,14 +23,32 @@ export async function getStaticPaths() {
 		return aPos - bPos;
 	});
 
+    const titles: Record<string, { en: string; es: string }> = {
+        "getting-started": { en: "Getting Started", es: "Comenzar" },
+        "architecture": { en: "Architecture", es: "Arquitectura" },
+        "developer-setup": { en: "Developer Setup", es: "Configuración de Desarrollador" },
+        "database": { en: "Database", es: "Base de Datos" },
+        "lua-scripting": { en: "Lua Scripting", es: "Scripting Lua" },
+        "testing": { en: "Testing", es: "Pruebas" },
+        "gm-commands": { en: "GM Commands", es: "Comandos GM" }
+    };
+
 	return posts.map((post, index) => {
 		const currentIndex = sortedPosts.findIndex(p => p.id === post.id);
 		const prevPost = currentIndex > 0 ? sortedPosts[currentIndex - 1] : null;
 		const nextPost = currentIndex < sortedPosts.length - 1 ? sortedPosts[currentIndex + 1] : null;
+        
+        const titleData = titles[post.id] || { en: post.data.title, es: post.data.title };
 		
 		return {
 			params: { slug: post.id },
-			props: { post, prevPost, nextPost },
+			props: { 
+                post, 
+                prevPost, 
+                nextPost, 
+                titleEn: titleData.en,
+                titleEs: titleData.es
+            },
 		};
 	});
 }
@@ -39,12 +57,14 @@ type Props = {
 	post: CollectionEntry<"docs">;
 	prevPost: CollectionEntry<"docs"> | null;
 	nextPost: CollectionEntry<"docs"> | null;
+    titleEn: string;
+    titleEs: string;
 };
 
-const { post, prevPost, nextPost } = Astro.props;
+const { post, prevPost, nextPost, titleEn, titleEs } = Astro.props;
 const { Content, headings } = await render(post);
 ---
 
-<Post {...post.data} {headings} prevPost={prevPost} nextPost={nextPost}>
+<Post {...post.data} {headings} prevPost={prevPost} nextPost={nextPost} titleEn={titleEn} titleEs={titleEs}>
 	<Content />
 </Post>

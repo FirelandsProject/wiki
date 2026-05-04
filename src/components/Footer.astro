@@ -10,7 +10,8 @@ const today = new Date();
 			<div class="footer-section brand">
 				<h2 class="footer-logo">Firelands <span>Core</span></h2>
 				<p class="brand-description">
-					A powerful, open-source MMO engine project dedicated to creating stability and performance for our community.
+					<span class="lang-en">A powerful, open-source MMO engine project dedicated to creating stability and performance for our community.</span>
+					<span class="lang-es">Un potente proyecto de motor MMO de código abierto dedicado a crear estabilidad y rendimiento para nuestra comunidad.</span>
 				</p>
 				<div class="social-links">
 					<a href="https://github.com/FirelandsProject" target="_blank" aria-label="GitHub">
@@ -23,25 +24,49 @@ const today = new Date();
 			</div>
 
 			<div class="footer-section links">
-				<h3>Resources</h3>
+				<h3>
+					<span class="lang-en">Resources</span>
+					<span class="lang-es">Recursos</span>
+				</h3>
 				<ul>
-					<li><a href={base || '/'}>Wiki Home</a></li>
-					<li><a href={`${base}/docs/`}>Documentation</a></li>
+					<li><a href={base || '/'}>
+						<span class="lang-en">Wiki Home</span>
+						<span class="lang-es">Inicio Wiki</span>
+					</a></li>
+					<li><a href={`${base}/docs/`}>
+						<span class="lang-en">Documentation</span>
+						<span class="lang-es">Documentación</span>
+					</a></li>
 				</ul>
 			</div>
 
 			<div class="footer-section links">
-				<h3>Community</h3>
+				<h3>
+					<span class="lang-en">Community</span>
+					<span class="lang-es">Comunidad</span>
+				</h3>
 				<ul>
-					<li><a href="https://discord.gg/TFKV3hy43">Discord Server</a></li>
-					<li><a href="https://github.com/FirelandsProject">Contribute</a></li>
+					<li><a href="https://discord.gg/TFKV3hy43">
+						<span class="lang-en">Discord Server</span>
+						<span class="lang-es">Servidor Discord</span>
+					</a></li>
+					<li><a href="https://github.com/FirelandsProject">
+						<span class="lang-en">Contribute</span>
+						<span class="lang-es">Contribuir</span>
+					</a></li>
 				</ul>
 			</div>
 		</div>
 
 		<div class="footer-bottom">
-			<p>&copy; {today.getFullYear()} <strong>Firelands Core Project</strong>. All rights reserved.</p>
-			<p class="credits">Crafted with 🔥 for the open source community.</p>
+			<p>
+				<span class="lang-en">&copy; {today.getFullYear()} <strong>Firelands Core Project</strong>. All rights reserved.</span>
+				<span class="lang-es">&copy; {today.getFullYear()} <strong>Firelands Core Project</strong>. Todos los derechos reservados.</span>
+			</p>
+			<p class="credits">
+				<span class="lang-en">Crafted with 🔥 for the open source community.</span>
+				<span class="lang-es">Hecho con 🔥 para la comunidad de código abierto.</span>
+			</p>
 		</div>
 	</div>
 </footer>

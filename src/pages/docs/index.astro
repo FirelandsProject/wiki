@@ -18,6 +18,44 @@ const order = [
   "gm-commands"
 ];
 
+const titleTranslations: Record<string, { en: string; es: string; descEn: string; descEs: string }> = {
+  "getting-started": { 
+    en: "Getting Started", es: "Comenzar",
+    descEn: "Introduction to Firelands - WoW Cataclysm Emulator",
+    descEs: "Introducción a Firelands - Emulador de WoW Cataclysm"
+  },
+  "architecture": { 
+    en: "Architecture", es: "Arquitectura",
+    descEn: "Hexagonal Architecture in Firelands",
+    descEs: "Arquitectura Hexagonal en Firelands"
+  },
+  "developer-setup": { 
+    en: "Developer Setup", es: "Configuración de Desarrollador",
+    descEn: "How to set up the development environment",
+    descEs: "Cómo configurar el entorno de desarrollo"
+  },
+  "database": { 
+    en: "Database", es: "Base de Datos",
+    descEn: "Database schema and migrations",
+    descEs: "Esquema de base de datos y migraciones"
+  },
+  "lua-scripting": { 
+    en: "Lua Scripting", es: "Scripting Lua",
+    descEn: "Gameplay scripting with Lua",
+    descEs: "Scripting de juego con Lua"
+  },
+  "testing": { 
+    en: "Testing", es: "Pruebas",
+    descEn: "Testing strategies and workflows",
+    descEs: "Estrategias y flujos de pruebas"
+  },
+  "gm-commands": { 
+    en: "GM Commands", es: "Comandos GM",
+    descEn: "Game Master commands reference",
+    descEs: "Referencia de comandos de Game Master"
+  }
+};
+
 const sortedPosts = posts.sort((a, b) => {
   const aIndex = order.indexOf(a.id);
   const bIndex = order.indexOf(b.id);
@@ -155,12 +193,17 @@ const sortedPosts = posts.sort((a, b) => {
 		<Header />
 		<main>
 			<div class="intro">
-				<h1>Documentation</h1>
+				<h1>
+					<span class="lang-en">Documentation</span>
+					<span class="lang-es">Documentación</span>
+				</h1>
 				<p class="intro-text">
-					Explore the complete Firelands Core documentation. Click any card below to dive into the topic you need.
+					<span class="lang-en">Explore the complete Firelands Core documentation. Click any card below to dive into the topic you need.</span>
+					<span class="lang-es">Explora la documentación completa de Firelands Core. Haz clic en cualquier tarjeta para profundizar en el tema que necesitas.</span>
 				</p>
 				<div class="intro-hint">
-					<span>💡 Pro tip: Start with <strong>Getting Started</strong> if you're new!</span>
+					<span class="lang-en">💡 Pro tip: Start with <strong>Getting Started</strong> if you're new!</span>
+					<span class="lang-es">💡 Consejo: ¡Comienza con <strong>Getting Started</strong> si eres nuevo!</span>
 				</div>
 			</div>
 			<section class="masonry-wrapper">
@@ -169,11 +212,17 @@ const sortedPosts = posts.sort((a, b) => {
 						<div class="masonry-item">
 							<a href={`/wiki/docs/${post.id}/`} class="doc-card">
 								<span class="order-badge">#{index + 1}</span>
-								<h3 class="title">{post.data.title}</h3>
+								<h3 class="title">
+									<span class="lang-en">{post.data.title}</span>
+									<span class="lang-es">{titleTranslations[post.id]?.es || post.data.title}</span>
+								</h3>
 								<p class="date">
 									<FormattedDate date={post.data.pubDate} />
 								</p>
-								<p class="description">{post.data.description}</p>
+								<p class="description">
+									<span class="lang-en">{post.data.description}</span>
+									<span class="lang-es">{titleTranslations[post.id]?.descEs || post.data.description}</span>
+								</p>
 							</a>
 						</div>
 					))

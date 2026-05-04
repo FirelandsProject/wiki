@@ -4,11 +4,20 @@ description: 'Hexagonal Architecture in Firelands'
 pubDate: '2025-01-01'
 ---
 
-# Hexagonal Architecture
+# <span class="lang-en">Hexagonal Architecture</span><span class="lang-es">Arquitectura Hexagonal</span>
+
+<span class="lang-en">
 
 Firelands implements **Hexagonal Architecture** (also known as Ports & Adapters) to keep business logic decoupled from external systems.
 
-## Layer Structure
+</span>
+<span class="lang-es">
+
+Firelands implementa la **Arquitectura Hexagonal** (también conocida como Ports & Adapters) para mantener la lógica de negocio desacoplada de los sistemas externos.
+
+</span>
+
+## <span class="lang-en">Layer Structure</span><span class="lang-es">Estructura de Capas</span>
 
 ```
 src/
@@ -21,13 +30,37 @@ src/
 └── tools/           # DevTools executable
 ```
 
-## Dependency Rule
+<span class="lang-en">
+
+Common utilities / Entities, Value Objects, Repository Interfaces (Ports)
+
+</span>
+<span class="lang-es">
+
+Utilidades comunes / Entidades, Objetos de Valor, Interfaces de Repositorio (Ports)
+
+</span>
+
+## <span class="lang-en">Dependency Rule</span><span class="lang-es">Regla de Dependencias</span>
+
+<span class="lang-en">
 
 - `domain/` must **NOT** import from `application/` or `infrastructure/`
 - All external dependencies flow inward: **infrastructure → application → domain**
 - Communication via abstract interfaces (ports)
 
-## Domain Layer (`src/domain/`)
+</span>
+<span class="lang-es">
+
+- `domain/` debe **NO** importar de `application/` o `infrastructure/`
+- Todas las dependencias externas fluyen hacia adentro: **infrastructure → application → domain**
+- Comunicación a través de interfaces abstractas (ports)
+
+</span>
+
+## <span class="lang-en">Domain Layer (`src/domain/`)</span><span class="lang-es">Capa de Dominio (`src/domain/`)</span>
+
+<span class="lang-en">
 
 Contains:
 - **Entities**: Core business objects
@@ -39,7 +72,24 @@ Example:
 - `domain/models/SpellDefinition.h`
 - `domain/models/GmTicket.h`
 
-## Application Layer (`src/application/`)
+</span>
+<span class="lang-es">
+
+Contiene:
+- **Entidades**: Objetos de negocio principales
+- **Objetos de Valor**: Tipos inmutables
+- **Interfaces de Repositorio (Ports)**: Interfaces abstractas para acceso a datos
+
+Ejemplo:
+- `domain/models/Character.h`
+- `domain/models/SpellDefinition.h`
+- `domain/models/GmTicket.h`
+
+</span>
+
+## <span class="lang-en">Application Layer (`src/application/`)</span><span class="lang-es">Capa de Aplicación (`src/application/`)</span>
+
+<span class="lang-en">
 
 Contains:
 - **Services**: Use cases implementing business logic
@@ -50,20 +100,59 @@ Example:
 - `application/services/CharacterService.h`
 - `application/services/CommandService.h`
 
-## Infrastructure Layer (`src/infrastructure/`)
+</span>
+<span class="lang-es">
+
+Contiene:
+- **Servicios**: Casos de uso que implementan lógica de negocio
+- **Ports**: Interfaces que definen interacciones con sistemas externos
+
+Ejemplo:
+- `application/services/AuthService.h`
+- `application/services/CharacterService.h`
+- `application/services/CommandService.h`
+
+</span>
+
+## <span class="lang-en">Infrastructure Layer (`src/infrastructure/`)</span><span class="lang-es">Capa de Infraestructura (`src/infrastructure/`)</span>
+
+<span class="lang-en">
 
 Contains:
 - **Adapters**: Implementations of ports
 - **External wrappers**: Third-party library wrappers
 
-## Executables
+</span>
+<span class="lang-es">
+
+Contiene:
+- **Adapters**: Implementaciones de los ports
+- **Wrappers externos**: Wrappers de librerías de terceros
+
+</span>
+
+## <span class="lang-en">Executables</span><span class="lang-es">Ejecutables</span>
+
+<span class="lang-en">
 
 | Target | Binary | Purpose |
 |--------|--------|---------|
 | `auth` | `build/bin/auth` | Authentication server |
 | `world` | `build/bin/world` | Game server |
 
-## Precompiled Headers (PCH)
+</span>
+<span class="lang-es">
+
+| Objetivo | Binario | Propósito |
+|---------|---------|----------|
+| `auth` | `build/bin/auth` | Servidor de autenticación |
+| `world` | `build/bin/world` | Servidor de juego |
+
+</span>
+
+## <span class="lang-en">Precompiled Headers (PCH)</span><span class="lang-es">Encabezados Precompilados (PCH)</span>
+
+<span class="lang-en">
 
 Heavy headers precompiled for faster builds:
 - STL containers
@@ -78,3 +167,22 @@ target_precompile_headers(<target_name> PRIVATE ${PROJECT_PCH_HEADERS})
 ```
 
 **Important**: spdlog MUST be included via `<shared/Logger.h>` for `SPDLOG_LEVEL_NAMES` to apply.
+
+</span>
+<span class="lang-es">
+
+Encabezados pesados precompilados para construcciones más rápidas:
+- Contenedores STL
+- spdlog
+- nlohmann/json
+- `shared/Common.h`
+- `shared/Logger.h`
+
+Al agregar nuevos objetivos, incluir PCH:
+```cmake
+target_precompile_headers(<target_name> PRIVATE ${PROJECT_PCH_HEADERS})
+```
+
+**Importante**: spdlog DEBE ser incluido vía `<shared/Logger.h>` para que `SPDLOG_LEVEL_NAMES` aplique.
+
+</span>

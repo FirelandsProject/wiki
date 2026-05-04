@@ -1,43 +1,87 @@
 <script is:inline>
-  (function() {
-    // Global i18n state
-    var currentLang = localStorage.getItem('wiki-lang') || 'en';
-    document.documentElement.setAttribute('data-lang', currentLang);
-    
-    // Listen for storage changes from other tabs/windows
-    window.addEventListener('storage', function(e) {
-      if (e.key === 'wiki-lang') {
-        setLanguage(e.newValue || 'en', false);
+(function() {
+  var currentLang = localStorage.getItem('wiki-lang') || 'en';
+  
+  var translations = {
+    home: { en: 'Home', es: 'Inicio' },
+    docs: { en: 'Docs', es: 'Docs' },
+    about: { en: 'About', es: 'Acerca de' },
+    search: { en: 'Search', es: 'Buscar' },
+    lastUpdated: { en: 'Updated', es: 'Actualizado' },
+    prev: { en: 'Previous', es: 'Anterior' },
+    next: { en: 'Next', es: 'Siguiente' },
+    onThisPage: { en: 'On This Page', es: 'En Esta Página' },
+    tableOfContents: { en: 'Table of Contents', es: 'Tabla de Contenidos' },
+    editThisPage: { en: 'Edit this page', es: 'Editar esta página' },
+    previousPage: { en: 'Previous Page', es: 'Página Anterior' },
+    nextPage: { en: 'Next Page', es: 'Página Siguiente' },
+    readMore: { en: 'Read more', es: 'Leer más' },
+    skipToContent: { en: 'Skip to content', es: 'Saltar al contenido' },
+    menu: { en: 'Menu', es: 'Menú' },
+    close: { en: 'Close', es: 'Cerrar' },
+    searchDocs: { en: 'Search documentation...', es: 'Buscar documentación...' },
+    noResults: { en: 'No results found', es: 'No se encontraron resultados' },
+    onThisPageSub: { en: 'On this page', es: 'En esta página' }
+  };
+
+  function applyTranslations(lang) {
+    document.querySelectorAll('[data-i18n]').forEach(function(el) {
+      var key = el.getAttribute('data-i18n');
+      if (translations[key] && translations[key][lang]) {
+        el.textContent = translations[key][lang];
       }
     });
-    
-    // Function to set language globally
-    function setLanguage(lang, save) {
-      currentLang = lang;
-      if (save !== false) {
-        localStorage.setItem('wiki-lang', lang);
+
+    document.querySelectorAll('.i18n').forEach(function(el) {
+      var en = el.getAttribute('en');
+      var es = el.getAttribute('es');
+      if (lang === 'es' && es) {
+        el.textContent = es;
+      } else if (lang === 'en' && en) {
+        el.textContent = en;
       }
-      document.documentElement.setAttribute('data-lang', lang);
-      
-      // Dispatch custom event for components to listen
-      window.dispatchEvent(new CustomEvent('lang-changed', { detail: { lang: lang } }));
+    });
+  }
+
+  function setLang(lang) {
+    currentLang = lang;
+    localStorage.setItem('wiki-lang', lang);
+    document.documentElement.setAttribute('data-lang', lang);
+    applyTranslations(lang);
+  }
+
+  function init() {
+    var saved = localStorage.getItem('wiki-lang') || 'en';
+    currentLang = saved;
+    document.documentElement.setAttribute('data-lang', saved);
+    applyTranslations(saved);
+  }
+
+  init();
+  window.__setLanguage = setLang;
+
+  document.addEventListener('click', function(e) {
+    var btn = e.target.closest('[data-lang]');
+    if (btn && btn.classList.contains('lang-btn')) {
+      setLang(btn.dataset.lang);
     }
-    
-    // Expose globally
-    window.setLanguage = setLanguage;
-    
-    // Listen for clicks on language buttons
-    document.addEventListener('click', function(e) {
-      var btn = e.target.closest('[data-lang-toggle]');
-      if (btn) {
-        setLanguage(btn.dataset.lang);
-      }
-    });
-  })();
+  });
+
+  window.addEventListener('storage', function(e) {
+    if (e.key === 'wiki-lang') {
+      setLang(e.newValue || 'en');
+    }
+  });
+
+  window.addEventListener('lang-changed', function(e) {
+    setLang(e.detail.lang);
+  });
+
+  document.addEventListener('astro:page-load', init);
+})();
 </script>
 
 <style is:global>
-  /* Bilingual content toggle */
   [data-lang="en"] .lang-es { display: none !important; }
   [data-lang="es"] .lang-en { display: none !important; }
 </style>

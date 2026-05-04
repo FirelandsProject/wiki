@@ -4,9 +4,11 @@ description: 'How to set up the development environment'
 pubDate: '2025-01-01'
 ---
 
-# Developer Setup
+# <span class="lang-en">Developer Setup</span><span class="lang-es">Configuración de Desarrollador</span>
 
-## Prerequisites
+## <span class="lang-en">Prerequisites</span><span class="lang-es">Prerrequisitos</span>
+
+<span class="lang-en">
 
 - CMake 3.10+
 - C++17 compliant compiler (GCC, Clang, MSVC)
@@ -14,37 +16,72 @@ pubDate: '2025-01-01'
 - MySQL 8.0 (via Docker)
 - Git
 
-## Quick Start
+</span>
+<span class="lang-es">
 
-### 1. Clone the Repository
+- CMake 3.10+
+- Compilador compatible con C++17 (GCC, Clang, MSVC)
+- Sistema de construcción Ninja
+- MySQL 8.0 (vía Docker)
+- Git
+
+</span>
+
+## <span class="lang-en">Quick Start</span><span class="lang-es">Inicio Rápido</span>
+
+### <span class="lang-en">1. Clone the Repository</span><span class="lang-es">1. Clonar el Repositorio</span>
 
 ```bash
 git clone https://github.com/FirelandsProject/firelands-next
 cd firelands-next
 ```
 
-### 2. Configure the Build
+### <span class="lang-en">2. Configure the Build</span><span class="lang-es">2. Configurar la Construcción</span>
 
 ```bash
 cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Debug
 ```
 
+<span class="lang-en">
+
 Notes:
 - **Generator**: MUST use Ninja (not Make)
 - **ccache**: Auto-detected and enabled if installed
 
-### 3. Build
+</span>
+<span class="lang-es">
+
+Notas:
+- **Generador**: DEBE usar Ninja (no Make)
+- **ccache**: Auto-detectado y habilitado si está instalado
+
+</span>
+
+### <span class="lang-en">3. Build</span><span class="lang-es">3. Construir</span>
 
 ```bash
 ninja -C build                    # Full build
 ninja -C build auth world         # Build auth and world servers
 ```
 
-### 4. Start Database
+<span class="lang-en">
+
+Full build / Build auth and world servers
+
+</span>
+<span class="lang-es">
+
+Construcción completa / Construir servidores auth y world
+
+</span>
+
+### <span class="lang-en">4. Start Database</span><span class="lang-es">4. Iniciar Base de Datos</span>
 
 ```bash
 docker-compose up -d db
 ```
+
+<span class="lang-en">
 
 Database credentials:
 - MySQL: `mysql:8.0`
@@ -53,14 +90,37 @@ Database credentials:
 - User: `firelands/firelands`
 - Databases: `auth`, `characters`, `world`
 
-### 5. Run Servers
+</span>
+<span class="lang-es">
+
+Credenciales de base de datos:
+- MySQL: `mysql:8.0`
+- Puerto: `3306`
+- Root: `root/root`
+- Usuario: `firelands/firelands`
+- Bases de datos: `auth`, `characters`, `world`
+
+</span>
+
+### <span class="lang-en">5. Run Servers</span><span class="lang-es">5. Ejecutar Servidores</span>
 
 ```bash
 ./build/bin/auth    # Auth server
 ./build/bin/world   # World server
 ```
 
-## Building Tests
+<span class="lang-en">
+
+Auth server / World server
+
+</span>
+<span class="lang-es">
+
+Servidor auth / Servidor world
+
+</span>
+
+## <span class="lang-en">Building Tests</span><span class="lang-es">Construir Pruebas</span>
 
 ```bash
 cmake -B build -G Ninja -DFIRELANDS_BUILD_TESTS=ON
@@ -69,7 +129,20 @@ ctest --test-dir build           # Run all tests
 ctest --test-dir build -R <pattern>  # Run specific tests
 ```
 
-## Dependencies (Fetched via CMake)
+<span class="lang-en">
+
+Run all tests / Run specific tests
+
+</span>
+<span class="lang-es">
+
+Ejecutar todas las pruebas / Ejecutar pruebas específicas
+
+</span>
+
+## <span class="lang-en">Dependencies (Fetched via CMake)</span><span class="lang-es">Dependencias (Obtenidas vía CMake)</span>
+
+<span class="lang-en">
 
 | Library | Version | Purpose |
 |---------|---------|---------|
@@ -84,10 +157,41 @@ ctest --test-dir build -R <pattern>  # Run specific tests
 | FTXUI | 5.0.0 | Console UI |
 | StormLib | 9.26 | MPQ archive handling |
 
-## Cross-Platform
+</span>
+<span class="lang-es">
+
+| Librería | Versión | Propósito |
+|---------|---------|----------|
+| Boost | (sistema) | Hilos |
+| GoogleTest | 1.14.0 | Pruebas |
+| spdlog | 1.14.1 | Registro |
+| MariaDB Connector/C | 3.3.8 | Cliente MySQL |
+| MariaDB Connector/C++ | 1.1.7 | MySQL C++ |
+| nlohmann/json | 3.11.2 | Análisis JSON |
+| yaml-cpp | 0.8.0 | Configuración YAML |
+| Lua | 5.4.7 | Scripting de juego |
+| FTXUI | 5.0.0 | Interfaz de consola |
+| StormLib | 9.26 | Manejo de archivos MPQ |
+
+</span>
+
+## <span class="lang-en">Cross-Platform</span><span class="lang-es">Multiplataforma</span>
+
+<span class="lang-en">
 
 - **Windows**: MSVC or MinGW
 - **Linux**: GCC or Clang
 - **macOS**: Clang (Apple Clang)
 
 Use `std::filesystem` for paths and `std::thread` for threading.
+
+</span>
+<span class="lang-es">
+
+- **Windows**: MSVC o MinGW
+- **Linux**: GCC o Clang
+- **macOS**: Clang (Apple Clang)
+
+Usar `std::filesystem` para rutas y `std::thread` para hilos.
+
+</span>
