@@ -4,17 +4,47 @@ import Post from "../../layouts/Post.astro";
 
 export async function getStaticPaths() {
 	const posts = await getCollection("docs");
-	return posts.map((post) => ({
-		params: { slug: post.id },
-		props: post,
-	}));
-}
-type Props = CollectionEntry<"docs">;
+	
+	const order = [
+		"getting-started",
+		"architecture",
+		"developer-setup",
+		"database",
+		"lua-scripting",
+		"testing",
+		"gm-commands"
+	];
 
-const post = Astro.props;
+	const sortedPosts = posts.sort((a, b) => {
+		const aIndex = order.indexOf(a.id);
+		const bIndex = order.indexOf(b.id);
+		const aPos = aIndex === -1 ? 999 : aIndex;
+		const bPos = bIndex === -1 ? 999 : bIndex;
+		return aPos - bPos;
+	});
+
+	return posts.map((post, index) => {
+		const currentIndex = sortedPosts.findIndex(p => p.id === post.id);
+		const prevPost = currentIndex > 0 ? sortedPosts[currentIndex - 1] : null;
+		const nextPost = currentIndex < sortedPosts.length - 1 ? sortedPosts[currentIndex + 1] : null;
+		
+		return {
+			params: { slug: post.id },
+			props: { post, prevPost, nextPost },
+		};
+	});
+}
+
+type Props = {
+	post: CollectionEntry<"docs">;
+	prevPost: CollectionEntry<"docs"> | null;
+	nextPost: CollectionEntry<"docs"> | null;
+};
+
+const { post, prevPost, nextPost } = Astro.props;
 const { Content, headings } = await render(post);
 ---
 
-<Post {...post.data} headings={headings}>
+<Post {...post.data} {headings} prevPost={prevPost} nextPost={nextPost}>
 	<Content />
 </Post>
