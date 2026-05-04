@@ -2,6 +2,7 @@
 import HeaderLink from "./HeaderLink.astro";
 import Logo from "./Logo.astro";
 import { SITE_TITLE, getBasePath } from "../consts";
+import LangSwitcher from "./LangSwitcher.astro";
 const base = getBasePath();
 ---
 
@@ -11,11 +12,13 @@ const base = getBasePath();
 			<Logo class="logo-svg" />
 		</a>
 		<div class="internal-links">
-			<HeaderLink href={base || '/'}>Home</HeaderLink>
-			<HeaderLink href={`${base}/docs`}>Docs</HeaderLink>
-			<HeaderLink href={`${base}/about`}>About</HeaderLink>
+			<HeaderLink href={base || '/'} data-i18n="home">Home</HeaderLink>
+			<HeaderLink href={`${base}/docs`} data-i18n="docs">Docs</HeaderLink>
+			<HeaderLink href={`${base}/about`} data-i18n="about">About</HeaderLink>
 		</div>
-		<div class="social-links">
+		<div class="header-right">
+			<LangSwitcher />
+			<div class="social-links">
 			<a href="https://github.com/FirelandsProject" target="_blank">
 				<span class="sr-only">Firelands Core Project GitHub repo</span>
 				<svg
@@ -71,6 +74,12 @@ const base = getBasePath();
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
+		gap: 1rem;
+	}
+	.header-right {
+		display: flex;
+		align-items: center;
+		gap: 1rem;
 	}
 	.internal-links {
 		display: flex;

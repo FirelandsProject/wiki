@@ -1,0 +1,82 @@
+<!-- Language Switcher -->
+<div class="lang-switcher" id="lang-switcher">
+  <button class="lang-btn active" data-lang="en" aria-label="English">EN</button>
+  <button class="lang-btn" data-lang="es" aria-label="Español">ES</button>
+</div>
+
+<script>
+  const translations = {
+    en: {
+      home: 'Home',
+      docs: 'Docs',
+      about: 'About',
+      prev: 'Previous',
+      next: 'Next',
+      onThisPage: 'On This Page',
+      lastUpdated: 'Last updated'
+    },
+    es: {
+      home: 'Inicio',
+      docs: 'Docs',
+      about: 'Acerca de',
+      prev: 'Anterior',
+      next: 'Siguiente',
+      onThisPage: 'En esta página',
+      lastUpdated: 'Última actualización'
+    }
+  };
+
+  const langSwitcher = document.getElementById('lang-switcher');
+  const langBtns = langSwitcher?.querySelectorAll('.lang-btn');
+  
+  function setLang(lang) {
+    const t = translations[lang];
+    localStorage.setItem('wiki-lang', lang);
+    document.documentElement.lang = lang;
+    langBtns?.forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.lang === lang);
+    });
+    
+    // Translate all marked elements
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.dataset.i18n;
+      if (t[key]) el.textContent = t[key];
+    });
+  }
+
+  // Initialize from saved preference
+  const savedLang = localStorage.getItem('wiki-lang') || 'en';
+  setLang(savedLang);
+
+  // Handle button clicks
+  langBtns?.forEach(btn => {
+    btn.addEventListener('click', () => setLang(btn.dataset.lang));
+  });
+</script>
+
+<style>
+  .lang-switcher {
+    display: flex;
+    gap: 0.25rem;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 0.25rem;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  .lang-btn {
+    padding: 0.35rem 0.6rem;
+    background: transparent;
+    border: none;
+    border-radius: 4px;
+    color: #888;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .lang-btn:hover { color: #ccc; }
+  .lang-btn.active {
+    background: rgba(255, 123, 0, 0.2);
+    color: rgb(255, 215, 0);
+  }
+</style>

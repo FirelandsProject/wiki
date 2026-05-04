@@ -389,7 +389,7 @@ const hasToc = headings && headings.length > 0;
                                             </>
                                         </svg>
                                         <span>
-                                            Updated{" "}
+                                            <span data-i18n="lastUpdated">Updated</span>{" "}
                                             <FormattedDate date={updatedDate} />
                                         </span>
                                     </div>
@@ -406,7 +406,7 @@ const hasToc = headings && headings.length > 0;
 									<a href={`${base}/docs/${prevPost.id}/`} class="nav-link nav-prev">
 										<span class="nav-arrow">←</span>
 										<span class="nav-content">
-											<span class="nav-label">Previous</span>
+											<span class="nav-label" data-i18n="prev">Previous</span>
 											<span class="nav-title">{prevPost.data.title}</span>
 										</span>
 									</a>
@@ -417,7 +417,7 @@ const hasToc = headings && headings.length > 0;
 								{nextPost ? (
 									<a href={`${base}/docs/${nextPost.id}/`} class="nav-link nav-next">
 										<span class="nav-content">
-											<span class="nav-label">Next</span>
+											<span class="nav-label" data-i18n="next">Next</span>
 											<span class="nav-title">{nextPost.data.title}</span>
 										</span>
 										<span class="nav-arrow">→</span>
@@ -434,7 +434,7 @@ const hasToc = headings && headings.length > 0;
             {
                 headings && headings.length > 0 && (
                     <aside class="toc-container">
-                        <div class="toc-title">On This Page</div>
+                        <div class="toc-title" data-i18n="onThisPage">On This Page</div>
                         <ul class="toc-list">
                             {headings
                                 .filter((h: Heading) => h.depth <= 3)
