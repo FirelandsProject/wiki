@@ -5,42 +5,16 @@
 </div>
 
 <script>
-  const translations = {
-    en: {
-      home: 'Home',
-      docs: 'Docs',
-      about: 'About',
-      prev: 'Previous',
-      next: 'Next',
-      onThisPage: 'On This Page',
-      lastUpdated: 'Last updated'
-    },
-    es: {
-      home: 'Inicio',
-      docs: 'Docs',
-      about: 'Acerca de',
-      prev: 'Anterior',
-      next: 'Siguiente',
-      onThisPage: 'En esta página',
-      lastUpdated: 'Última actualización'
-    }
-  };
-
   const langSwitcher = document.getElementById('lang-switcher');
   const langBtns = langSwitcher?.querySelectorAll('.lang-btn');
   
   function setLang(lang) {
-    const t = translations[lang];
+    document.body.setAttribute('data-lang', lang);
     localStorage.setItem('wiki-lang', lang);
     document.documentElement.lang = lang;
+    
     langBtns?.forEach(btn => {
       btn.classList.toggle('active', btn.dataset.lang === lang);
-    });
-    
-    // Translate all marked elements
-    document.querySelectorAll('[data-i18n]').forEach(el => {
-      const key = el.dataset.i18n;
-      if (t[key]) el.textContent = t[key];
     });
   }
 
@@ -79,4 +53,8 @@
     background: rgba(255, 123, 0, 0.2);
     color: rgb(255, 215, 0);
   }
+
+  /* Show/hide content based on language */
+  [data-lang="en"] .lang-es { display: none; }
+  [data-lang="es"] .lang-en { display: none; }
 </style>

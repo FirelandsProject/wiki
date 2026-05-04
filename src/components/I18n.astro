@@ -1,0 +1,19 @@
+<!-- Bilingual content wrapper -->
+<!-- Usage: <i18n en="English text" es="Spanish text"></i18n> -->
+<span class="i18n"></span>
+
+<script>
+  // Parse all i18n elements and apply translations
+  function initI18n() {
+    const lang = localStorage.getItem('wiki-lang') || 'en';
+    document.body.setAttribute('data-lang', lang);
+  }
+  
+  // Run on load
+  initI18n();
+</script>
+
+<style is:global>
+  [data-lang="en"] .lang-es { display: none !important; }
+  [data-lang="es"] .lang-en { display: none !important; }
+</style>

@@ -28,6 +28,11 @@ const hasToc = headings && headings.length > 0;
 <html lang="en">
     <head>
         <BaseHead title={title} description={description} />
+        <script>
+            // Set lang on body before render to prevent flash
+            const saved = localStorage.getItem('wiki-lang') || 'en';
+            document.body?.setAttribute('data-lang', saved);
+        </script>
         <style>
             main {
                 flex: 1;

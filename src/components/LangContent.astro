@@ -1,0 +1,28 @@
+---
+interface Props {
+  en: string;
+  es: string;
+}
+
+const { en, es } = Astro.props;
+---
+
+<span class="lang-content" data-en={en} data-es={es}></span>
+
+<script>
+  const elements = document.querySelectorAll('.lang-content');
+  const savedLang = localStorage.getItem('wiki-lang') || 'en';
+  
+  function updateContent() {
+    const lang = localStorage.getItem('wiki-lang') || 'en';
+    elements.forEach(el => {
+      const content = el.getAttribute(`data-${lang}`);
+      if (content) el.innerHTML = content;
+    });
+  }
+  
+  // Listen for language changes
+  window.addEventListener('storage', updateContent);
+  window.addEventListener('lang-changed', updateContent);
+  updateContent();
+</script>

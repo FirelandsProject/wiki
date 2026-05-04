@@ -393,3 +393,27 @@ button:active, .btn:active {
     left: 100%;
 }
 
+/* Bilingual content toggle */
+body[data-lang="en"] .lang-es { display: none !important; }
+body[data-lang="es"] .lang-en { display: none !important; }
+.card-shine::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        to right,
+        transparent 0%,
+        rgba(255,255,255,0.05) 50%,
+        transparent 100%
+    );
+    transform: rotate(30deg);
+    transition: all 0.5s ease;
+    pointer-events: none;
+}
+.card-shine:hover::after {
+    left: 100%;
+}
+
