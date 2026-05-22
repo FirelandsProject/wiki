@@ -26,7 +26,7 @@ src/
 ## Documentation Content
 The wiki documents **firelands-next**, a WoW Cataclysm emulator (4.3.4) with:
 - Hexagonal Architecture
-- C++17, CMake, Ninja build
+- C++20, CMake, Ninja build
 - MySQL database
 - Lua scripting
 - GoogleTest testing

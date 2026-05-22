@@ -2,6 +2,7 @@
 title: 'Developer Setup'
 description: 'How to set up the development environment'
 pubDate: '2025-01-01'
+updatedDate: '2026-05-21'
 ---
 
 # <span class="lang-en">Developer Setup</span><span class="lang-es">Configuración de Desarrollador</span>
@@ -10,18 +11,20 @@ pubDate: '2025-01-01'
 
 <span class="lang-en">
 
-- CMake 3.10+
-- C++17 compliant compiler (GCC, Clang, MSVC)
+- CMake 3.20+
+- C++20 compiler (Clang 15+, GCC 12+, MSVC 2022 17.4+)
 - Ninja build system
+- Python 3.8+ (SQL merge scripts)
 - MySQL 8.0 (via Docker)
 - Git
 
 </span>
 <span class="lang-es">
 
-- CMake 3.10+
-- Compilador compatible con C++17 (GCC, Clang, MSVC)
+- CMake 3.20+
+- Compilador C++20 (Clang 15+, GCC 12+, MSVC 2022 17.4+)
 - Sistema de construcción Ninja
+- Python 3.8+ (scripts de fusión SQL)
 - MySQL 8.0 (vía Docker)
 - Git
 
@@ -60,8 +63,9 @@ Notas:
 ### <span class="lang-en">3. Build</span><span class="lang-es">3. Construir</span>
 
 ```bash
-ninja -C build                    # Full build
-ninja -C build auth world         # Build auth and world servers
+ninja -C build                         # Full build
+ninja -C build auth world              # Auth and world servers
+ninja -C build FirelandsDevTools       # CLI account/realm tool
 ```
 
 <span class="lang-en">
@@ -88,7 +92,7 @@ Database credentials:
 - Port: `3306`
 - Root: `root/root`
 - User: `firelands/firelands`
-- Databases: `auth`, `characters`, `world`
+- Databases: `firelands_auth`, `firelands_characters`, `firelands_world`
 
 </span>
 <span class="lang-es">
@@ -98,16 +102,27 @@ Credenciales de base de datos:
 - Puerto: `3306`
 - Root: `root/root`
 - Usuario: `firelands/firelands`
-- Bases de datos: `auth`, `characters`, `world`
+- Bases de datos: `firelands_auth`, `firelands_characters`, `firelands_world`
 
 </span>
 
 ### <span class="lang-en">5. Run Servers</span><span class="lang-es">5. Ejecutar Servidores</span>
 
 ```bash
-./build/bin/auth    # Auth server
-./build/bin/world   # World server
+./build/bin/auth    # Auth server (config: authserver.yaml)
+./build/bin/world   # World server (config: worldserver.yaml)
 ```
+
+<span class="lang-en">
+
+Override config paths with `FIRELANDS_AUTH_CONFIG` and `FIRELANDS_WORLD_CONFIG`. Both servers use an FTXUI-based interactive console when attached to a TTY.
+
+</span>
+<span class="lang-es">
+
+Sobrescribe la configuración con `FIRELANDS_AUTH_CONFIG` y `FIRELANDS_WORLD_CONFIG`. Ambos servidores usan consola interactiva FTXUI cuando hay TTY.
+
+</span>
 
 <span class="lang-en">
 
@@ -146,7 +161,7 @@ Ejecutar todas las pruebas / Ejecutar pruebas específicas
 
 | Library | Version | Purpose |
 |---------|---------|---------|
-| Boost | (system) | Threading |
+| Boost | (system) | Asio networking (C++20 coroutines) |
 | GoogleTest | 1.14.0 | Testing |
 | spdlog | 1.14.1 | Logging |
 | MariaDB Connector/C | 3.3.8 | MySQL client |
@@ -162,7 +177,7 @@ Ejecutar todas las pruebas / Ejecutar pruebas específicas
 
 | Librería | Versión | Propósito |
 |---------|---------|----------|
-| Boost | (sistema) | Hilos |
+| Boost | (sistema) | Red Asio (corrutinas C++20) |
 | GoogleTest | 1.14.0 | Pruebas |
 | spdlog | 1.14.1 | Registro |
 | MariaDB Connector/C | 3.3.8 | Cliente MySQL |

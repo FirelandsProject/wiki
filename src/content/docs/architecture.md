@@ -2,6 +2,7 @@
 title: 'Architecture'
 description: 'Hexagonal Architecture in Firelands'
 pubDate: '2025-01-01'
+updatedDate: '2026-05-21'
 ---
 
 # <span class="lang-en">Hexagonal Architecture</span><span class="lang-es">Arquitectura Hexagonal</span>
@@ -71,6 +72,8 @@ Example:
 - `domain/models/Character.h`
 - `domain/models/SpellDefinition.h`
 - `domain/models/GmTicket.h`
+- `domain/models/GossipMenu.h`
+- `domain/models/SpellDefinition.h`
 
 </span>
 <span class="lang-es">
@@ -84,6 +87,8 @@ Ejemplo:
 - `domain/models/Character.h`
 - `domain/models/SpellDefinition.h`
 - `domain/models/GmTicket.h`
+- `domain/models/GossipMenu.h`
+- `domain/models/SpellDefinition.h`
 
 </span>
 
@@ -119,15 +124,17 @@ Ejemplo:
 <span class="lang-en">
 
 Contains:
-- **Adapters**: Implementations of ports
-- **External wrappers**: Third-party library wrappers
+- **Adapters**: Implementations of ports (MySQL, DBC readers)
+- **Network**: `AsyncNetworkServer` with Boost.Asio C++20 coroutines
+- **World session**: `WorldSession` split across `worldsession/*.cpp` (login, gossip, spells, GM state, object updates)
 
 </span>
 <span class="lang-es">
 
 Contiene:
-- **Adapters**: Implementaciones de los ports
-- **Wrappers externos**: Wrappers de librerías de terceros
+- **Adapters**: Implementaciones de ports (MySQL, lectores DBC)
+- **Red**: `AsyncNetworkServer` con corrutinas Boost.Asio C++20
+- **Sesión world**: `WorldSession` repartida en `worldsession/*.cpp` (login, gossip, hechizos, estado GM, object updates)
 
 </span>
 
@@ -139,6 +146,7 @@ Contiene:
 |--------|--------|---------|
 | `auth` | `build/bin/auth` | Authentication server |
 | `world` | `build/bin/world` | Game server |
+| `FirelandsDevTools` | `build/bin/FirelandsDevTools` | CLI for accounts and realms |
 
 </span>
 <span class="lang-es">
@@ -147,6 +155,20 @@ Contiene:
 |---------|---------|----------|
 | `auth` | `build/bin/auth` | Servidor de autenticación |
 | `world` | `build/bin/world` | Servidor de juego |
+| `FirelandsDevTools` | `build/bin/FirelandsDevTools` | CLI de cuentas y reinos |
+
+</span>
+
+## <span class="lang-en">Wire format</span><span class="lang-es">Formato de red</span>
+
+<span class="lang-en">
+
+Packet layouts and opcodes target **WoW Cataclysm 4.3.4 (build 15595)**. Shared builders live under `src/shared/network/` (e.g. `SpellCooldownWire`, `KnownSpellsWire`, gossip packets). `ByteBuffer` uses C++20 `std::span` helpers for safe reads and writes.
+
+</span>
+<span class="lang-es">
+
+Los paquetes y opcodes apuntan a **WoW Cataclysm 4.3.4 (build 15595)**. Los builders compartidos están en `src/shared/network/` (p. ej. `SpellCooldownWire`, `KnownSpellsWire`, gossip). `ByteBuffer` usa helpers `std::span` de C++20.
 
 </span>
 

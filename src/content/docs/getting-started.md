@@ -2,6 +2,7 @@
 title: 'Getting Started'
 description: 'Introduction to Firelands - WoW Cataclysm Emulator'
 pubDate: '2025-01-01'
+updatedDate: '2026-05-21'
 ---
 
 # <span class="lang-en">Getting Started</span><span class="lang-es">Comenzar</span>
@@ -23,22 +24,26 @@ Firelands es un **Emulador de WoW Cataclysm** (4.3.4) construido con prácticas 
 
 | | |
 |---|---|
-| **Language** | C++17 |
+| **Language** | C++20 |
 | **Build** | CMake + Ninja |
+| **Networking** | Boost.Asio (C++20 coroutines) |
 | **Database** | MySQL 8.0 |
 | **Testing** | GoogleTest |
 | **Scripting** | Lua 5.4 |
+| **Console UI** | FTXUI (FirelandsTui) |
 
 </span>
 <span class="lang-es">
 
 | | |
 |---|---|
-| **Lenguaje** | C++17 |
+| **Lenguaje** | C++20 |
 | **Build** | CMake + Ninja |
+| **Red** | Boost.Asio (corrutinas C++20) |
 | **Base de datos** | MySQL 8.0 |
 | **Pruebas** | GoogleTest |
 | **Scripting** | Lua 5.4 |
+| **Consola** | FTXUI (FirelandsTui) |
 
 </span>
 

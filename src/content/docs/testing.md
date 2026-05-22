@@ -2,6 +2,7 @@
 title: 'Testing'
 description: 'Testing strategies and workflows'
 pubDate: '2025-01-01'
+updatedDate: '2026-05-21'
 ---
 
 # <span class="lang-en">Testing</span><span class="lang-es">Pruebas</span>
@@ -78,7 +79,9 @@ Tests are organized by layer:
 - `tests/unit/domain/` - Domain entity tests
 - `tests/unit/application/` - Service tests
 - `tests/unit/infrastructure/` - Adapter tests
-- `tests/unit/shared/` - Shared utilities tests
+- `tests/unit/shared/` - Shared utilities tests (wire formats, `ByteBuffer`, GUIDs)
+
+Recent coverage includes gossip packets, spell cooldown wire encoding, action buttons, and aura logic.
 
 </span>
 <span class="lang-es">
@@ -87,7 +90,9 @@ Las pruebas se organizan por capa:
 - `tests/unit/domain/` - Pruebas de entidades del dominio
 - `tests/unit/application/` - Pruebas de servicios
 - `tests/unit/infrastructure/` - Pruebas de adaptadores
-- `tests/unit/shared/` - Pruebas de utilidades compartidas
+- `tests/unit/shared/` - Utilidades compartidas (wire formats, `ByteBuffer`, GUIDs)
+
+Cobertura reciente: paquetes gossip, cooldowns de hechizo, action bar y auras.
 
 </span>
 

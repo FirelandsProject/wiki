@@ -2,49 +2,86 @@
 title: 'Lua Scripting'
 description: 'Gameplay scripting with Lua'
 pubDate: '2025-01-01'
+updatedDate: '2026-05-21'
 ---
 
-# Lua Scripting
+# <span class="lang-en">Lua Scripting</span><span class="lang-es">Scripting Lua</span>
 
-Firelands usa Lua 5.4 para scripting de gameplay. El sistema está en desarrollo.
+<span class="lang-en">
 
-## Ubicación
+Firelands uses **Lua 5.4** for gameplay scripting. The world server loads scripts at startup via `LuaGameScriptHost` and fires lifecycle events (e.g. `world_startup`).
 
-Los scripts Lua se encuentran en `scripts/lua/`. El script bootstrap es `scripts/lua/bootstrap.lua`.
+</span>
+<span class="lang-es">
 
-## Estado Actual
+Firelands usa **Lua 5.4** para scripting de gameplay. El world carga scripts al arrancar con `LuaGameScriptHost` y dispara eventos de ciclo de vida (p. ej. `world_startup`).
 
-El sistema de scripting está en fase inicial de implementación:
+</span>
 
-- `bootstrap.lua` - Script de inicio (actualmente vacío, disponible para definiciones globales)
-- `LuaGameScriptHost` - Sistema de hosting de scripts en desarrollo
+## <span class="lang-en">Location</span><span class="lang-es">Ubicación</span>
 
-## Scripts de NPCs
+- Scripts: `scripts/lua/`
+- Bootstrap: `scripts/lua/bootstrap.lua`
 
-Los scripts de NPCs permiten añadir comportamiento personalizado a criaturas del juego:
+## <span class="lang-en">Gossip (shipped)</span><span class="lang-es">Gossip (implementado)</span>
+
+<span class="lang-en">
+
+When a player talks to a creature, the server tries **Lua first**, then falls back to the world database:
+
+1. `gossip_hello` — script can call `SendGossipMessage` and set `_gossipMenuSent`
+2. If no menu was sent, load `creature_template.gossip_menu_id` and send `SMSG_GOSSIP_MESSAGE`
+3. `gossip_select` on `CMSG_GOSSIP_SELECT_OPTION` (supports chained menus via `ActionMenuId`)
+
+Quest lines in gossip packets are filtered by **class and race** masks from `quest_template`.
+
+</span>
+<span class="lang-es">
+
+Al hablar con una criatura, el servidor intenta **Lua primero**, luego la base world:
+
+1. `gossip_hello` — el script puede llamar `SendGossipMessage` y marcar `_gossipMenuSent`
+2. Si no hay menú, carga `creature_template.gossip_menu_id` y envía `SMSG_GOSSIP_MESSAGE`
+3. `gossip_select` en `CMSG_GOSSIP_SELECT_OPTION` (menús encadenados vía `ActionMenuId`)
+
+Las líneas de misiones en gossip se filtran por máscaras de **clase y raza** en `quest_template`.
+
+</span>
 
 ```lua
--- Ejemplo planned (no implementado aún)
-function OnGossip(event, player, creature)
-    player:GossipMenuAddItem(0, "Hello!", 0, 1)
-    player:GossipSendMenu(1, creature)
+-- Example shape (API may evolve)
+function OnGossipHello(event, player, creature)
+    player:SendGossipMessage(menuId, textId, creature)
 end
 
-RegisterCreatureGossipEvent(12345, 1, OnGossip)
+RegisterCreatureGossipEvent(entry, 1, OnGossipHello)
 ```
 
-## Hooks Planificados
+## <span class="lang-en">Planned Hooks</span><span class="lang-es">Hooks Planificados</span>
 
-Los siguientes hooks estarán disponibles cuando el sistema esté completo:
+<span class="lang-en">
 
-- `OnGossip` - Jugador habla con NPC
-- `OnQuestAccept` - Jugador acepta quest
-- `OnSpellCast` - Jugador lanza hechizo
-- `OnEnterCombat` - Criatura entra en combate
-- `OnDeath` - Criatura/Jugador muere
-- `OnLogin` - Jugador se conecta
-- `OnLogout` - Jugador se desconecta
+Additional hooks are planned as the host API grows:
 
-## Estado del Proyecto
+</span>
+<span class="lang-es">
 
-El sistema Lua está en desarrollo. La API expuesta puede cambiar.
+Se planean más hooks a medida que crezca la API del host:
+
+</span>
+
+- `OnQuestAccept` — player accepts a quest
+- `OnSpellCast` — player casts a spell
+- `OnEnterCombat` / `OnDeath` — combat lifecycle
+- `OnLogin` / `OnLogout` — session lifecycle
+
+<span class="lang-en">
+
+The Lua API is still evolving; verify behavior against `docs/EN/LUA_SCRIPTING.md` in the **firelands-next** repository for the latest bindings.
+
+</span>
+<span class="lang-es">
+
+La API Lua sigue evolucionando; consulta `docs/EN/LUA_SCRIPTING.md` en el repositorio **firelands-next** para los bindings más recientes.
+
+</span>
