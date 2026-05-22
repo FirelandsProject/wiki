@@ -18,7 +18,9 @@ Los comandos de staff empiezan con `.` en el chat o en la consola del world. En 
 
 </span>
 
-## <span class="lang-en">Teleport</span><span class="lang-es">Teleport</span>
+## <span class="lang-en">Teleport</span><span class="lang-es">Teletransporte</span>
+
+<span class="lang-en">
 
 | Command | Description | Permission |
 |---------|-------------|------------|
@@ -28,7 +30,22 @@ Los comandos de staff empiezan con `.` en el chat o en la consola del world. En 
 | `.appear <name>` | Same as `.goto` | ManagePlayers |
 | `.summon <name>` | Summon player to you | ManagePlayers |
 
+</span>
+<span class="lang-es">
+
+| Comando | Descripción | Permiso |
+|---------|-------------|-----------|
+| `.gps` | Mostrar coordenadas actuales | CommandGps |
+| `.tele <x> <y> [z] [mapId]` | Teletransportarse a coordenadas | CommandTeleport |
+| `.goto <name>` | Ir a un jugador online | ManagePlayers |
+| `.appear <name>` | Igual que `.goto` | ManagePlayers |
+| `.summon <name>` | Invocar jugador hacia ti | ManagePlayers |
+
+</span>
+
 ## <span class="lang-en">GM tools</span><span class="lang-es">Herramientas GM</span>
+
+<span class="lang-en">
 
 | Command | Description | Permission |
 |---------|-------------|------------|
@@ -39,7 +56,23 @@ Los comandos de staff empiezan con `.` en el chat o en la consola del world. En 
 | `.fly [on\|off]` | Toggle flight | CommandGmTools |
 | `.speed <1-10\|reset>` | Set run speed (default 7) | CommandGmTools |
 
+</span>
+<span class="lang-es">
+
+| Comando | Descripción | Permiso |
+|---------|-------------|-----------|
+| `.gm [on\|off]` | Activar o desactivar etiqueta GM | CommandGmTools |
+| `.dev [on\|off]` | Activar o desactivar etiqueta de desarrollador | CommandGmTools |
+| `.dnd [on\|off]` | Activar o desactivar No molestar | CommandGmTools |
+| `.visible [on\|off]` | Alternar visibilidad GM | CommandGmTools |
+| `.fly [on\|off]` | Activar o desactivar vuelo | CommandGmTools |
+| `.speed <1-10\|reset>` | Velocidad de carrera (por defecto 7) | CommandGmTools |
+
+</span>
+
 ## <span class="lang-en">Players</span><span class="lang-es">Jugadores</span>
+
+<span class="lang-en">
 
 | Command | Description | Permission |
 |---------|-------------|------------|
@@ -47,7 +80,20 @@ Los comandos de staff empiezan con `.` en el chat o en la consola del world. En 
 | `.announce <msg>` | Global announcement | ManagePlayers |
 | `.kick <name> [reason]` | Disconnect player | ManagePlayers |
 
-## <span class="lang-en">Gameplay</span><span class="lang-es">Gameplay</span>
+</span>
+<span class="lang-es">
+
+| Comando | Descripción | Permiso |
+|---------|-------------|-----------|
+| `.online` | Listar personajes online | ManagePlayers |
+| `.announce <msg>` | Anuncio global | ManagePlayers |
+| `.kick <name> [reason]` | Desconectar jugador | ManagePlayers |
+
+</span>
+
+## <span class="lang-en">Gameplay</span><span class="lang-es">Juego</span>
+
+<span class="lang-en">
 
 | Command | Description | Permission | Notes |
 |---------|-------------|------------|-------|
@@ -60,6 +106,23 @@ Los comandos de staff empiezan con `.` en el chat o en la consola del world. En 
 | `.damage <amount>` | Damage selected target | CommandGameplay | **In-game only**; target player or NPC first |
 | `.revive` | Restore your character to full health and primary power | CommandGameplay | **In-game only** |
 | `.faction …` | Forced faction standing | CommandGameplay | See subcommands below |
+
+</span>
+<span class="lang-es">
+
+| Comando | Descripción | Permiso | Notas |
+|---------|-------------|-----------|-------|
+| `.learn <spellId>` | Aprender hechizo (persistido) | CommandGameplay | Consola: nombre del objetivo primero |
+| `.money <copper>` | Añadir o quitar cobre | CommandGameplay | Persiste `characters.money` |
+| `.additem <id> [count]` | Añadir objeto a la mochila | CommandGameplay | Objetivo en juego o nombre primero en consola; mochila llena → correo |
+| `.delitem <id>` | Quitar objeto de la mochila | CommandGameplay | Solo mochila principal (no equipado) |
+| `.level <level>` | Fijar nivel del personaje (1–85) | CommandGameplay | |
+| `.cd` | Limpiar GCD y cooldowns de hechizos | CommandGameplay | Persiste estado vacío de cooldowns |
+| `.damage <amount>` | Dañar objetivo seleccionado | CommandGameplay | **Solo en juego**; selecciona jugador o PNJ antes |
+| `.revive` | Restaurar salud y poder principal al máximo | CommandGameplay | **Solo en juego** |
+| `.faction …` | Reputación forzada | CommandGameplay | Ver subcomandos abajo |
+
+</span>
 
 ### <span class="lang-en">`.faction` subcommands</span><span class="lang-es">Subcomandos de `.faction`</span>
 
@@ -84,6 +147,8 @@ Los comandos de staff empiezan con `.` en el chat o en la consola del world. En 
 
 ## <span class="lang-en">Account (console only)</span><span class="lang-es">Cuenta (solo consola)</span>
 
+<span class="lang-en">
+
 | Command | Description | Permission |
 |---------|-------------|------------|
 | `.account create …` | Create account | ManageAccounts |
@@ -92,18 +157,24 @@ Los comandos de staff empiezan con `.` en el chat o en la consola del world. En 
 | `.ban <account>` | Lock account (`account.locked`) | ManageAccounts |
 | `.unban <account>` | Unlock account | ManageAccounts |
 
+</span>
+<span class="lang-es">
+
+| Comando | Descripción | Permiso |
+|---------|-------------|-----------|
+| `.account create …` | Crear cuenta | ManageAccounts |
+| `.account setaccess …` | Fijar nivel de acceso (requiere re-login) | ManageAccounts |
+| `.account delete …` | Eliminar cuenta | ManageAccounts |
+| `.ban <account>` | Bloquear cuenta (`account.locked`) | ManageAccounts |
+| `.unban <account>` | Desbloquear cuenta | ManageAccounts |
+
+</span>
+
 ## <span class="lang-en">GM tickets (in-game only)</span><span class="lang-es">Tickets GM (solo en juego)</span>
 
 <span class="lang-en">
 
 Requires **Game Master** access and the **ManageGmTickets** permission (included in the default GM permission set). Tickets are stored in `firelands_characters.gm_ticket`; players open them from the client help UI, and staff work the queue with chat commands or the gossip desk below.
-
-</span>
-<span class="lang-es">
-
-Requiere nivel **Game Master** y el permiso **ManageGmTickets** (incluido en el set GM por defecto). Los tickets viven en `firelands_characters.gm_ticket`; los jugadores los abren desde la UI de ayuda del cliente, y el staff gestiona la cola por chat o por el escritorio gossip descrito abajo.
-
-</span>
 
 | Command | Description |
 |---------|-------------|
@@ -113,6 +184,22 @@ Requiere nivel **Game Master** y el permiso **ManageGmTickets** (incluido en el 
 | `.ticket take <id>` | Assign ticket to yourself |
 | `.ticket reply <id> <message>` | Staff reply; online players receive `SMSG_GMRESPONSE_RECEIVED` |
 | `.ticket close <id>` | Close ticket (must be assigned to you) |
+
+</span>
+<span class="lang-es">
+
+Requiere nivel **Game Master** y el permiso **ManageGmTickets** (incluido en el set GM por defecto). Los tickets viven en `firelands_characters.gm_ticket`; los jugadores los abren desde la UI de ayuda del cliente, y el staff gestiona la cola por chat o por el escritorio gossip descrito abajo.
+
+| Comando | Descripción |
+|---------|-------------|
+| `.ticket queue` | Listar cola sin asignar en chat de sistema (hasta 20) |
+| `.ticket mine` | Listar tickets asignados a tu cuenta (hasta 20) |
+| `.ticket ui` | Abrir el escritorio gossip de **tickets GM** |
+| `.ticket take <id>` | Asignarte el ticket |
+| `.ticket reply <id> <message>` | Respuesta del staff; jugadores online reciben `SMSG_GMRESPONSE_RECEIVED` |
+| `.ticket close <id>` | Cerrar ticket (debe estar asignado a ti) |
+
+</span>
 
 ### <span class="lang-en">Ticket desk UI (`.ticket ui`)</span><span class="lang-es">Escritorio de tickets (`.ticket ui`)</span>
 
@@ -131,7 +218,7 @@ Requiere nivel **Game Master** y el permiso **ManageGmTickets** (incluido en el 
 - Each row shows ticket id, character name, and a short message preview
 - **Previous page** / **Next page** when more than 10 tickets exist
 - Select a row to open the **detail** view
-- **Back** returns to the main menu
+- **Back** — return to the main menu
 
 **Detail view**
 
@@ -153,16 +240,16 @@ Chat commands (`.ticket queue`, `.ticket take`, etc.) call the same `GmTicketSer
 
 **Menú principal**
 
-- **Open ticket queue** — tickets sin asignar, FIFO, 10 por página
-- **My assigned tickets** — tickets con tu `assigned_account_id`
-- **Close** — cerrar el escritorio
+- **Cola de tickets abierta** — tickets sin asignar, FIFO, hasta 10 por página
+- **Mis tickets asignados** — tickets con tu `assigned_account_id`
+- **Cerrar** — cerrar el escritorio
 
 **Lista** (cola o míos)
 
 - Cada fila: id, nombre del personaje y vista previa del mensaje
-- **Previous page** / **Next page** si hay más de 10
+- **Página anterior** / **Página siguiente** si hay más de 10
 - Elige una fila para el **detalle**
-- **Back** al menú principal
+- **Volver** — al menú principal
 
 **Detalle**
 
@@ -170,10 +257,10 @@ Muestra id, personaje, estado, mapa/posición, mensaje del jugador y tu última 
 
 | Opción | Cuándo | Efecto |
 |--------|--------|--------|
-| **Take ticket** | Sin asignar o de otro GM | Igual que `.ticket take <id>` |
-| **Write reply…** | Asignado a ti | Caja gossip; igual que `.ticket reply` (avisa al jugador online) |
-| **Mark resolved (close)** | Asignado a ti | Igual que `.ticket close <id>`; vuelve a la lista |
-| **Back** | Siempre | Vuelve a la lista actual |
+| **Tomar ticket** | Sin asignar o de otro GM | Igual que `.ticket take <id>` |
+| **Escribir respuesta…** | Asignado a ti | Caja gossip; igual que `.ticket reply` (avisa al jugador online) |
+| **Marcar resuelto (cerrar)** | Asignado a ti | Igual que `.ticket close <id>`; vuelve a la lista |
+| **Volver** | Siempre | Vuelve a la lista actual |
 
 Los comandos de chat usan la misma lógica `GmTicketService` que la UI.
 
@@ -181,22 +268,28 @@ Los comandos de chat usan la misma lógica `GmTicketService` que la UI.
 
 ## <span class="lang-en">Mail</span><span class="lang-es">Correo</span>
 
+<span class="lang-en">
+
 | Command | Description | Permission |
 |---------|-------------|------------|
 | `.email` | Open mailbox UI without a nearby mailbox NPC | CommandMailbox |
-
-<span class="lang-en">
 
 **In-game only.** Moderators (access level 1) and above may use `.email`; other dot commands still require **Game Master** (2+). Useful after `.additem` when the target’s main backpack is full and items were sent by in-game mail.
 
 </span>
 <span class="lang-es">
 
+| Comando | Descripción | Permiso |
+|---------|-------------|-----------|
+| `.email` | Abrir la UI de correo sin un buzón cercano | CommandMailbox |
+
 **Solo en juego.** Moderadores (nivel 1) y superiores pueden usar `.email`; el resto de comandos `.` siguen pidiendo **Game Master** (2+). Útil tras `.additem` si la mochila principal está llena y los objetos se enviaron por correo.
 
 </span>
 
 ## <span class="lang-en">Server / NPCs</span><span class="lang-es">Servidor / NPCs</span>
+
+<span class="lang-en">
 
 | Command | Description | Permission |
 |---------|-------------|------------|
@@ -205,20 +298,37 @@ Los comandos de chat usan la misma lógica `GmTicketService` que la UI.
 | `.npc add <entry> [displayId] [faction]` | Spawn NPC at your position | ServerControl |
 | `.npc del` | Delete targeted NPC (in-game) or by guid (console) | ServerControl |
 
-<span class="lang-en">
-
 `.npc` spawn/delete requires **Administrator** access level (3). Console: `.npc <OnlineChar> search|add|del …`.
 
 </span>
 <span class="lang-es">
 
-`.npc` add/del requiere nivel **Administrator** (3). Consola: `.npc <PersonajeOnline> search|add|del …`.
+| Comando | Descripción | Permiso |
+|---------|-------------|-----------|
+| `.server restart <delay>` | Programar apagado del world (`30s`, `5m`, etc.; cuenta atrás en los últimos 10 s) | ServerControl |
+| `.npc search [fragment]` | Buscar en `creature_template` (chat de sistema con estilo) | ServerControl |
+| `.npc add <entry> [displayId] [faction]` | Crear PNJ en tu posición | ServerControl |
+| `.npc del` | Borrar PNJ objetivo (en juego) o por guid (consola) | ServerControl |
+
+`.npc` crear/borrar requiere nivel **Administrator** (3). Consola: `.npc <PersonajeOnline> search|add|del …`.
 
 </span>
 
 ## <span class="lang-en">Help</span><span class="lang-es">Ayuda</span>
 
+<span class="lang-en">
+
 | Command | Description |
 |---------|-------------|
 | `.help` | Show help (WoW-colored; stripped on console) |
 | `.commands` | Same as `.help` |
+
+</span>
+<span class="lang-es">
+
+| Comando | Descripción |
+|---------|-------------|
+| `.help` | Mostrar ayuda (colores WoW; sin colores en consola) |
+| `.commands` | Igual que `.help` |
+
+</span>
