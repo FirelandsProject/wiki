@@ -5,478 +5,363 @@ import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import FormattedDate from "../components/FormattedDate.astro";
 import { getBasePath } from "../consts";
+import { docSlugFromId, docUrl, localePath } from "../i18n/utils";
+import { t, type Locale } from "../i18n/ui";
 
 type Heading = {
-    depth: number;
-    slug: string;
-    text: string;
+	depth: number;
+	slug: string;
+	text: string;
 };
 
 type Props = CollectionEntry<"docs">["data"] & {
-    headings?: Heading[];
-    prevPost?: CollectionEntry<"docs"> | null;
-    nextPost?: CollectionEntry<"docs"> | null;
-    titleEn?: string;
-    titleEs?: string;
-    prevTitleEn?: string;
-    prevTitleEs?: string;
-    nextTitleEn?: string;
-    nextTitleEs?: string;
+	headings?: Heading[];
+	prevPost?: CollectionEntry<"docs"> | null;
+	nextPost?: CollectionEntry<"docs"> | null;
+	locale?: Locale;
+	showDocsBreadcrumb?: boolean;
 };
 
 const base = getBasePath();
+const locale: Locale = Astro.props.locale ?? Astro.currentLocale ?? "en";
 
 const {
-    title,
-    description,
-    pubDate,
-    updatedDate,
-    author,
-    headings,
-    prevPost,
-    nextPost,
-    titleEn,
-    titleEs,
-    prevTitleEn,
-    prevTitleEs,
-    nextTitleEn,
-    nextTitleEs,
+	title,
+	description,
+	pubDate,
+	updatedDate,
+	author,
+	headings,
+	prevPost,
+	nextPost,
+	showDocsBreadcrumb = false,
 } = Astro.props;
+
 const hasToc = headings && headings.length > 0;
 ---
 
-<html lang="en">
-    <head>
-        <BaseHead title={title} description={description} />
-        <script is:inline>
-          var saved = localStorage.getItem('wiki-lang') || 'en';
-          document.documentElement.setAttribute('data-lang', saved);
-          document.documentElement.lang = saved;
-        </script>
-        <style>
-            main {
-                flex: 1;
-                width: 100%;
-                max-width: 1300px;
-                margin: 0 auto;
-                padding: 4rem 2rem;
-                display: grid;
-                grid-template-columns: minmax(0, 1fr) 300px;
-                gap: 4rem;
-                align-items: flex-start;
-            }
+<html lang={locale}>
+	<head>
+		<BaseHead title={title} description={description} locale={locale} />
+		<style>
+			main {
+				flex: 1;
+				width: 100%;
+				max-width: 1300px;
+				margin: 0 auto;
+				padding: 4rem 2rem;
+				display: grid;
+				grid-template-columns: minmax(0, 1fr) 300px;
+				gap: 4rem;
+				align-items: flex-start;
+			}
+			main.no-toc {
+				grid-template-columns: 1fr;
+				max-width: 1000px;
+			}
+			@media (max-width: 1100px) {
+				main,
+				main.no-toc {
+					grid-template-columns: 1fr;
+					padding: 2rem 1rem;
+					max-width: 900px;
+				}
+				.toc-container {
+					display: none;
+				}
+			}
+			article {
+				width: 100%;
+				min-width: 0;
+			}
+			main.no-toc .title {
+				text-align: center;
+			}
+			main.no-toc .metadata {
+				justify-content: center;
+			}
+			main.no-toc .breadcrumb {
+				text-align: center;
+			}
+			.prose {
+				width: 100%;
+				max-width: 100%;
+				padding: 3.5rem;
+				color: rgb(var(--gray-dark));
+				background: rgba(20, 20, 20, 0.7);
+				backdrop-filter: blur(16px);
+				border-radius: 16px;
+				border: 1px solid rgba(var(--accent), 0.15);
+				box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+				position: relative;
+				overflow: hidden;
+			}
+			.prose::before {
+				content: "";
+				position: absolute;
+				top: 0;
+				left: 0;
+				right: 0;
+				height: 4px;
+				background: linear-gradient(to right, transparent, rgb(var(--accent)), transparent);
+				border-radius: 16px 16px 0 0;
+			}
+			.breadcrumb {
+				margin-bottom: 2rem;
+				font-family: "Metamorphous", serif;
+				font-size: 0.9rem;
+			}
+			.breadcrumb a {
+				color: rgb(var(--accent));
+				opacity: 0.8;
+			}
+			.breadcrumb span {
+				color: rgb(var(--gray));
+				margin: 0 0.5rem;
+			}
+			.title {
+				margin-bottom: 3rem;
+				text-align: left;
+				line-height: 1.2;
+				border-bottom: 1px solid rgba(var(--accent), 0.1);
+				padding-bottom: 2rem;
+			}
+			.title h1 {
+				margin: 0 0 0.75rem 0;
+				color: rgb(var(--gold));
+				font-family: "Metamorphous", serif;
+				font-size: 3.5rem;
+				text-transform: capitalize;
+				letter-spacing: 1px;
+				text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+			}
+			.metadata {
+				display: flex;
+				gap: 2rem;
+				color: rgb(var(--gray));
+				font-size: 0.9rem;
+				font-family: "Inter", sans-serif;
+			}
+			.meta-item {
+				display: flex;
+				align-items: center;
+				gap: 0.5rem;
+			}
+			.meta-item svg {
+				color: rgb(var(--accent));
+			}
+			.toc-container {
+				position: sticky;
+				top: 6rem;
+				background: rgba(26, 26, 26, 0.6);
+				backdrop-filter: blur(10px);
+				padding: 2rem;
+				padding-bottom: 3rem;
+				border-radius: 12px;
+				border: 1px solid rgba(var(--accent), 0.1);
+			}
+			.toc-title {
+				font-family: "Metamorphous", serif;
+				color: rgb(var(--gold));
+				font-size: 1.1rem;
+				margin-bottom: 1.5rem;
+				text-transform: uppercase;
+				letter-spacing: 1px;
+				display: flex;
+				align-items: center;
+				gap: 0.5rem;
+			}
+			.toc-title::before {
+				content: "";
+				width: 4px;
+				height: 1.2em;
+				background: rgb(var(--accent));
+				display: inline-block;
+			}
+			.toc-list {
+				list-style: none;
+				padding: 0;
+				margin: 0;
+				padding-bottom: 1rem;
+			}
+			.toc-link {
+				display: block;
+				padding: 0.5rem 0;
+				color: rgb(var(--gray));
+				font-size: 0.9rem;
+				text-decoration: none;
+				transition: all 0.2s ease;
+				border-left: 2px solid transparent;
+				padding-left: 1rem;
+			}
+			.toc-link:hover {
+				color: rgb(var(--accent));
+				padding-left: 1.25rem;
+				background: rgba(var(--accent), 0.05);
+			}
+			.toc-link.depth-3 {
+				margin-left: 1rem;
+				font-size: 0.85rem;
+				opacity: 0.8;
+			}
+			.toc-link.active {
+				color: rgb(var(--gold));
+				text-shadow: 0 0 8px rgba(var(--gold), 0.4);
+			}
+			.doc-nav {
+				display: flex;
+				justify-content: space-between;
+				gap: 1rem;
+				margin-top: 4rem;
+				padding-top: 2rem;
+				border-top: 1px solid rgba(var(--accent), 0.2);
+			}
+			.nav-link {
+				display: flex;
+				align-items: center;
+				gap: 1rem;
+				padding: 1.25rem 1.5rem;
+				background: rgba(0, 0, 0, 0.3);
+				border: 1px solid rgba(var(--accent), 0.15);
+				border-radius: 12px;
+				text-decoration: none;
+				transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+				min-width: 200px;
+				max-width: 45%;
+			}
+			.nav-link:hover {
+				transform: translateY(-4px) scale(1.02);
+				border-color: var(--accent);
+				background: rgba(255, 123, 0, 0.08);
+				box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 123, 0, 0.15);
+			}
+			.nav-prev {
+				margin-right: auto;
+			}
+			.nav-next {
+				margin-left: auto;
+				text-align: right;
+				justify-content: flex-end;
+			}
+			.nav-arrow {
+				font-size: 1.5rem;
+				color: rgb(var(--accent));
+			}
+			.nav-content {
+				display: flex;
+				flex-direction: column;
+				gap: 0.25rem;
+			}
+			.nav-label {
+				font-size: 0.75rem;
+				text-transform: uppercase;
+				letter-spacing: 1px;
+				color: #888;
+			}
+			.nav-title {
+				font-family: "Metamorphous", serif;
+				font-size: 0.95rem;
+				color: rgb(var(--gold));
+				line-height: 1.3;
+			}
+			.nav-spacer {
+				flex: 1;
+			}
+			@media (max-width: 768px) {
+				.doc-nav {
+					flex-direction: column;
+				}
+				.nav-link {
+					max-width: 100%;
+					min-width: 100%;
+				}
+				.nav-next {
+					text-align: left;
+					justify-content: flex-start;
+				}
+			}
+			@media (max-width: 720px) {
+				.prose {
+					padding: 2rem 1.5rem;
+				}
+				.title h1 {
+					font-size: 2.2rem;
+				}
+				.metadata {
+					flex-direction: column;
+					gap: 0.5rem;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<Header locale={locale} />
+		<main class={!hasToc ? "no-toc" : ""}>
+			<article>
+				<div class="breadcrumb">
+					<a href={localePath(locale, "/", base)}>Wiki</a>
+					{showDocsBreadcrumb && (
+						<>
+							<span>&raquo;</span>
+							<a href={localePath(locale, "/docs", base)}>{t(locale, "docs")}</a>
+						</>
+					)}
+					<span>&raquo;</span>
+					{title}
+				</div>
+				<div class="prose">
+					<div class="title">
+						<h1>{title}</h1>
+						<div class="metadata">
+							<div class="meta-item">
+								<FormattedDate date={pubDate} locale={locale} />
+							</div>
+							{
+								author && (
+									<div class="meta-item">
+										<span>{author}</span>
+									</div>
+								)
+							}
+							{
+								updatedDate && (
+									<div class="meta-item">
+										<span>
+											{t(locale, "lastUpdated")}{" "}
+											<FormattedDate date={updatedDate} locale={locale} />
+										</span>
+									</div>
+								)
+							}
+						</div>
+					</div>
+					<slot />
 
-            main.no-toc {
-                grid-template-columns: 1fr;
-                max-width: 1000px;
-            }
-
-            @media (max-width: 1100px) {
-                main,
-                main.no-toc {
-                    grid-template-columns: 1fr;
-                    padding: 2rem 1rem;
-                    max-width: 900px;
-                }
-                .toc-container {
-                    display: none;
-                }
-            }
-
-            article {
-                width: 100%;
-                min-width: 0;
-            }
-
-            main.no-toc .title {
-                text-align: center;
-            }
-            main.no-toc .metadata {
-                justify-content: center;
-            }
-            main.no-toc .breadcrumb {
-                text-align: center;
-            }
-
-            .prose {
-                width: 100%;
-                max-width: 100%;
-                padding: 3.5rem;
-                color: rgb(var(--gray-dark));
-                background: rgba(20, 20, 20, 0.7);
-                backdrop-filter: blur(16px);
-                border-radius: 16px;
-                border: 1px solid rgba(var(--accent), 0.15);
-                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-                position: relative;
-                overflow: hidden;
-            }
-
-            .prose::before {
-                content: "";
-                position: absolute;
-                top: 0;
-                left: 0;
-                right: 0;
-                height: 4px;
-                background: linear-gradient(
-                    to right,
-                    transparent,
-                    rgb(var(--accent)),
-                    transparent
-                );
-                border-radius: 16px 16px 0 0;
-            }
-
-            .breadcrumb {
-                margin-bottom: 2rem;
-                font-family: "Metamorphous", serif;
-                font-size: 0.9rem;
-            }
-            .breadcrumb a {
-                color: rgb(var(--accent));
-                opacity: 0.8;
-            }
-            .breadcrumb span {
-                color: rgb(var(--gray));
-                margin: 0 0.5rem;
-            }
-
-            .title {
-                margin-bottom: 3rem;
-                text-align: left;
-                line-height: 1.2;
-                border-bottom: 1px solid rgba(var(--accent), 0.1);
-                padding-bottom: 2rem;
-            }
-            .title h1 {
-                margin: 0 0 0.75rem 0;
-                color: rgb(var(--gold));
-                font-family: "Metamorphous", serif;
-                font-size: 3.5rem;
-                text-transform: capitalize;
-                letter-spacing: 1px;
-                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-            }
-
-            .metadata {
-                display: flex;
-                gap: 2rem;
-                color: rgb(var(--gray));
-                font-size: 0.9rem;
-                font-family: "Inter", sans-serif;
-            }
-            .meta-item {
-                display: flex;
-                align-items: center;
-                gap: 0.5rem;
-            }
-            .meta-item svg {
-                color: rgb(var(--accent));
-            }
-
-            /* TOC Styles */
-            .toc-container {
-                position: sticky;
-                top: 6rem;
-                background: rgba(26, 26, 26, 0.6);
-                backdrop-filter: blur(10px);
-                padding: 2rem;
-                padding-bottom: 3rem;
-                border-radius: 12px;
-                border: 1px solid rgba(var(--accent), 0.1);
-            }
-            .toc-title {
-                font-family: "Metamorphous", serif;
-                color: rgb(var(--gold));
-                font-size: 1.1rem;
-                margin-bottom: 1.5rem;
-                text-transform: uppercase;
-                letter-spacing: 1px;
-                display: flex;
-                align-items: center;
-                gap: 0.5rem;
-            }
-            .toc-title::before {
-                content: "";
-                width: 4px;
-                height: 1.2em;
-                background: rgb(var(--accent));
-                display: inline-block;
-            }
-            .toc-list {
-                list-style: none;
-                padding: 0;
-                margin: 0;
-                padding-bottom: 1rem;
-            }
-            .toc-link {
-                display: block;
-                padding: 0.5rem 0;
-                color: rgb(var(--gray));
-                font-size: 0.9rem;
-                text-decoration: none;
-                transition: all 0.2s ease;
-                border-left: 2px solid transparent;
-                padding-left: 1rem;
-            }
-            .toc-link:hover {
-                color: rgb(var(--accent));
-                padding-left: 1.25rem;
-                background: rgba(var(--accent), 0.05);
-            }
-            .toc-link.depth-3 {
-                margin-left: 1rem;
-                font-size: 0.85rem;
-                opacity: 0.8;
-            }
-
-.toc-link.active {
-                color: rgb(var(--gold));
-                text-shadow: 0 0 8px rgba(var(--gold), 0.4);
-            }
-
-            /* Doc Navigation */
-            .doc-nav {
-                display: flex;
-                justify-content: space-between;
-                gap: 1rem;
-                margin-top: 4rem;
-                padding-top: 2rem;
-                border-top: 1px solid rgba(var(--accent), 0.2);
-            }
-            .nav-link {
-                display: flex;
-                align-items: center;
-                gap: 1rem;
-                padding: 1.25rem 1.5rem;
-                background: rgba(0, 0, 0, 0.3);
-                border: 1px solid rgba(var(--accent), 0.15);
-                border-radius: 12px;
-                text-decoration: none;
-                transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-                min-width: 200px;
-                max-width: 45%;
-            }
-            .nav-link:hover {
-                transform: translateY(-4px) scale(1.02);
-                border-color: var(--accent);
-                background: rgba(255, 123, 0, 0.08);
-                box-shadow: 
-                    0 10px 30px rgba(0, 0, 0, 0.4),
-                    0 0 20px rgba(255, 123, 0, 0.15);
-            }
-            .nav-prev {
-                margin-right: auto;
-            }
-            .nav-next {
-                margin-left: auto;
-                text-align: right;
-                justify-content: flex-end;
-            }
-            .nav-arrow {
-                font-size: 1.5rem;
-                color: rgb(var(--accent));
-                transition: transform 0.3s ease;
-            }
-            .nav-link:hover .nav-arrow {
-                transform: scale(1.3);
-            }
-            .nav-content {
-                display: flex;
-                flex-direction: column;
-                gap: 0.25rem;
-            }
-            .nav-label {
-                font-size: 0.75rem;
-                text-transform: uppercase;
-                letter-spacing: 1px;
-                color: #888;
-            }
-            .nav-title {
-                font-family: 'Metamorphous', serif;
-                font-size: 0.95rem;
-                color: rgb(var(--gold));
-                line-height: 1.3;
-            }
-            .nav-spacer {
-                flex: 1;
-            }
-            
-            @media (max-width: 768px) {
-                .doc-nav {
-                    flex-direction: column;
-                }
-                .nav-link {
-                    max-width: 100%;
-                    min-width: 100%;
-                }
-                .nav-next {
-                    text-align: left;
-                    justify-content: flex-start;
-                }
-            }
-
-            @media (max-width: 720px) {
-                .prose {
-                    padding: 2rem 1.5rem;
-                }
-                .title h1 {
-                    font-size: 2.2rem;
-                }
-                .metadata {
-                    flex-direction: column;
-                    gap: 0.5rem;
-                }
-            }
-        </style>
-    </head>
-
-    <body>
-        <Header />
-        <main class={!hasToc ? "no-toc" : ""}>
-            <article>
-                <div class="breadcrumb">
-                    <a href={base || '/'}>Wiki</a>
-                    <span>&raquo;</span>
-                    <a href={`${base}/docs`}>
-                        <span class="lang-en">Docs</span>
-                        <span class="lang-es">Docs</span>
-                    </a>
-                    <span>&raquo;</span>
-                    {titleEn && titleEs ? (
-                        <>
-                            <span class="lang-en">{titleEn}</span>
-                            <span class="lang-es">{titleEs}</span>
-                        </>
-                    ) : title}
-                </div>
-                <div class="prose">
-                    <div class="title">
-                        <h1>
-                            {titleEn && titleEs ? (
-                                <>
-                                    <span class="lang-en">{titleEn}</span>
-                                    <span class="lang-es">{titleEs}</span>
-                                </>
-                            ) : title}
-                        </h1>
-                        <div class="metadata">
-                            <div class="meta-item">
-                                <svg
-                                    width="16"
-                                    height="16"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    stroke-width="2"
-                                    ><rect
-                                        x="3"
-                                        y="4"
-                                        width="18"
-                                        height="18"
-                                        rx="2"
-                                        ry="2"></rect><line
-                                        x1="16"
-                                        y1="2"
-                                        x2="16"
-                                        y2="6"></line><line
-                                        x1="8"
-                                        y1="2"
-                                        x2="8"
-                                        y2="6"></line><line
-                                        x1="3"
-                                        y1="10"
-                                        x2="21"
-                                        y2="10"></line></svg
-                                >
-                                <FormattedDate date={pubDate} />
-                            </div>
-                            {
-                                author && (
-                                    <div class="meta-item">
-                                        <svg
-                                            width="16"
-                                            height="16"
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            stroke-width="2"
-                                        >
-                                            <>
-                                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                                                <circle cx="12" cy="7" r="4" />
-                                            </>
-                                        </svg>
-                                        <span>{author}</span>
-                                    </div>
-                                )
-                            }
-                            {
-                                updatedDate && (
-                                    <div class="meta-item">
-                                        <svg
-                                            width="16"
-                                            height="16"
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            stroke-width="2"
-                                        >
-                                            <>
-                                                <path d="M23 4v6h-6" />
-                                                <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
-                                            </>
-                                        </svg>
-                                        <span>
-                                            <span data-i18n="lastUpdated">Updated</span>{" "}
-                                            <FormattedDate date={updatedDate} />
-                                        </span>
-                                    </div>
-                                )
-                            }
-                        </div>
-                    </div>
-                    <slot />
-					
 					{
 						(prevPost || nextPost) && (
 							<nav class="doc-nav" aria-label="Documentation navigation">
 								{prevPost ? (
-									<a href={`${base}/docs/${prevPost.id}/`} class="nav-link nav-prev">
+									<a
+										href={docUrl(locale, docSlugFromId(prevPost.id), base)}
+										class="nav-link nav-prev"
+									>
 										<span class="nav-arrow">←</span>
 										<span class="nav-content">
-											<span class="nav-label" data-i18n="prev">Previous</span>
-											<span class="nav-title">
-												{prevTitleEn && prevTitleEs ? (
-													<>
-														<span class="lang-en">{prevTitleEn}</span>
-														<span class="lang-es">{prevTitleEs}</span>
-													</>
-												) : (
-													prevPost.data.title
-												)}
-											</span>
+											<span class="nav-label">{t(locale, "prev")}</span>
+											<span class="nav-title">{prevPost.data.title}</span>
 										</span>
 									</a>
 								) : (
 									<div class="nav-spacer" />
 								)}
-								
 								{nextPost ? (
-									<a href={`${base}/docs/${nextPost.id}/`} class="nav-link nav-next">
+									<a
+										href={docUrl(locale, docSlugFromId(nextPost.id), base)}
+										class="nav-link nav-next"
+									>
 										<span class="nav-content">
-											<span class="nav-label" data-i18n="next">Next</span>
-											<span class="nav-title">
-												{nextTitleEn && nextTitleEs ? (
-													<>
-														<span class="lang-en">{nextTitleEn}</span>
-														<span class="lang-es">{nextTitleEs}</span>
-													</>
-												) : (
-													nextPost.data.title
-												)}
-											</span>
+											<span class="nav-label">{t(locale, "next")}</span>
+											<span class="nav-title">{nextPost.data.title}</span>
 										</span>
 										<span class="nav-arrow">→</span>
 									</a>
@@ -486,59 +371,43 @@ const hasToc = headings && headings.length > 0;
 							</nav>
 						)
 					}
-                </div>
-            </article>
-
-            {
-                headings && headings.length > 0 && (
-                    <aside class="toc-container">
-                        <div class="toc-title" data-i18n="onThisPage">On This Page</div>
-                        <ul class="toc-list">
-                            {headings
-                                .filter((h: Heading) => h.depth <= 3)
-                                .map((h: Heading) => (
-                                    <li>
-                                        <a
-                                            href={`#${h.slug}`}
-                                            class={`toc-link depth-${h.depth}`}
-                                        >
-                                            {h.text}
-                                        </a>
-                                    </li>
-                                ))}
-                        </ul>
-                    </aside>
-                )
-            }
-        </main>
-        <Footer />
-
-        <script>
-            const observerOptions = {
-                root: null,
-                rootMargin: "0px 0px -80% 0px",
-                threshold: 0,
-            };
-
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach((entry) => {
-                    const id = entry.target.getAttribute("id");
-                    const tocLink = document.querySelector(
-                        `.toc-link[href="#${id}"]`,
-                    );
-
-                    if (entry.isIntersecting) {
-                        document
-                            .querySelectorAll(".toc-link")
-                            .forEach((link) => link.classList.remove("active"));
-                        tocLink?.classList.add("active");
-                    }
-                });
-            }, observerOptions);
-
-            document.querySelectorAll("h2, h3").forEach((section) => {
-                observer.observe(section);
-            });
-        </script>
-    </body>
+				</div>
+			</article>
+			{
+				headings && headings.length > 0 && (
+					<aside class="toc-container">
+						<div class="toc-title">{t(locale, "onThisPage")}</div>
+						<ul class="toc-list">
+							{headings
+								.filter((h: Heading) => h.depth <= 3)
+								.map((h: Heading) => (
+									<li>
+										<a href={`#${h.slug}`} class={`toc-link depth-${h.depth}`}>
+											{h.text}
+										</a>
+									</li>
+								))}
+						</ul>
+					</aside>
+				)
+			}
+		</main>
+		<Footer locale={locale} />
+		<script>
+			const observer = new IntersectionObserver(
+				(entries) => {
+					entries.forEach((entry) => {
+						const id = entry.target.getAttribute("id");
+						const tocLink = document.querySelector(`.toc-link[href="#${id}"]`);
+						if (entry.isIntersecting) {
+							document.querySelectorAll(".toc-link").forEach((link) => link.classList.remove("active"));
+							tocLink?.classList.add("active");
+						}
+					});
+				},
+				{ root: null, rootMargin: "0px 0px -80% 0px", threshold: 0 },
+			);
+			document.querySelectorAll("h2, h3").forEach((section) => observer.observe(section));
+		</script>
+	</body>
 </html>

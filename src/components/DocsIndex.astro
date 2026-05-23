@@ -1,0 +1,138 @@
+---
+import { getCollection } from "astro:content";
+import FormattedDate from "../components/FormattedDate.astro";
+import { docSlugFromId, docUrl, filterDocsByLocale, sortDocs } from "../i18n/utils";
+import { t, type Locale } from "../i18n/ui";
+
+interface Props {
+	locale: Locale;
+	base: string;
+}
+
+const { locale, base } = Astro.props;
+const posts = sortDocs(filterDocsByLocale(await getCollection("docs"), locale));
+---
+
+<div class="intro">
+	<h1>{t(locale, "documentation")}</h1>
+	<p class="intro-text">{t(locale, "docsIntro")}</p>
+	<div class="intro-hint">{t(locale, "docsHint")}</div>
+</div>
+<section class="masonry-wrapper">
+	{
+		posts.map((post, index) => (
+			<div class="masonry-item">
+				<a href={docUrl(locale, docSlugFromId(post.id), base)} class="doc-card">
+					<span class="order-badge">#{index + 1}</span>
+					<h3 class="title">{post.data.title}</h3>
+					<p class="date">
+						<FormattedDate date={post.data.pubDate} locale={locale} />
+					</p>
+					<p class="description">{post.data.description}</p>
+				</a>
+			</div>
+		))
+	}
+</section>
+
+<style>
+	.intro {
+		text-align: center;
+		margin-bottom: 3rem;
+		padding: 2rem;
+		background: rgba(0, 0, 0, 0.3);
+		border-radius: 12px;
+		border: 1px solid rgba(212, 175, 55, 0.1);
+	}
+	.intro h1 {
+		margin: 0 0 1rem 0;
+		color: rgb(var(--gold));
+	}
+	.intro-text {
+		font-size: 1.2rem;
+		color: #ccc;
+		max-width: 600px;
+		margin: 0 auto 1.5rem;
+		line-height: 1.6;
+	}
+	.intro-hint {
+		display: inline-block;
+		background: rgba(255, 123, 0, 0.1);
+		border: 1px solid rgba(255, 123, 0, 0.3);
+		padding: 0.75rem 1.5rem;
+		border-radius: 8px;
+		color: rgb(var(--gold));
+		font-size: 0.95rem;
+	}
+	section.masonry-wrapper {
+		column-count: 3;
+		column-gap: 1.5rem;
+		width: 100%;
+	}
+	.masonry-item {
+		break-inside: avoid;
+		margin-bottom: 1.5rem;
+	}
+	.doc-card {
+		display: block;
+		text-decoration: none;
+		background: linear-gradient(145deg, rgba(30, 30, 30, 0.9), rgba(20, 20, 20, 0.95));
+		border: 1px solid rgba(212, 175, 55, 0.15);
+		padding: 1.5rem;
+		border-radius: 12px;
+		transition: all 0.3s ease;
+		box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+		position: relative;
+		overflow: hidden;
+	}
+	.doc-card::before {
+		content: "";
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 3px;
+		background: linear-gradient(90deg, rgba(212, 175, 55, 0.8), transparent);
+	}
+	.doc-card:hover {
+		transform: translateY(-4px) scale(1.01);
+		border-color: rgba(212, 175, 55, 0.5);
+	}
+	.title {
+		margin: 0 0 0.75rem 0;
+		color: #d4af37;
+		font-family: "Metamorphous", serif;
+		font-size: 1.25rem;
+	}
+	.date {
+		margin: 0 0 1rem 0;
+		color: #888;
+		font-size: 0.8rem;
+	}
+	.description {
+		margin: 0;
+		color: #aaa;
+		font-size: 0.9rem;
+		line-height: 1.6;
+	}
+	.order-badge {
+		position: absolute;
+		top: 1rem;
+		right: 1rem;
+		background: rgba(212, 175, 55, 0.15);
+		color: #d4af37;
+		padding: 0.25rem 0.5rem;
+		border-radius: 4px;
+		font-size: 0.75rem;
+	}
+	@media (max-width: 1024px) {
+		section.masonry-wrapper {
+			column-count: 2;
+		}
+	}
+	@media (max-width: 640px) {
+		section.masonry-wrapper {
+			column-count: 1;
+		}
+	}
+</style>

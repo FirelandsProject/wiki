@@ -1,12 +1,12 @@
 ---
 import { getCollection, render } from "astro:content";
-import Post from "../../layouts/Post.astro";
-import { buildDocNav } from "../../lib/docPages";
-import { docSlugFromId } from "../../i18n/utils";
+import Post from "../../../layouts/Post.astro";
+import { buildDocNav } from "../../../lib/docPages";
+import { docSlugFromId } from "../../../i18n/utils";
 
 export async function getStaticPaths() {
 	const posts = await getCollection("docs");
-	const nav = buildDocNav(posts, "en");
+	const nav = buildDocNav(posts, "es");
 
 	return nav.map(({ post, prevPost, nextPost }) => ({
 		params: { slug: docSlugFromId(post.id) },
@@ -23,7 +23,7 @@ const { Content, headings } = await render(post);
 	{headings}
 	{prevPost}
 	{nextPost}
-	locale="en"
+	locale="es"
 	showDocsBreadcrumb
 >
 	<Content />

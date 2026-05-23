@@ -1,68 +1,58 @@
 ---
-// Import the global.css file here so that it is included on
-// all pages through the use of the <BaseHead /> component.
 import "../styles/global.css";
 import { ClientRouter } from "astro:transitions";
-import I18nInit from "./I18nInit.astro";
+import { getBasePath } from "../consts";
+import { switchLocalePath } from "../i18n/utils";
+import type { Locale } from "../i18n/ui";
 
 interface Props {
 	title: string;
 	description: string;
 	image?: string;
+	locale?: Locale;
 }
 
+const base = getBasePath();
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const locale: Locale = Astro.props.locale ?? Astro.currentLocale ?? "en";
 
 const {
 	title,
 	description,
 	image = "https://avatars.githubusercontent.com/u/108418383",
 } = Astro.props;
+
+const enUrl = new URL(switchLocalePath(Astro.url.pathname, "en", base), Astro.site);
+const esUrl = new URL(switchLocalePath(Astro.url.pathname, "es", base), Astro.site);
 ---
 
 <ClientRouter />
-<I18nInit />
-<!-- Global Metadata -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 <meta name="generator" content={Astro.generator} />
 
-<!-- Font preloads -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Metamorphous&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+	href="https://fonts.googleapis.com/css2?family=Metamorphous&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+	rel="stylesheet"
+/>
 
-
-<!-- Canonical URL -->
 <link rel="canonical" href={canonicalURL} />
+<link rel="alternate" hreflang="en" href={enUrl} />
+<link rel="alternate" hreflang="es" href={esUrl} />
+<link rel="alternate" hreflang="x-default" href={enUrl} />
 
-<!-- i18n initialization -->
-<script is:inline>
-(function() {
-  var saved = localStorage.getItem('wiki-lang') || 'en';
-  document.documentElement.setAttribute('data-lang', saved);
-  document.documentElement.lang = saved;
-  window.addEventListener('lang-changed', function(e) {
-    document.documentElement.setAttribute('data-lang', e.detail.lang);
-    document.documentElement.lang = e.detail.lang;
-  });
-})();
-</script>
-
-<!-- Primary Meta Tags -->
 <title>{title}</title>
 <meta name="title" content={title} />
 <meta name="description" content={description} />
-
-<!-- Open Graph / Facebook -->
 <meta property="og:type" content="website" />
 <meta property="og:url" content={Astro.url} />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
+<meta property="og:locale" content={locale === "es" ? "es_ES" : "en_US"} />
 <meta property="og:image" content={new URL(image, Astro.url)} />
-
-<!-- Twitter -->
 <meta property="twitter:card" content="summary_large_image" />
 <meta property="twitter:url" content={Astro.url} />
 <meta property="twitter:title" content={title} />

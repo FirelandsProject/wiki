@@ -1,7 +1,42 @@
 ---
 import { getBasePath } from "../consts";
+import { localePath } from "../i18n/utils";
+import { t, type Locale } from "../i18n/ui";
+
+interface Props {
+	locale?: Locale;
+}
+
+const locale: Locale = Astro.props.locale ?? Astro.currentLocale ?? "en";
 const base = getBasePath();
 const today = new Date();
+
+const footer = {
+	en: {
+		brand: "A powerful, open-source MMO engine project dedicated to creating stability and performance for our community.",
+		resources: "Resources",
+		wikiHome: "Wiki Home",
+		documentation: "Documentation",
+		community: "Community",
+		discord: "Discord Server",
+		contribute: "Contribute",
+		rights: "All rights reserved.",
+		credits: "Crafted with 🔥 for the open source community.",
+	},
+	es: {
+		brand: "Un potente proyecto de motor MMO de código abierto dedicado a crear estabilidad y rendimiento para nuestra comunidad.",
+		resources: "Recursos",
+		wikiHome: "Inicio Wiki",
+		documentation: "Documentación",
+		community: "Comunidad",
+		discord: "Servidor Discord",
+		contribute: "Contribuir",
+		rights: "Todos los derechos reservados.",
+		credits: "Hecho con 🔥 para la comunidad de código abierto.",
+	},
+} as const;
+
+const copy = footer[locale];
 ---
 
 <footer class="site-footer">
@@ -9,10 +44,7 @@ const today = new Date();
 		<div class="footer-grid">
 			<div class="footer-section brand">
 				<h2 class="footer-logo">Firelands <span>Core</span></h2>
-				<p class="brand-description">
-					<span class="lang-en">A powerful, open-source MMO engine project dedicated to creating stability and performance for our community.</span>
-					<span class="lang-es">Un potente proyecto de motor MMO de código abierto dedicado a crear estabilidad y rendimiento para nuestra comunidad.</span>
-				</p>
+				<p class="brand-description">{copy.brand}</p>
 				<div class="social-links">
 					<a href="https://github.com/FirelandsProject" target="_blank" aria-label="GitHub">
 						<svg viewBox="0 0 16 16" width="24" height="24" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path></svg>
@@ -24,49 +56,25 @@ const today = new Date();
 			</div>
 
 			<div class="footer-section links">
-				<h3>
-					<span class="lang-en">Resources</span>
-					<span class="lang-es">Recursos</span>
-				</h3>
+				<h3>{copy.resources}</h3>
 				<ul>
-					<li><a href={base || '/'}>
-						<span class="lang-en">Wiki Home</span>
-						<span class="lang-es">Inicio Wiki</span>
-					</a></li>
-					<li><a href={`${base}/docs/`}>
-						<span class="lang-en">Documentation</span>
-						<span class="lang-es">Documentación</span>
-					</a></li>
+					<li><a href={localePath(locale, "/", base)}>{copy.wikiHome}</a></li>
+					<li><a href={localePath(locale, "/docs", base)}>{copy.documentation}</a></li>
 				</ul>
 			</div>
 
 			<div class="footer-section links">
-				<h3>
-					<span class="lang-en">Community</span>
-					<span class="lang-es">Comunidad</span>
-				</h3>
+				<h3>{copy.community}</h3>
 				<ul>
-					<li><a href="https://discord.gg/TFKV3hy43">
-						<span class="lang-en">Discord Server</span>
-						<span class="lang-es">Servidor Discord</span>
-					</a></li>
-					<li><a href="https://github.com/FirelandsProject">
-						<span class="lang-en">Contribute</span>
-						<span class="lang-es">Contribuir</span>
-					</a></li>
+					<li><a href="https://discord.gg/TFKV3hy43">{copy.discord}</a></li>
+					<li><a href="https://github.com/FirelandsProject">{copy.contribute}</a></li>
 				</ul>
 			</div>
 		</div>
 
 		<div class="footer-bottom">
-			<p>
-				<span class="lang-en">&copy; {today.getFullYear()} <strong>Firelands Core Project</strong>. All rights reserved.</span>
-				<span class="lang-es">&copy; {today.getFullYear()} <strong>Firelands Core Project</strong>. Todos los derechos reservados.</span>
-			</p>
-			<p class="credits">
-				<span class="lang-en">Crafted with 🔥 for the open source community.</span>
-				<span class="lang-es">Hecho con 🔥 para la comunidad de código abierto.</span>
-			</p>
+			<p>&copy; {today.getFullYear()} <strong>Firelands Core Project</strong>. {copy.rights}</p>
+			<p class="credits">{copy.credits}</p>
 		</div>
 	</div>
 </footer>
@@ -79,13 +87,12 @@ const today = new Date();
 		margin-top: 4rem;
 		border-top: 2px solid transparent;
 		border-image: linear-gradient(to right, transparent, rgb(var(--accent)), transparent) 1;
-		font-family: 'Inter', sans-serif;
+		font-family: "Inter", sans-serif;
 		position: relative;
 		overflow: hidden;
 	}
-
 	.site-footer::before {
-		content: '';
+		content: "";
 		position: absolute;
 		top: 0;
 		left: 0;
@@ -94,43 +101,37 @@ const today = new Date();
 		background: linear-gradient(to right, transparent, rgba(var(--accent), 0.5), transparent);
 		box-shadow: 0 0 15px rgba(var(--accent), 0.3);
 	}
-
 	.footer-container {
 		max-width: 1000px;
 		margin: 0 auto;
 		padding: 0 2rem;
 	}
-
 	.footer-grid {
 		display: grid;
 		grid-template-columns: 2fr 1fr 1fr;
 		gap: 4rem;
 		margin-bottom: 3rem;
 	}
-
 	.footer-logo {
-		font-family: 'Metamorphous', serif;
+		font-family: "Metamorphous", serif;
 		font-size: 1.8rem;
 		color: #ffffff;
 		margin: 0 0 1rem 0;
 		text-transform: uppercase;
 		letter-spacing: 2px;
 	}
-
 	.footer-logo span {
 		color: rgb(var(--accent));
 		font-weight: 300;
 	}
-
 	.brand-description {
 		font-size: 0.95rem;
 		line-height: 1.6;
 		margin-bottom: 1.5rem;
 		color: #888;
 	}
-
 	.footer-section h3 {
-		font-family: 'Metamorphous', serif;
+		font-family: "Metamorphous", serif;
 		font-size: 1.1rem;
 		color: white;
 		margin-bottom: 1.2rem;
@@ -140,46 +141,38 @@ const today = new Date();
 		display: inline-block;
 		padding-bottom: 4px;
 	}
-
 	.footer-section ul {
 		list-style: none;
 		padding: 0;
 		margin: 0;
 	}
-
 	.footer-section ul li {
 		margin-bottom: 0.8rem;
 	}
-
 	.footer-section ul a {
 		color: #888;
 		text-decoration: none;
 		transition: all 0.2s ease;
 		font-size: 0.9rem;
 	}
-
 	.footer-section ul a:hover {
 		color: rgb(var(--accent));
 		padding-left: 4px;
 		text-shadow: 0 0 8px rgba(var(--accent), 0.4);
 	}
-
 	.social-links {
 		display: flex;
 		gap: 1.2rem;
 	}
-
 	.social-links a {
 		color: #666;
 		transition: all 0.3s ease;
 	}
-
 	.social-links a:hover {
 		color: rgb(var(--accent));
 		transform: translateY(-3px);
 		filter: drop-shadow(0 0 5px rgba(var(--accent), 0.5));
 	}
-
 	.footer-bottom {
 		border-top: 1px solid rgba(255, 255, 255, 0.05);
 		padding-top: 2rem;
@@ -187,38 +180,30 @@ const today = new Date();
 		font-size: 0.85rem;
 		color: #888;
 	}
-
 	.footer-bottom strong {
 		color: #bbb;
 		font-weight: 500;
 	}
-
 	.credits {
 		margin-top: 0.5rem;
 		font-style: italic;
 	}
-
 	@media (max-width: 768px) {
 		.footer-grid {
 			grid-template-columns: 1fr;
 			gap: 2.5rem;
 			text-align: center;
 		}
-
 		.footer-section h3 {
 			display: block;
 			width: fit-content;
 			margin: 0 auto 1.2rem auto;
 		}
-
 		.social-links {
 			justify-content: center;
 		}
-
 		.footer-section ul a:hover {
 			padding-left: 0;
 		}
 	}
 </style>
-
-

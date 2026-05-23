@@ -1,0 +1,102 @@
+---
+import { getBasePath } from "../consts";
+import { localePath } from "../i18n/utils";
+import { t, type Locale } from "../i18n/ui";
+
+interface Props {
+	locale: Locale;
+}
+
+const { locale } = Astro.props;
+const base = getBasePath();
+
+const copy = {
+	en: {
+		subtitle: "Documentation for firelands-next - WoW Cataclysm Emulator (4.3.4)",
+		about: "About",
+		aboutText:
+			"Firelands is a WoW Cataclysm emulator built with modern software engineering practices, featuring a clean hexagonal architecture and comprehensive test coverage.",
+		arch: "Hexagonal Architecture",
+		archText:
+			"Clean separation between domain, application, and infrastructure layers with dependency inversion.",
+		tdd: "Test-Driven Development",
+		tddText: "Business logic driven by tests using GoogleTest and GMock for comprehensive coverage.",
+		cpp: "Modern C++20",
+		cppText: "Built with C++20, CMake, and Ninja for fast builds and cross-platform support.",
+	},
+	es: {
+		subtitle: "Documentación para firelands-next - Emulador de WoW Cataclysm (4.3.4)",
+		about: "Acerca de",
+		aboutText:
+			"Firelands es un emulador de WoW Cataclysm construido con prácticas modernas de ingeniería de software, con una arquitectura hexagonal limpia y cobertura de pruebas completa.",
+		arch: "Arquitectura Hexagonal",
+		archText:
+			"Separación limpia entre las capas de dominio, aplicación e infraestructura con inversión de dependencias.",
+		tdd: "Desarrollo Guiado por Pruebas",
+		tddText:
+			"Lógica de negocio impulsada por pruebas usando GoogleTest y GMock para cobertura completa.",
+		cpp: "C++20 Moderno",
+		cppText: "Construido con C++20, CMake y Ninja para compilaciones rápidas y soporte multiplataforma.",
+	},
+} as const;
+
+const c = copy[locale];
+---
+
+<div class="hero">
+	<h1 class="glow-text">Firelands Wiki</h1>
+	<p class="subtitle">{c.subtitle}</p>
+</div>
+
+<div class="prose">
+	<h2>{c.about}</h2>
+	<p>{c.aboutText}</p>
+
+	<div class="features-grid">
+		<div class="feature-card">
+			<h3>🏗️ {c.arch}</h3>
+			<p>{c.archText}</p>
+		</div>
+		<div class="feature-card">
+			<h3>🧪 {c.tdd}</h3>
+			<p>{c.tddText}</p>
+		</div>
+		<div class="feature-card">
+			<h3>⚡ {c.cpp}</h3>
+			<p>{c.cppText}</p>
+		</div>
+	</div>
+
+	<hr />
+
+	<p style="text-align: center;">
+		<a href={localePath(locale, "/docs", base)} class="cta-button">{t(locale, "enterDocs")}</a>
+	</p>
+</div>
+
+<style>
+	.hero {
+		text-align: center;
+		margin-bottom: 3rem;
+	}
+	.subtitle {
+		font-size: 1.2rem;
+		color: #ccc;
+	}
+	.features-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+		gap: 1.5rem;
+		margin: 2rem 0;
+	}
+	.feature-card {
+		background: rgba(255, 255, 255, 0.03);
+		border: 1px solid rgba(var(--accent), 0.1);
+		padding: 1.5rem;
+		border-radius: 12px;
+	}
+	.feature-card h3 {
+		color: rgb(var(--gold));
+		margin-top: 0;
+	}
+</style>

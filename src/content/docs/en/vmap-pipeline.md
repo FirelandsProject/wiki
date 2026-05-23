@@ -1,0 +1,96 @@
+---
+title: 'VMap Pipeline'
+description: 'Client data and collision extractors — server .map, vmap, mmap master plan'
+pubDate: '2025-01-01'
+updatedDate: '2026-05-23'
+---
+
+# Client data & collision extractors
+
+**Strategy:** Full C++ port from the reference implementation — zero wrapped binaries for the collision pipeline.
+
+**Primary goal:** Reference-identical **server collision artifacts** (`.map`, `vmaps/`, `mmaps/`) so a ported **`VMapManager2` / mmap runtime** replaces `MapCollisionQueriesStub`.
+
+**Client target:** WoW **4.3.4 / build 15595**.
+
+## Scope overview
+
+| Area | Target | Purpose | Status |
+|------|--------|---------|--------|
+| MPQ + patch order | `FirelandsExtractCommon` | `MpqPatchChain`, `WowDataMpqList` | **Done** |
+| DBC / DB2 extract | `firelands-dbc-extractor` | `DBFilesClient` → output tree | **Done** |
+| Raw client maps | `firelands-map-extractor` | WDT/ADT/WDL from MPQs | **Done** |
+| TUI launcher | `firelands-extractors` | FTXUI: DBC + raw maps | **Partial** |
+| Shared vmap math | `FirelandsVmapCommon` | BIH, DBC reader, `ModelSpawn` | **Done** |
+| Server `.map` + tilelist | `firelands-map-extractor-vmap` | Tool 1 — ADT/WDT → `maps/*.map` | **Implemented** |
+| VMap4 extract | `firelands-vmap4-extractor` | Tool 2 — `Buildings/` | **Ported** |
+| VMap4 assemble | `firelands-vmap4-assembler` | Tool 3 — `vmaps/` | **Implemented** |
+| MMAP generate | `firelands-mmap-generator` | Tool 4 — `mmaps/` (Recast/Detour) | **Not started** |
+| Runtime collision | `world` | `IMapCollisionQueries` | **Stub only** |
+
+### Two “map extractors”
+
+| Binary | Location | Output |
+|--------|----------|--------|
+| `firelands-map-extractor` | `tools/extractors/` | Raw client files under `World/maps/…` |
+| `firelands-map-extractor-vmap` | `tools/vmap/map_extractor/` | Server `maps/<id><yy><xx>.map` + `<id>.tilelist` |
+
+## Collision pipeline (end-to-end)
+
+```
+WoW 4.3.4 Data/  (MPQ chain via StormLib)
+        │
+        ▼
+  Tool 1: firelands-map-extractor-vmap  →  maps/*.map + *.tilelist
+        │
+        ▼
+  Tool 2: firelands-vmap4-extractor     →  Buildings/
+        │
+        ▼
+  Tool 3: firelands-vmap4-assembler     →  vmaps/
+        │
+        ▼
+  Tool 4: firelands-mmap-generator      →  mmaps/  (Recast/Detour)
+        │
+        ▼
+  worldserver: VMap + Detour loaders → real IMapCollisionQueries
+```
+
+**Run order:** Tool 1 → 2 → 3 → 4 for a full collision dataset. Tool 4 requires Tool 1 and Tool 3 outputs.
+
+## Magic constants (must match reference)
+
+| Constant | Value | Used in |
+|----------|-------|---------|
+| `MAP_MAGIC` | `"MAPS"` | Server `.map` tiles |
+| `VMAP_MAGIC` | `"VMAP"` | VMap tree/tile headers |
+| `MMAP_MAGIC` | `"MMAP"` | Navmesh tiles |
+
+Defined in reference `VMapDefinitions.h`; our port must use identical values.
+
+## Runtime integration
+
+Today `worldserver.yaml` sets `Collision.DataRoot` but **`MapCollisionQueriesStub`** returns safe defaults. Closing criteria:
+
+1. Generate collision dataset with Tools 1–4 against a 4.3.4 client
+2. Port `VMapManager2` + Detour mmap loader from reference
+3. Wire `IMapCollisionQueries` implementation; remove stub
+4. Integration tests: line-of-sight, height queries, pathfinding spot-checks
+
+## Configuration
+
+In `worldserver.yaml`:
+
+```yaml
+Collision:
+  DataRoot: "/path/to/collision-output"
+```
+
+Expected layout under `DataRoot`: `maps/`, `vmaps/`, `mmaps/` (matching reference server data tree).
+
+## Related
+
+- [Extractors](/wiki/docs/extractors/) — MPQ/DBC CLI and TUI
+- [StormLib](/wiki/docs/storm-lib/) — MPQ phase 1
+- [Module: Infrastructure](/wiki/docs/modules-infrastructure/) — `MapCollisionQueriesStub`
+- [Roadmap](/wiki/docs/roadmap/) — collision parity status

@@ -1,88 +1,52 @@
-<!-- Language Switcher -->
+---
+import { switchLocalePath } from "../i18n/utils";
+import type { Locale } from "../i18n/ui";
+
+interface Props {
+	locale: Locale;
+	base: string;
+}
+
+const { locale, base } = Astro.props;
+const currentPath = Astro.url.pathname;
+const enHref = switchLocalePath(currentPath, "en", base);
+const esHref = switchLocalePath(currentPath, "es", base);
+---
+
 <div class="lang-switcher">
-  <button type="button" class="lang-btn" data-lang="en">EN</button>
-  <button type="button" class="lang-btn" data-lang="es">ES</button>
+	<a href={enHref} class:list={["lang-btn", { active: locale === "en" }]} aria-current={locale === "en" ? "page" : undefined}>
+		EN
+	</a>
+	<a href={esHref} class:list={["lang-btn", { active: locale === "es" }]} aria-current={locale === "es" ? "page" : undefined}>
+		ES
+	</a>
 </div>
 
-<script is:inline>
-  (function() {
-    function updateSwitcher() {
-      var container = document.querySelector('.lang-switcher');
-      if (!container) return;
-      
-      var btns = container.querySelectorAll('.lang-btn');
-      var saved = localStorage.getItem('wiki-lang') || 'en';
-      
-      btns.forEach(function(btn) {
-        btn.classList.toggle('active', btn.dataset.lang === saved);
-      });
-    }
-    
-    function setLang(lang) {
-      localStorage.setItem('wiki-lang', lang);
-      document.documentElement.setAttribute('data-lang', lang);
-      document.documentElement.lang = lang;
-      updateSwitcher();
-      
-      window.dispatchEvent(new CustomEvent('lang-changed', { detail: { lang: lang } }));
-    }
-    
-    function init() {
-      var saved = localStorage.getItem('wiki-lang') || 'en';
-      document.documentElement.setAttribute('data-lang', saved);
-      document.documentElement.lang = saved;
-      updateSwitcher();
-    }
-    
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', init);
-    } else {
-      init();
-    }
-    
-    document.addEventListener('click', function(e) {
-      var btn = e.target.closest('.lang-btn');
-      if (btn) {
-        setLang(btn.dataset.lang);
-      }
-    });
-    
-    window.addEventListener('storage', function(e) {
-      if (e.key === 'wiki-lang') {
-        document.documentElement.setAttribute('data-lang', e.newValue || 'en');
-        updateSwitcher();
-      }
-    });
-    
-    document.addEventListener('astro:after-swap', function() {
-      init();
-    });
-  })();
-</script>
-
 <style>
-  .lang-switcher {
-    display: flex;
-    gap: 0.25rem;
-    background: rgba(0, 0, 0, 0.3);
-    padding: 0.25rem;
-    border-radius: 6px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-  }
-  .lang-btn {
-    padding: 0.35rem 0.6rem;
-    background: transparent;
-    border: none;
-    border-radius: 4px;
-    color: #888;
-    font-size: 0.75rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s ease;
-  }
-  .lang-btn:hover { color: #ccc; }
-  .lang-btn.active {
-    background: rgba(255, 123, 0, 0.2);
-    color: rgb(255, 215, 0);
-  }
+	.lang-switcher {
+		display: flex;
+		gap: 0.25rem;
+		background: rgba(0, 0, 0, 0.3);
+		padding: 0.25rem;
+		border-radius: 6px;
+		border: 1px solid rgba(255, 255, 255, 0.1);
+	}
+	.lang-btn {
+		padding: 0.35rem 0.6rem;
+		background: transparent;
+		border: none;
+		border-radius: 4px;
+		color: #888;
+		font-size: 0.75rem;
+		font-weight: 600;
+		text-decoration: none;
+		transition: all 0.2s ease;
+	}
+	.lang-btn:hover {
+		color: #ccc;
+	}
+	.lang-btn.active {
+		background: rgba(255, 123, 0, 0.2);
+		color: rgb(255, 215, 0);
+	}
 </style>

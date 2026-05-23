@@ -2,80 +2,23 @@
 import BaseHead from "../components/BaseHead.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
-import { SITE_TITLE, SITE_DESCRIPTION, getBasePath } from "../consts";
-const base = getBasePath();
+import HomeContent from "../components/HomeContent.astro";
+import { SITE_TITLE } from "../consts";
+import { t } from "../i18n/ui";
+
+const locale = "en";
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={locale}>
 	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+		<BaseHead title={SITE_TITLE} description={t(locale, "siteDescription")} locale={locale} />
 	</head>
 	<body>
-		<Header title={SITE_TITLE} />
+		<Header locale={locale} />
 		<main>
-            <div class="hero">
-                <h1 class="glow-text">Firelands Wiki</h1>
-                <p class="subtitle">
-                    <span class="lang-en">Documentation for firelands-next - WoW Cataclysm Emulator (4.3.4)</span>
-                    <span class="lang-es">Documentación para firelands-next - Emulador de WoW Cataclysm (4.3.4)</span>
-                </p>
-            </div>
-            
-            <div class="prose">
-                <h2>
-                    <span class="lang-en">About</span>
-                    <span class="lang-es">Acerca de</span>
-                </h2>
-                <p>
-                    <span class="lang-en">Firelands is a WoW Cataclysm emulator built with modern software engineering practices, featuring a clean hexagonal architecture and comprehensive test coverage.</span>
-                    <span class="lang-es">Firelands es un emulador de WoW Cataclysm construido con prácticas modernas de ingeniería de software, con una arquitectura hexagonal limpia y cobertura de pruebas completa.</span>
-                </p>
-                
-                <div class="features-grid">
-                    <div class="feature-card">
-                        <h3>🏗️ 
-                            <span class="lang-en">Hexagonal Architecture</span>
-                            <span class="lang-es">Arquitectura Hexagonal</span>
-                        </h3>
-                        <p>
-                            <span class="lang-en">Clean separation between domain, application, and infrastructure layers with dependency inversion.</span>
-                            <span class="lang-es">Separación limpia entre las capas de dominio, aplicación e infraestructura con inversión de dependencias.</span>
-                        </p>
-                    </div>
-                    <div class="feature-card">
-                        <h3>🧪 
-                            <span class="lang-en">Test-Driven Development</span>
-                            <span class="lang-es">Desarrollo Guiado por Pruebas</span>
-                        </h3>
-                        <p>
-                            <span class="lang-en">Business logic driven by tests using GoogleTest and GMock for comprehensive coverage.</span>
-                            <span class="lang-es">Lógica de negocio impulsada por pruebas usando GoogleTest y GMock para cobertura completa.</span>
-                        </p>
-                    </div>
-                    <div class="feature-card">
-                        <h3>⚡ 
-                            <span class="lang-en">Modern C++17</span>
-                            <span class="lang-es">C++17 Moderno</span>
-                        </h3>
-                        <p>
-                            <span class="lang-en">Built with C++17, CMake, and Ninja for fast builds and cross-platform support.</span>
-                            <span class="lang-es">Construido con C++17, CMake y Ninja para construcciones rápidas y soporte multiplataforma.</span>
-                        </p>
-                    </div>
-                </div>
-
-                <hr />
-                
-                <p style="text-align: center;">
-                    <a href={`${base}/docs`} class="cta-button">
-                        <span class="lang-en">Enter Knowledge Base</span>
-                        <span class="lang-es">Entrar a la Base de Conocimiento</span>
-                    </a>
-                </p>
-            </div>
+			<HomeContent locale={locale} />
 		</main>
-
-		<Footer />
+		<Footer locale={locale} />
 	</body>
 </html>

@@ -1,0 +1,156 @@
+---
+import type { Locale } from "../i18n/ui";
+
+interface Props {
+	locale: Locale;
+}
+
+const { locale } = Astro.props;
+
+const copy = {
+	en: {
+		mission: "Our Mission",
+		missionText:
+			'Firelands Core Project is an open-source community dedicated to developing a high-fidelity emulator for <strong>World of Warcraft: Cataclysm (v4.3.4)</strong>. Founded with an educational purpose, we believe in the power of collaborative learning and the preservation of gaming history.',
+		educational: "Educational",
+		educationalText:
+			"Designed as a learning platform for software architecture, reverse engineering, and database management.",
+		community: "Community Driven",
+		communityText:
+			"We believe the best core is built by many hands. Everyone is welcome to contribute, regardless of skill level.",
+		performance: "Performance",
+		performanceText:
+			"Optimized for modern hardware, focusing on stability and high concurrency for the best player experience.",
+		openSource: "Open Source",
+		openSourceText:
+			"Our code is and will always be open. Transparency and freedom are at the heart of our development.",
+		journey: "Our Journey",
+		journeyText1:
+			"The Firelands Core Project started as a small group of enthusiasts who wanted to explore the complexities of the Cataclysm expansion. Over time, it has evolved into a robust ecosystem where developers from around the world share their knowledge.",
+		quote:
+			'"To make the best emulator, we don\'t just need code; we need a community that values learning above all else."',
+		journeyText2:
+			"Our intention is to create a community in which people can participate, learn, study, and contribute. Whether you are a seasoned C++ developer or just starting your journey into SQL, there is a place for you in the Firelands.",
+	},
+	es: {
+		mission: "Nuestra Misión",
+		missionText:
+			"Firelands Core Project es una comunidad de código abierto dedicada a desarrollar un emulador de alta fidelidad para <strong>World of Warcraft: Cataclysm (v4.3.4)</strong>. Fundado con un propósito educativo, creemos en el poder del aprendizaje colaborativo y la preservación de la historia de los videojuegos.",
+		educational: "Educativo",
+		educationalText:
+			"Diseñado como plataforma de aprendizaje para arquitectura de software, ingeniería inversa y gestión de bases de datos.",
+		community: "Impulsado por la Comunidad",
+		communityText:
+			"Creemos que el mejor núcleo es construido por muchas manos. Todos son bienvenidos a contribuir, sin importar su nivel de habilidad.",
+		performance: "Rendimiento",
+		performanceText:
+			"Optimizado para hardware moderno, enfocándose en estabilidad y alta concurrencia para la mejor experiencia de juego.",
+		openSource: "Código Abierto",
+		openSourceText:
+			"Nuestro código es y siempre será abierto. La transparencia y libertad están en el corazón de nuestro desarrollo.",
+		journey: "Nuestro Viaje",
+		journeyText1:
+			"El Proyecto Firelands Core comenzó como un pequeño grupo de entusiastas que querían explorar las complejidades de la expansión Cataclysm. Con el tiempo, ha evolucionado en un ecosistema robusto donde desarrolladores de todo el mundo comparten su conocimiento.",
+		quote:
+			'"Para hacer el mejor emulador, no solo necesitamos código; necesitamos una comunidad que valore el aprendizaje por encima de todo lo demás."',
+		journeyText2:
+			"Nuestra intención es crear una comunidad en la que las personas puedan participar, aprender, estudiar y contribuir. Ya seas un desarrollador experimentado de C++ o apenas comenzando tu viaje en SQL, hay un lugar para ti en Firelands.",
+	},
+} as const;
+
+const c = copy[locale];
+---
+
+<div class="about-container">
+	<section class="mission">
+		<div class="mission-content">
+			<h2>{c.mission}</h2>
+			<p set:html={c.missionText} />
+			<div class="glow-divider"></div>
+		</div>
+	</section>
+
+	<div class="features-grid">
+		<div class="feature-card">
+			<div class="icon">🎓</div>
+			<h3>{c.educational}</h3>
+			<p>{c.educationalText}</p>
+		</div>
+		<div class="feature-card">
+			<div class="icon">🤝</div>
+			<h3>{c.community}</h3>
+			<p>{c.communityText}</p>
+		</div>
+		<div class="feature-card">
+			<div class="icon">🔥</div>
+			<h3>{c.performance}</h3>
+			<p>{c.performanceText}</p>
+		</div>
+		<div class="feature-card">
+			<div class="icon">⚖️</div>
+			<h3>{c.openSource}</h3>
+			<p>{c.openSourceText}</p>
+		</div>
+	</div>
+
+	<section class="long-content">
+		<h3>{c.journey}</h3>
+		<p>{c.journeyText1}</p>
+		<blockquote>{c.quote}</blockquote>
+		<p>{c.journeyText2}</p>
+	</section>
+</div>
+
+<style>
+	.about-container {
+		display: flex;
+		flex-direction: column;
+		gap: 4rem;
+	}
+	.mission {
+		text-align: center;
+		padding: 2rem 0;
+	}
+	.mission h2 {
+		font-size: 3rem;
+		margin-bottom: 1.5rem;
+		color: rgb(var(--gold));
+	}
+	.mission p {
+		font-size: 1.25rem;
+		max-width: 800px;
+		margin: 0 auto;
+		line-height: 1.8;
+	}
+	.features-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+		gap: 2rem;
+	}
+	.feature-card {
+		background: rgba(255, 255, 255, 0.03);
+		border: 1px solid rgba(var(--accent), 0.1);
+		padding: 2.5rem 2rem;
+		border-radius: 16px;
+		text-align: center;
+	}
+	.feature-card .icon {
+		font-size: 2.5rem;
+		margin-bottom: 1rem;
+	}
+	.feature-card h3 {
+		color: rgb(var(--gold));
+	}
+	.glow-divider {
+		height: 2px;
+		width: 200px;
+		margin: 3rem auto 0;
+		background: linear-gradient(to right, transparent, rgb(var(--accent)), transparent);
+	}
+	.long-content {
+		background: rgba(0, 0, 0, 0.2);
+		padding: 3rem;
+		border-radius: 20px;
+		border-left: 4px solid rgb(var(--accent));
+	}
+</style>

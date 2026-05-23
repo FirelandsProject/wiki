@@ -1,0 +1,14 @@
+---
+import Layout from "../../layouts/Post.astro";
+import AboutContent from "../../components/AboutContent.astro";
+
+const locale = "es";
+const meta = {
+	title: "Acerca de",
+	description: "Acerca del Proyecto Firelands Core",
+};
+---
+
+<Layout {...meta} pubDate={new Date("September 11 2023")} locale={locale}>
+	<AboutContent locale={locale} />
+</Layout>
