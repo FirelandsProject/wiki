@@ -165,4 +165,4 @@ LOG_INFO("Player {} logged in from {}", player.GetName(), ip_address);
 
 - This wiki and `docs/` in the **firelands-next** repository
 - GitHub issues and discussions
-- Reference implementation clone (`firelands-cata-ref/`, build 15595) for packet parity
+- WowPacketParser structs and packet captures for build **15595** when validating wire formats

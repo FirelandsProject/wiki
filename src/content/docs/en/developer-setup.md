@@ -111,7 +111,7 @@ python3 tools/merge_migrations.py
 # or
 cmake --build build --target merge-migrations
 
-# Import reference data from local Cataclysm clone
+# Import world seed data (gossip, npc_text, phases, …)
 python3 tools/sql/import_ref_gossip.py
 python3 tools/sql/import_ref_npc_text.py
 python3 tools/sql/import_ref_quest_gossip.py

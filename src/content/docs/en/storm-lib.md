@@ -7,7 +7,7 @@ updatedDate: '2026-05-23'
 
 # StormLib roadmap — DBC & map extractors
 
-Implementation plan for game data extractors in **firelands-next**, aligned with **MPQ-based** Cataclysm clients (not CASC). Parity reference: local **firelands-cata-ref** clone when available.
+Implementation plan for game data extractors in **firelands-next**, aligned with **MPQ-based** Cataclysm clients (not CASC). Wire and file formats target build **15595**.
 
 ## Deliverables
 

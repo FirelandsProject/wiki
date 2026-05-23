@@ -7,9 +7,9 @@ updatedDate: '2026-05-23'
 
 # Client data & collision extractors
 
-**Strategy:** Full C++ port from the reference implementation — zero wrapped binaries for the collision pipeline.
+**Strategy:** Full in-tree C++ implementation — zero wrapped binaries for the collision pipeline.
 
-**Primary goal:** Reference-identical **server collision artifacts** (`.map`, `vmaps/`, `mmaps/`) so a ported **`VMapManager2` / mmap runtime** replaces `MapCollisionQueriesStub`.
+**Primary goal:** Client-compatible **server collision artifacts** (`.map`, `vmaps/`, `mmaps/`) so **`VMapManager2` / mmap runtime** replaces `MapCollisionQueriesStub`.
 
 **Client target:** WoW **4.3.4 / build 15595**.
 
@@ -58,7 +58,7 @@ WoW 4.3.4 Data/  (MPQ chain via StormLib)
 
 **Run order:** Tool 1 → 2 → 3 → 4 for a full collision dataset. Tool 4 requires Tool 1 and Tool 3 outputs.
 
-## Magic constants (must match reference)
+## Magic constants (format must match client tooling)
 
 | Constant | Value | Used in |
 |----------|-------|---------|
@@ -66,14 +66,14 @@ WoW 4.3.4 Data/  (MPQ chain via StormLib)
 | `VMAP_MAGIC` | `"VMAP"` | VMap tree/tile headers |
 | `MMAP_MAGIC` | `"MMAP"` | Navmesh tiles |
 
-Defined in reference `VMapDefinitions.h`; our port must use identical values.
+Defined in `VMapDefinitions.h` under `tools/vmap/`; all extractors must use identical values.
 
 ## Runtime integration
 
 Today `worldserver.yaml` sets `Collision.DataRoot` but **`MapCollisionQueriesStub`** returns safe defaults. Closing criteria:
 
 1. Generate collision dataset with Tools 1–4 against a 4.3.4 client
-2. Port `VMapManager2` + Detour mmap loader from reference
+2. Wire `VMapManager2` + Detour mmap loader in `world`
 3. Wire `IMapCollisionQueries` implementation; remove stub
 4. Integration tests: line-of-sight, height queries, pathfinding spot-checks
 
@@ -86,7 +86,7 @@ Collision:
   DataRoot: "/path/to/collision-output"
 ```
 
-Expected layout under `DataRoot`: `maps/`, `vmaps/`, `mmaps/` (matching reference server data tree).
+Expected layout under `DataRoot`: `maps/`, `vmaps/`, `mmaps/` (standard Cataclysm server data layout).
 
 ## Related
 

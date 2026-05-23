@@ -52,7 +52,7 @@ cmake --build build --target merge-migrations
 | `src/tools/DevTools.cpp` | CLI [DevTools](/wiki/es/docs/devtools/) |
 | `tools/extractors/` | [Extractores](/wiki/es/docs/extractors/) — MPQ/DBC |
 | `tools/vmap/` | [Pipeline VMap](/wiki/es/docs/vmap-pipeline/) |
-| `tools/sql/import_ref_*.py` | Datos de referencia → migraciones (gossip, npc_text, quests) |
+| `tools/sql/import_ref_*.py` | SQL seed world → migraciones (gossip, npc_text, quests, fases) |
 
 ## Pruebas (`tests/`)
 

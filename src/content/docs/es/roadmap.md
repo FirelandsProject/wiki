@@ -7,7 +7,7 @@ updatedDate: '2026-05-23'
 
 # Roadmap y seguimiento
 
-Lugar único para el progreso: roadmap por fases, estabilidad del cliente y paridad vs la implementación de referencia (build **15595**).
+Lugar único para el progreso: roadmap por fases, estabilidad del cliente y paridad con el **cliente 4.3.4 (build 15595)**.
 
 ## Objetivos rápidos
 

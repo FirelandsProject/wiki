@@ -7,7 +7,7 @@ updatedDate: '2026-05-23'
 
 # Gossip NPC y `npc_text`
 
-Gossip de Cataclysm **4.3.4 (build 15595)**: menús desde base de datos, textos de diálogo, hooks Lua y paquetes wire alineados con WowPacketParser / firelands-cata-ref.
+Gossip de Cataclysm **4.3.4 (build 15595)**: menús desde base de datos, textos de diálogo, hooks Lua y paquetes wire alineados con WowPacketParser **V4_3_4_15595**.
 
 ## Entregado — Menús gossip NPC
 

@@ -7,7 +7,7 @@ updatedDate: '2026-05-23'
 
 # NPC gossip and `npc_text`
 
-Cataclysm **4.3.4 (build 15595)** gossip: database-driven menus, dialog copy, Lua hooks, and wire packets aligned to WowPacketParser / firelands-cata-ref.
+Cataclysm **4.3.4 (build 15595)** gossip: database-driven menus, dialog copy, Lua hooks, and wire packets aligned to WowPacketParser **V4_3_4_15595** layouts.
 
 ## Shipped — NPC gossip menus
 

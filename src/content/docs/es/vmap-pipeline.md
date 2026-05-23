@@ -7,9 +7,9 @@ updatedDate: '2026-05-23'
 
 # Datos del cliente y extractores de colisión
 
-**Estrategia:** Port completo en C++ desde la implementación de referencia — cero binarios envueltos para el pipeline de colisión.
+**Estrategia:** Implementación C++ completa en el repositorio — cero binarios envueltos para el pipeline de colisión.
 
-**Objetivo principal:** Artefactos de colisión **servidor** idénticos a referencia (`.map`, `vmaps/`, `mmaps/`) para que un **`VMapManager2` / runtime mmap** portado reemplace `MapCollisionQueriesStub`.
+**Objetivo principal:** Artefactos de colisión **servidor** compatibles con el cliente (`.map`, `vmaps/`, `mmaps/`) para que **`VMapManager2` / runtime mmap** reemplace `MapCollisionQueriesStub`.
 
 **Cliente objetivo:** WoW **4.3.4 / build 15595**.
 
@@ -58,7 +58,7 @@ WoW 4.3.4 Data/  (cadena MPQ vía StormLib)
 
 **Orden de ejecución:** Tool 1 → 2 → 3 → 4 para un dataset de colisión completo. Tool 4 requiere salidas de Tool 1 y Tool 3.
 
-## Constantes mágicas (deben coincidir con referencia)
+## Constantes mágicas (formato debe coincidir con tooling del cliente)
 
 | Constante | Valor | Usado en |
 |-----------|-------|----------|
@@ -66,14 +66,14 @@ WoW 4.3.4 Data/  (cadena MPQ vía StormLib)
 | `VMAP_MAGIC` | `"VMAP"` | Headers de árbol/tile VMap |
 | `MMAP_MAGIC` | `"MMAP"` | Tiles navmesh |
 
-Definidas en `VMapDefinitions.h` de referencia; nuestro port debe usar valores idénticos.
+Definidas en `VMapDefinitions.h` bajo `tools/vmap/`; todos los extractores deben usar valores idénticos.
 
 ## Integración runtime
 
 Hoy `worldserver.yaml` establece `Collision.DataRoot` pero **`MapCollisionQueriesStub`** devuelve defaults seguros. Criterios de cierre:
 
 1. Generar dataset de colisión con Tools 1–4 contra un cliente 4.3.4
-2. Portar `VMapManager2` + cargador Detour mmap desde referencia
+2. Cablear `VMapManager2` + cargador Detour mmap en `world`
 3. Cablear implementación `IMapCollisionQueries`; eliminar stub
 4. Pruebas de integración: línea de visión, consultas de altura, spot-checks de pathfinding
 
@@ -86,7 +86,7 @@ Collision:
   DataRoot: "/path/to/collision-output"
 ```
 
-Layout esperado bajo `DataRoot`: `maps/`, `vmaps/`, `mmaps/` (coincidiendo con árbol de datos del servidor de referencia).
+Layout esperado bajo `DataRoot`: `maps/`, `vmaps/`, `mmaps/` (layout estándar de datos de servidor Cataclysm).
 
 ## Relacionado
 

@@ -165,4 +165,4 @@ LOG_INFO("Player {} logged in from {}", player.GetName(), ip_address);
 
 - Esta wiki y `docs/` en el repositorio **firelands-next**
 - Issues y discussions en GitHub
-- Clon de implementación de referencia (`firelands-cata-ref/`, build 15595) para paridad de paquetes
+- Structs de WowPacketParser y capturas de paquetes para build **15595** al validar formatos wire
