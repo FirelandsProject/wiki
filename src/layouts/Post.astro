@@ -18,12 +18,30 @@ type Props = CollectionEntry<"docs">["data"] & {
     nextPost?: CollectionEntry<"docs"> | null;
     titleEn?: string;
     titleEs?: string;
+    prevTitleEn?: string;
+    prevTitleEs?: string;
+    nextTitleEn?: string;
+    nextTitleEs?: string;
 };
 
 const base = getBasePath();
 
-const { title, description, pubDate, updatedDate, author, headings, prevPost, nextPost, titleEn, titleEs } =
-    Astro.props;
+const {
+    title,
+    description,
+    pubDate,
+    updatedDate,
+    author,
+    headings,
+    prevPost,
+    nextPost,
+    titleEn,
+    titleEs,
+    prevTitleEn,
+    prevTitleEs,
+    nextTitleEn,
+    nextTitleEs,
+} = Astro.props;
 const hasToc = headings && headings.length > 0;
 ---
 
@@ -33,6 +51,7 @@ const hasToc = headings && headings.length > 0;
         <script is:inline>
           var saved = localStorage.getItem('wiki-lang') || 'en';
           document.documentElement.setAttribute('data-lang', saved);
+          document.documentElement.lang = saved;
         </script>
         <style>
             main {
@@ -320,7 +339,10 @@ const hasToc = headings && headings.length > 0;
                 <div class="breadcrumb">
                     <a href={base || '/'}>Wiki</a>
                     <span>&raquo;</span>
-                    <a href={`${base}/docs`}>Docs</a>
+                    <a href={`${base}/docs`}>
+                        <span class="lang-en">Docs</span>
+                        <span class="lang-es">Docs</span>
+                    </a>
                     <span>&raquo;</span>
                     {titleEn && titleEs ? (
                         <>
@@ -425,7 +447,16 @@ const hasToc = headings && headings.length > 0;
 										<span class="nav-arrow">←</span>
 										<span class="nav-content">
 											<span class="nav-label" data-i18n="prev">Previous</span>
-											<span class="nav-title">{prevPost.data.title}</span>
+											<span class="nav-title">
+												{prevTitleEn && prevTitleEs ? (
+													<>
+														<span class="lang-en">{prevTitleEn}</span>
+														<span class="lang-es">{prevTitleEs}</span>
+													</>
+												) : (
+													prevPost.data.title
+												)}
+											</span>
 										</span>
 									</a>
 								) : (
@@ -436,7 +467,16 @@ const hasToc = headings && headings.length > 0;
 									<a href={`${base}/docs/${nextPost.id}/`} class="nav-link nav-next">
 										<span class="nav-content">
 											<span class="nav-label" data-i18n="next">Next</span>
-											<span class="nav-title">{nextPost.data.title}</span>
+											<span class="nav-title">
+												{nextTitleEn && nextTitleEs ? (
+													<>
+														<span class="lang-en">{nextTitleEn}</span>
+														<span class="lang-es">{nextTitleEs}</span>
+													</>
+												) : (
+													nextPost.data.title
+												)}
+											</span>
 										</span>
 										<span class="nav-arrow">→</span>
 									</a>

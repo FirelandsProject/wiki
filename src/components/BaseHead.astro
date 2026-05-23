@@ -42,8 +42,10 @@ const {
 (function() {
   var saved = localStorage.getItem('wiki-lang') || 'en';
   document.documentElement.setAttribute('data-lang', saved);
+  document.documentElement.lang = saved;
   window.addEventListener('lang-changed', function(e) {
     document.documentElement.setAttribute('data-lang', e.detail.lang);
+    document.documentElement.lang = e.detail.lang;
   });
 })();
 </script>

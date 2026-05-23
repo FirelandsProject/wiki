@@ -21,6 +21,7 @@
     function setLang(lang) {
       localStorage.setItem('wiki-lang', lang);
       document.documentElement.setAttribute('data-lang', lang);
+      document.documentElement.lang = lang;
       updateSwitcher();
       
       window.dispatchEvent(new CustomEvent('lang-changed', { detail: { lang: lang } }));
@@ -29,6 +30,7 @@
     function init() {
       var saved = localStorage.getItem('wiki-lang') || 'en';
       document.documentElement.setAttribute('data-lang', saved);
+      document.documentElement.lang = saved;
       updateSwitcher();
     }
     

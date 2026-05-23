@@ -1,54 +1,56 @@
 ---
 import { type CollectionEntry, getCollection, render } from "astro:content";
 import Post from "../../layouts/Post.astro";
+import { DOC_ORDER, docTranslations } from "../../lib/docTranslations";
 
 export async function getStaticPaths() {
 	const posts = await getCollection("docs");
-	
-	const order = [
-		"getting-started",
-		"architecture",
-		"developer-setup",
-		"database",
-		"lua-scripting",
-		"testing",
-		"gm-commands"
-	];
 
 	const sortedPosts = posts.sort((a, b) => {
-		const aIndex = order.indexOf(a.id);
-		const bIndex = order.indexOf(b.id);
+		const aIndex = DOC_ORDER.indexOf(a.id as (typeof DOC_ORDER)[number]);
+		const bIndex = DOC_ORDER.indexOf(b.id as (typeof DOC_ORDER)[number]);
 		const aPos = aIndex === -1 ? 999 : aIndex;
 		const bPos = bIndex === -1 ? 999 : bIndex;
 		return aPos - bPos;
 	});
 
-    const titles: Record<string, { en: string; es: string }> = {
-        "getting-started": { en: "Getting Started", es: "Comenzar" },
-        "architecture": { en: "Architecture", es: "Arquitectura" },
-        "developer-setup": { en: "Developer Setup", es: "Configuración de Desarrollador" },
-        "database": { en: "Database", es: "Base de Datos" },
-        "lua-scripting": { en: "Lua Scripting", es: "Scripting Lua" },
-        "testing": { en: "Testing", es: "Pruebas" },
-        "gm-commands": { en: "GM Commands", es: "Comandos GM" }
-    };
-
-	return posts.map((post, index) => {
-		const currentIndex = sortedPosts.findIndex(p => p.id === post.id);
+	return posts.map((post) => {
+		const currentIndex = sortedPosts.findIndex((p) => p.id === post.id);
 		const prevPost = currentIndex > 0 ? sortedPosts[currentIndex - 1] : null;
-		const nextPost = currentIndex < sortedPosts.length - 1 ? sortedPosts[currentIndex + 1] : null;
-        
-        const titleData = titles[post.id] || { en: post.data.title, es: post.data.title };
-		
+		const nextPost =
+			currentIndex < sortedPosts.length - 1 ? sortedPosts[currentIndex + 1] : null;
+
+		const titleData = docTranslations[post.id as keyof typeof docTranslations] ?? {
+			en: post.data.title,
+			es: post.data.title,
+		};
+
+		const prevTitles = prevPost
+			? (docTranslations[prevPost.id as keyof typeof docTranslations] ?? {
+					en: prevPost.data.title,
+					es: prevPost.data.title,
+				})
+			: null;
+		const nextTitles = nextPost
+			? (docTranslations[nextPost.id as keyof typeof docTranslations] ?? {
+					en: nextPost.data.title,
+					es: nextPost.data.title,
+				})
+			: null;
+
 		return {
 			params: { slug: post.id },
-			props: { 
-                post, 
-                prevPost, 
-                nextPost, 
-                titleEn: titleData.en,
-                titleEs: titleData.es
-            },
+			props: {
+				post,
+				prevPost,
+				nextPost,
+				titleEn: titleData.en,
+				titleEs: titleData.es,
+				prevTitleEn: prevTitles?.en,
+				prevTitleEs: prevTitles?.es,
+				nextTitleEn: nextTitles?.en,
+				nextTitleEs: nextTitles?.es,
+			},
 		};
 	});
 }
@@ -57,14 +59,39 @@ type Props = {
 	post: CollectionEntry<"docs">;
 	prevPost: CollectionEntry<"docs"> | null;
 	nextPost: CollectionEntry<"docs"> | null;
-    titleEn: string;
-    titleEs: string;
+	titleEn: string;
+	titleEs: string;
+	prevTitleEn?: string;
+	prevTitleEs?: string;
+	nextTitleEn?: string;
+	nextTitleEs?: string;
 };
 
-const { post, prevPost, nextPost, titleEn, titleEs } = Astro.props;
+const {
+	post,
+	prevPost,
+	nextPost,
+	titleEn,
+	titleEs,
+	prevTitleEn,
+	prevTitleEs,
+	nextTitleEn,
+	nextTitleEs,
+} = Astro.props;
 const { Content, headings } = await render(post);
 ---
 
-<Post {...post.data} {headings} prevPost={prevPost} nextPost={nextPost} titleEn={titleEn} titleEs={titleEs}>
+<Post
+	{...post.data}
+	{headings}
+	prevPost={prevPost}
+	nextPost={nextPost}
+	titleEn={titleEn}
+	titleEs={titleEs}
+	prevTitleEn={prevTitleEn}
+	prevTitleEs={prevTitleEs}
+	nextTitleEn={nextTitleEn}
+	nextTitleEs={nextTitleEs}
+>
 	<Content />
 </Post>

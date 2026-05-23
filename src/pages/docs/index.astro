@@ -5,63 +5,16 @@ import Footer from "../../components/Footer.astro";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../../consts";
 import { getCollection } from "astro:content";
 import FormattedDate from "../../components/FormattedDate.astro";
+import { DOC_ORDER, docTranslations } from "../../lib/docTranslations";
 
 const posts = await getCollection("docs");
 
-const order = [
-  "getting-started",
-  "architecture",
-  "developer-setup",
-  "database",
-  "lua-scripting",
-  "testing",
-  "gm-commands"
-];
-
-const titleTranslations: Record<string, { en: string; es: string; descEn: string; descEs: string }> = {
-  "getting-started": { 
-    en: "Getting Started", es: "Comenzar",
-    descEn: "Introduction to Firelands - WoW Cataclysm Emulator",
-    descEs: "Introducción a Firelands - Emulador de WoW Cataclysm"
-  },
-  "architecture": { 
-    en: "Architecture", es: "Arquitectura",
-    descEn: "Hexagonal Architecture in Firelands",
-    descEs: "Arquitectura Hexagonal en Firelands"
-  },
-  "developer-setup": { 
-    en: "Developer Setup", es: "Configuración de Desarrollador",
-    descEn: "How to set up the development environment",
-    descEs: "Cómo configurar el entorno de desarrollo"
-  },
-  "database": { 
-    en: "Database", es: "Base de Datos",
-    descEn: "Database schema and migrations",
-    descEs: "Esquema de base de datos y migraciones"
-  },
-  "lua-scripting": { 
-    en: "Lua Scripting", es: "Scripting Lua",
-    descEn: "Gameplay scripting with Lua",
-    descEs: "Scripting de juego con Lua"
-  },
-  "testing": { 
-    en: "Testing", es: "Pruebas",
-    descEn: "Testing strategies and workflows",
-    descEs: "Estrategias y flujos de pruebas"
-  },
-  "gm-commands": { 
-    en: "GM Commands", es: "Comandos GM",
-    descEn: "Game Master commands reference",
-    descEs: "Referencia de comandos de Game Master"
-  }
-};
-
 const sortedPosts = posts.sort((a, b) => {
-  const aIndex = order.indexOf(a.id);
-  const bIndex = order.indexOf(b.id);
-  const aPos = aIndex === -1 ? 999 : aIndex;
-  const bPos = bIndex === -1 ? 999 : bIndex;
-  return aPos - bPos;
+	const aIndex = DOC_ORDER.indexOf(a.id as (typeof DOC_ORDER)[number]);
+	const bIndex = DOC_ORDER.indexOf(b.id as (typeof DOC_ORDER)[number]);
+	const aPos = aIndex === -1 ? 999 : aIndex;
+	const bPos = bIndex === -1 ? 999 : bIndex;
+	return aPos - bPos;
 });
 ---
 
@@ -203,29 +156,32 @@ const sortedPosts = posts.sort((a, b) => {
 				</p>
 				<div class="intro-hint">
 					<span class="lang-en">💡 Pro tip: Start with <strong>Getting Started</strong> if you're new!</span>
-					<span class="lang-es">💡 Consejo: ¡Comienza con <strong>Getting Started</strong> si eres nuevo!</span>
+					<span class="lang-es">💡 Consejo: ¡Comienza con <strong>Comenzar</strong> si eres nuevo!</span>
 				</div>
 			</div>
 			<section class="masonry-wrapper">
 				{
-					sortedPosts.map((post, index) => (
-						<div class="masonry-item">
-							<a href={`/wiki/docs/${post.id}/`} class="doc-card">
-								<span class="order-badge">#{index + 1}</span>
-								<h3 class="title">
-									<span class="lang-en">{post.data.title}</span>
-									<span class="lang-es">{titleTranslations[post.id]?.es || post.data.title}</span>
-								</h3>
-								<p class="date">
-									<FormattedDate date={post.data.pubDate} />
-								</p>
-								<p class="description">
-									<span class="lang-en">{post.data.description}</span>
-									<span class="lang-es">{titleTranslations[post.id]?.descEs || post.data.description}</span>
-								</p>
-							</a>
-						</div>
-					))
+					sortedPosts.map((post, index) => {
+						const t = docTranslations[post.id as keyof typeof docTranslations];
+						return (
+							<div class="masonry-item">
+								<a href={`/wiki/docs/${post.id}/`} class="doc-card">
+									<span class="order-badge">#{index + 1}</span>
+									<h3 class="title">
+										<span class="lang-en">{t?.en ?? post.data.title}</span>
+										<span class="lang-es">{t?.es ?? post.data.title}</span>
+									</h3>
+									<p class="date">
+										<FormattedDate date={post.data.pubDate} />
+									</p>
+									<p class="description">
+										<span class="lang-en">{t?.descEn ?? post.data.description}</span>
+										<span class="lang-es">{t?.descEs ?? post.data.description}</span>
+									</p>
+								</a>
+							</div>
+						);
+					})
 				}
 			</section>
 		</main>

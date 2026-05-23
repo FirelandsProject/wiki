@@ -47,6 +47,7 @@
     currentLang = lang;
     localStorage.setItem('wiki-lang', lang);
     document.documentElement.setAttribute('data-lang', lang);
+    document.documentElement.lang = lang;
     applyTranslations(lang);
   }
 
