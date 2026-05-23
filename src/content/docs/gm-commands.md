@@ -314,6 +314,35 @@ Los comandos de chat usan la misma lógica `GmTicketService` que la UI.
 
 </span>
 
+## <span class="lang-en">Access Levels</span><span class="lang-es">Niveles de Acceso</span>
+
+<span class="lang-en">
+
+| Level | Name | Notes |
+|-------|------|-------|
+| 0 | Player | No dot commands |
+| 1 | Moderator | `.email` only |
+| 2 | Game Master | Most `.` commands; requires specific permissions |
+| 3 | Administrator | `.npc add/del`, full server control |
+| — | Console | World server TTY — effective **Console** privilege via `PrivilegeOrigin::ServerConsole` |
+
+Permissions are defined in `shared/game/Permissions.h` and checked per command (e.g. `CommandGps`, `ManagePlayers`, `ManageGmTickets`, `ServerControl`).
+
+</span>
+<span class="lang-es">
+
+| Nivel | Nombre | Notas |
+|-------|--------|-------|
+| 0 | Jugador | Sin comandos `.` |
+| 1 | Moderador | Solo `.email` |
+| 2 | Game Master | La mayoría de comandos `.`; requiere permisos específicos |
+| 3 | Administrator | `.npc add/del`, control total del servidor |
+| — | Consola | TTY del world — privilegio **Console** vía `PrivilegeOrigin::ServerConsole` |
+
+Los permisos están en `shared/game/Permissions.h` y se comprueban por comando (p. ej. `CommandGps`, `ManagePlayers`, `ManageGmTickets`, `ServerControl`).
+
+</span>
+
 ## <span class="lang-en">Help</span><span class="lang-es">Ayuda</span>
 
 <span class="lang-en">

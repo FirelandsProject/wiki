@@ -2,19 +2,19 @@
 title: 'Testing'
 description: 'Testing strategies and workflows'
 pubDate: '2025-01-01'
-updatedDate: '2026-05-21'
+updatedDate: '2026-05-22'
 ---
 
 # <span class="lang-en">Testing</span><span class="lang-es">Pruebas</span>
 
 <span class="lang-en">
 
-Firelands follows **Test-Driven Development (TDD)** for code quality.
+Firelands follows **Test-Driven Development (TDD)** for all new behavior: write a failing test first, implement the minimum code to pass, then refactor.
 
 </span>
 <span class="lang-es">
 
-Firelands sigue el **Desarrollo Guiado por Pruebas (TDD)** para la calidad del código.
+Firelands sigue el **Desarrollo Guiado por Pruebas (TDD)** para todo comportamiento nuevo: escribir primero una prueba que falle, implementar el mínimo para pasar, luego refactorizar.
 
 </span>
 
@@ -22,22 +22,23 @@ Firelands sigue el **Desarrollo Guiado por Pruebas (TDD)** para la calidad del c
 
 <span class="lang-en">
 
-- **Framework**: GoogleTest (gtest/gmock)
-- **Location**: `tests/unit/`
+- **Framework**: GoogleTest 1.14.0 + GMock
+- **Binary**: `FirelandsUnitTests` (built by default)
+- **Location**: `tests/`
 
 </span>
 <span class="lang-es">
 
-- **Framework**: GoogleTest (gtest/gmock)
-- **Ubicación**: `tests/unit/`
+- **Framework**: GoogleTest 1.14.0 + GMock
+- **Binario**: `FirelandsUnitTests` (se construye por defecto)
+- **Ubicación**: `tests/`
 
 </span>
 
 ## <span class="lang-en">Building Tests</span><span class="lang-es">Construir Pruebas</span>
 
 ```bash
-cmake -B build -G Ninja -DFIRELANDS_BUILD_TESTS=ON
-ninja -C build
+ninja -C build FirelandsUnitTests
 ```
 
 ## <span class="lang-en">Running Tests</span><span class="lang-es">Ejecutar Pruebas</span>
@@ -51,7 +52,7 @@ ctest --test-dir build
 # Run tests matching pattern
 ctest --test-dir build -R <pattern>
 
-# Run specific test
+# Run specific test suite
 ctest --test-dir build -R CharacterService
 ```
 
@@ -65,7 +66,7 @@ ctest --test-dir build
 # Ejecutar pruebas que coincidan con el patrón
 ctest --test-dir build -R <pattern>
 
-# Ejecutar prueba específica
+# Ejecutar suite específica
 ctest --test-dir build -R CharacterService
 ```
 
@@ -75,24 +76,44 @@ ctest --test-dir build -R CharacterService
 
 <span class="lang-en">
 
-Tests are organized by layer:
-- `tests/unit/domain/` - Domain entity tests
-- `tests/unit/application/` - Service tests
-- `tests/unit/infrastructure/` - Adapter tests
-- `tests/unit/shared/` - Shared utilities tests (wire formats, `ByteBuffer`, GUIDs)
+```
+tests/
+├── unit/
+│   ├── shared/           # ByteBuffer, wire formats, GUIDs, config
+│   ├── domain/           # Domain entity and combat logic
+│   ├── application/      # Services (Auth, Character, Command, Spell)
+│   ├── infrastructure/   # MySQL adapters, Lua host, network sessions
+│   └── combat/           # Combat engine, damage, threat
+├── integration/
+│   └── combat/           # End-to-end combat scenarios
+├── fixtures/vmap/        # VMap test fixtures
+└── data/                 # YAML and test data files
+```
 
-Recent coverage includes gossip packets, spell cooldown wire encoding, action buttons, and aura logic.
+Approximately **90 test files** cover SRP/auth flows, character services, spell effects, gossip packets, GM tickets, movement checks, permissions, and wire format encoding.
+
+MySQL repository tests benefit from a running Docker MySQL instance.
 
 </span>
 <span class="lang-es">
 
-Las pruebas se organizan por capa:
-- `tests/unit/domain/` - Pruebas de entidades del dominio
-- `tests/unit/application/` - Pruebas de servicios
-- `tests/unit/infrastructure/` - Pruebas de adaptadores
-- `tests/unit/shared/` - Utilidades compartidas (wire formats, `ByteBuffer`, GUIDs)
+```
+tests/
+├── unit/
+│   ├── shared/           # ByteBuffer, wire formats, GUIDs, config
+│   ├── domain/           # Entidades de dominio y combate
+│   ├── application/      # Servicios (Auth, Character, Command, Spell)
+│   ├── infrastructure/   # Adaptadores MySQL, host Lua, sesiones de red
+│   └── combat/           # Motor de combate, daño, amenaza
+├── integration/
+│   └── combat/           # Escenarios de combate end-to-end
+├── fixtures/vmap/        # Fixtures VMap
+└── data/                 # YAML y datos de prueba
+```
 
-Cobertura reciente: paquetes gossip, cooldowns de hechizo, action bar y auras.
+Aproximadamente **90 archivos de prueba** cubren flujos SRP/auth, servicios de personaje, efectos de hechizo, paquetes gossip, tickets GM, movimiento, permisos y codificación wire.
+
+Las pruebas de repositorios MySQL se benefician de una instancia Docker MySQL en ejecución.
 
 </span>
 
@@ -100,16 +121,20 @@ Cobertura reciente: paquetes gossip, cooldowns de hechizo, action bar y auras.
 
 <span class="lang-en">
 
-1. **Red**: Write failing test first
-2. **Green**: Write minimal code to pass
-3. **Refactor**: Clean up while keeping tests green
+1. **Red**: Write a failing test that describes the desired behavior
+2. **Green**: Write the minimal code to make the test pass
+3. **Refactor**: Clean up while keeping all tests green
+
+Place tests in the layer that owns the behavior. Mock repository ports with GMock when testing application services in isolation.
 
 </span>
 <span class="lang-es">
 
-1. **Rojo**: Escribir prueba que falle primero
-2. **Verde**: Escribir código mínimo para pasar
-3. **Refactorizar**: Limpiar manteniendo las pruebas verdes
+1. **Rojo**: Escribir una prueba que falle describiendo el comportamiento deseado
+2. **Verde**: Escribir el código mínimo para que pase
+3. **Refactorizar**: Limpiar manteniendo todas las pruebas verdes
+
+Coloca las pruebas en la capa que posee el comportamiento. Simula ports de repositorio con GMock al probar servicios de application aisladamente.
 
 </span>
 
@@ -125,37 +150,24 @@ protected:
 };
 
 TEST_F(CharacterServiceTest, CreateCharacter_Success) {
-    // Arrange
     PlayerCreateInfo createInfo;
     createInfo.race = RACE_HUMAN;
     createInfo.class_ = CLASS_WARRIOR;
-    
-    // Act & Assert
+
     EXPECT_TRUE(service.CanCreateCharacter(createInfo));
 }
 ```
-
-<span class="lang-en">
-
-Arrange / Act & Assert
-
-</span>
-<span class="lang-es">
-
-Preparar / Actuar & Verificar
-
-</span>
 
 ## <span class="lang-en">Mocking</span><span class="lang-es">Mocking</span>
 
 <span class="lang-en">
 
-Use GMock to create mock implementations:
+Use GMock to create mock implementations of domain ports:
 
 </span>
 <span class="lang-es">
 
-Usar GMock para crear implementaciones mock:
+Usa GMock para crear implementaciones mock de ports de dominio:
 
 </span>
 
@@ -169,3 +181,26 @@ public:
     MOCK_METHOD(bool, Save, (const Character& character), (override));
 };
 ```
+
+## <span class="lang-en">What to Test</span><span class="lang-es">Qué Probar</span>
+
+<span class="lang-en">
+
+| Layer | Examples |
+|-------|----------|
+| **Domain** | Combat formulas, aura stacking rules, entity state transitions |
+| **Application** | Service orchestration with mocked ports |
+| **Infrastructure** | Wire packet round-trips, SQL adapter queries, Lua event firing |
+| **Shared** | ByteBuffer read/write, opcode constants, config parsing |
+
+</span>
+<span class="lang-es">
+
+| Capa | Ejemplos |
+|------|----------|
+| **Domain** | Fórmulas de combate, reglas de auras, transiciones de estado |
+| **Application** | Orquestación de servicios con ports simulados |
+| **Infrastructure** | Round-trip de paquetes wire, consultas SQL, eventos Lua |
+| **Shared** | Lectura/escritura ByteBuffer, opcodes, parsing de config |
+
+</span>
