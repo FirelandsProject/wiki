@@ -42,6 +42,7 @@ Current docs:
 - `database.md` - Schema and migrations
 - `modules-shared.md` … `modules-tools-build.md` - Layer/module deep-dives
 - `gossip-npc-text.md` - NPC gossip, npc_text, quest lines
+- `phase-system.md` - Zone phasing, PhaseShift, database and layer implementation
 - `lua-scripting.md` - Gameplay scripting
 - `testing.md` - TDD and unit tests
 - `devtools.md` - FirelandsDevTools CLI

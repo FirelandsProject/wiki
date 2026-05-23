@@ -95,13 +95,20 @@ La autenticación usa **SRP-6a** vía `SRPService` + `MySqlAccountRepository`. L
 | `gossip_menu`, `gossip_menu_option`, … | Menús gossip |
 | `npc_text` | Texto de diálogo |
 | `quest_template`, `creature_queststarter` | Líneas de misiones (máscaras clase/raza) |
+| `phase_area` | Área → IDs de fase del jugador |
+| `phase_x_phase_group` | PhaseGroup → fases miembro |
+| `conditions` (tipo 26) | Puertas misión/aura para `phase_area` |
 
-Datos de referencia desde un clone Cataclysm local:
+Las tablas de misiones en characters alimentan las condiciones de fase. Ver [Sistema de Fases](/wiki/es/docs/phase-system/).
+
+Datos world regenerables con scripts de importación:
 
 ```bash
 python3 tools/sql/import_ref_gossip.py      # → migración 35
 python3 tools/sql/import_ref_npc_text.py    # → migración 34
 python3 tools/sql/import_ref_quest_gossip.py # → migración 38
+python3 tools/sql/import_ref_phase_data.py       # → migración 55
+python3 tools/sql/import_ref_phase_conditions.py # → migración 57
 ```
 
 ## Mapeo de Repositorios
@@ -117,6 +124,10 @@ python3 tools/sql/import_ref_quest_gossip.py # → migración 38
 | `INpcTextRepository` | `MySqlNpcTextRepository` | world |
 | `IQuestGossipRepository` | `MySqlQuestGossipRepository` | world |
 | `ICreatureSpawnRepository` | `MySqlCreatureSpawnRepository` | world |
+| `IPhaseAreaCatalogRepository` | `MySqlPhaseAreaCatalogRepository` | world |
+| `IPhaseConditionRepository` | `MySqlPhaseConditionRepository` | world |
+| `IPhaseGroupCatalogRepository` | `MySqlPhaseGroupCatalogRepository` | world |
+| `IPlayerQuestProgressRepository` | `MySqlPlayerQuestProgressRepository` | characters |
 
 ## Buenas prácticas de migraciones
 
@@ -134,6 +145,7 @@ docker exec -it firelands-db-1 mysql -u firelands -p
 
 ## Relacionado
 
+- [Sistema de Fases](/wiki/es/docs/phase-system/)
 - [Gossip y npc_text](/wiki/es/docs/gossip-npc-text/)
 - [Tickets GM](/wiki/es/docs/gm-tickets/)
 - [Módulo: Infrastructure](/wiki/es/docs/modules-infrastructure/)

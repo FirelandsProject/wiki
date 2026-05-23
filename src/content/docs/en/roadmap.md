@@ -7,7 +7,7 @@ updatedDate: '2026-05-23'
 
 # Roadmap & tracking
 
-Single place for progress: phased roadmap, client stability, and parity vs the reference implementation (build **15595**).
+Single place for progress: phased roadmap, client stability, and parity with the **4.3.4 client (build 15595)**.
 
 ## Quick goals
 
@@ -57,7 +57,7 @@ Single place for progress: phased roadmap, client stability, and parity vs the r
 - [x] Spells — minimal cast (GCD + `SMSG_SPELL_START`/`GO`)
 - [x] Gossip DB menus + `npc_text` + quest lines in gossip
 - [ ] Quest accept/complete opcodes
-- [ ] Instances + phases (Lua)
+- [ ] Instances + phases (Lua) — zone phasing partially done; see [Phase System](/wiki/docs/phase-system/)
 - [ ] Real collision (vmap/mmap) — [VMap pipeline](/wiki/docs/vmap-pipeline/)
 
 ## Client stability
@@ -97,7 +97,7 @@ Living section — update **Status** when milestones close.
 | Quests / gossip | Gossip + quest lines | Partial | Accept/complete opcodes |
 | Loot | — | Not started | Basic take-item flow |
 | Collision | `MapCollisionQueriesStub` | Started | Wire real vmap/mmap |
-| Instances / phases | — | Not started | Instance id + reset hooks |
+| Instances / phases | Partial | Zone `PhaseShift` + DB catalogs | Instance id + live quest refresh; see [Phase System](/wiki/docs/phase-system/) |
 | DBC stores | Partial spell DBC | Started | Critical templates |
 | Battlegrounds | — | Not started | After open world stable |
 

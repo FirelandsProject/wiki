@@ -166,13 +166,20 @@ In-game mail with optional item attachments (e.g. `.additem` overflow).
 | `gossip_menu`, `gossip_menu_option`, `gossip_menu_option_action` | NPC gossip menus |
 | `npc_text` | Dialog copy for `SMSG_NPC_TEXT_UPDATE` |
 | `quest_template`, `creature_queststarter` | Quest gossip lines (class/race masks) |
+| `phase_area` | Area → player phase IDs |
+| `phase_x_phase_group` | PhaseGroup → member phase IDs |
+| `conditions` (type 26) | Quest/aura gates for `phase_area` rows |
 
-Reference data can be imported from a local Cataclysm reference clone:
+Character DB quest tables (`character_queststatus`, `character_queststatus_rewarded`) back phase condition checks. See [Phase System](/wiki/docs/phase-system/).
+
+World seed data can be regenerated with import scripts:
 
 ```bash
 python3 tools/sql/import_ref_gossip.py      # → migration 35
 python3 tools/sql/import_ref_npc_text.py    # → migration 34
 python3 tools/sql/import_ref_quest_gossip.py # → migration 38
+python3 tools/sql/import_ref_phase_data.py       # → migration 55
+python3 tools/sql/import_ref_phase_conditions.py # → migration 57
 ```
 
 ## Repository Mapping
@@ -188,6 +195,10 @@ python3 tools/sql/import_ref_quest_gossip.py # → migration 38
 | `INpcTextRepository` | `MySqlNpcTextRepository` | world |
 | `IQuestGossipRepository` | `MySqlQuestGossipRepository` | world |
 | `ICreatureSpawnRepository` | `MySqlCreatureSpawnRepository` | world |
+| `IPhaseAreaCatalogRepository` | `MySqlPhaseAreaCatalogRepository` | world |
+| `IPhaseConditionRepository` | `MySqlPhaseConditionRepository` | world |
+| `IPhaseGroupCatalogRepository` | `MySqlPhaseGroupCatalogRepository` | world |
+| `IPlayerQuestProgressRepository` | `MySqlPlayerQuestProgressRepository` | characters |
 
 ## Migration best practices
 
@@ -205,6 +216,7 @@ docker exec -it firelands-db-1 mysql -u firelands -p
 
 ## Related
 
+- [Phase System](/wiki/docs/phase-system/) — zone phasing tables and visibility
 - [Gossip & NPC text](/wiki/docs/gossip-npc-text/) — world gossip tables
 - [GM Tickets](/wiki/docs/gm-tickets/)
 - [Module: Infrastructure](/wiki/docs/modules-infrastructure/) — repository adapters
