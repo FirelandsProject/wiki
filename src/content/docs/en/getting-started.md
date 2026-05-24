@@ -91,7 +91,7 @@ Full setup details: [Developer Setup](/wiki/docs/developer-setup/).
 - [Developer Setup](/wiki/docs/developer-setup/) — Environment, build, configuration
 - [Database](/wiki/docs/database/) — Schema, migrations, tables
 - [Testing](/wiki/docs/testing/) — TDD and GoogleTest
-- [Roadmap](/wiki/docs/roadmap/) — Phases, parity matrix, client stability
+- [Core Roadmap](/wiki/docs/roadmap/) — Unified tracker: phases, parity matrix, extractors, status legend
 
 ### Module deep-dives
 

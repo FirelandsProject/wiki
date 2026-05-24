@@ -7,6 +7,8 @@ updatedDate: '2026-05-23'
 
 # C++20 migration plan
 
+> **Status tracking:** phase checklist summary lives on the [Core Roadmap](/wiki/docs/roadmap/#toolchain--c20). This page keeps implementation detail.
+
 Implementation plan for raising firelands-next from C++17 to **C++20**.
 
 **Status:** Phase 1 **complete** (2026-05-18) — `CMAKE_CXX_STANDARD 20` at root; tool targets use `cxx_std_20`. Phase 2 (incremental feature adoption) **open**.

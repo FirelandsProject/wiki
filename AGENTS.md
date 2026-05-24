@@ -43,6 +43,7 @@ Current docs:
 - `modules-shared.md` … `modules-tools-build.md` - Layer/module deep-dives
 - `gossip-npc-text.md` - NPC gossip, npc_text, quest lines
 - `phase-system.md` - Zone phasing, PhaseShift, database and layer implementation
+- `playercreateinfo.md` - Starter spawn, spells, skills (race/class masks, DBC import)
 - `lua-scripting.md` - Gameplay scripting
 - `testing.md` - TDD and unit tests
 - `devtools.md` - FirelandsDevTools CLI
@@ -51,7 +52,7 @@ Current docs:
 - `storm-lib.md` - StormLib extractor roadmap
 - `gm-commands.md` - GM command reference
 - `gm-tickets.md` - GM ticket system design
-- `roadmap.md` - Phased roadmap and parity matrix
+- `roadmap.md` - **Unified core roadmap** (phases, parity matrix, extractors, toolchain, status legend ✅/🔄/⏳)
 - `cpp20-migration.md` - C++20 toolchain migration status
 
 ## No Test/Lint Scripts

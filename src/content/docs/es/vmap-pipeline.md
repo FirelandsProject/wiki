@@ -7,6 +7,8 @@ updatedDate: '2026-05-23'
 
 # Datos del cliente y extractores de colisión
 
+> **Seguimiento de estado:** el progreso vivo de Tools 1–4 y colisión en runtime está en el [Roadmap del Core](/wiki/es/docs/roadmap/#extractores-y-pipeline-de-colisión). Actualizar esa página al cerrar hitos; este doc guarda el detalle técnico.
+
 **Estrategia:** Implementación C++ completa en el repositorio — cero binarios envueltos para el pipeline de colisión.
 
 **Objetivo principal:** Artefactos de colisión **servidor** compatibles con el cliente (`.map`, `vmaps/`, `mmaps/`) para que **`VMapManager2` / runtime mmap** reemplace `MapCollisionQueriesStub`.

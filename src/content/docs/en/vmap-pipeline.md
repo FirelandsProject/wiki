@@ -7,6 +7,8 @@ updatedDate: '2026-05-23'
 
 # Client data & collision extractors
 
+> **Status tracking:** live progress for Tools 1–4 and runtime collision is on the [Core Roadmap](/wiki/docs/roadmap/#extractors--collision-pipeline). Update that page when milestones close; this doc keeps technical detail.
+
 **Strategy:** Full in-tree C++ implementation — zero wrapped binaries for the collision pipeline.
 
 **Primary goal:** Client-compatible **server collision artifacts** (`.map`, `vmaps/`, `mmaps/`) so **`VMapManager2` / mmap runtime** replaces `MapCollisionQueriesStub`.

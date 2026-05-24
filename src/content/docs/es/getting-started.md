@@ -91,7 +91,7 @@ Detalles completos: [Configuración de Desarrollador](/wiki/es/docs/developer-se
 - [Configuración de Desarrollador](/wiki/es/docs/developer-setup/) — Entorno, build, configuración
 - [Base de Datos](/wiki/es/docs/database/) — Esquema, migraciones, tablas
 - [Pruebas](/wiki/es/docs/testing/) — TDD y GoogleTest
-- [Roadmap](/wiki/es/docs/roadmap/) — Fases, matriz de paridad, estabilidad del cliente
+- [Roadmap del Core](/wiki/es/docs/roadmap/) — Tracker unificado: fases, matriz, extractores, leyenda de estados
 
 ### Módulos
 
