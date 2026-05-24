@@ -1,6 +1,7 @@
 # AGENTS.md - Firelands Wiki
 
 ## Quick Start
+- **Node.js** `>=22.12.0` (Astro 6 requirement; see `.nvmrc`)
 - Run `pnpm install` to install dependencies
 - Run `pnpm exec playwright install chromium` once (required for Mermaid diagram builds)
 - Run `pnpm dev` to start dev server at `localhost:4321`
