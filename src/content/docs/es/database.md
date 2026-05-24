@@ -89,7 +89,7 @@ La autenticación usa **SRP-6a** vía `SRPService` + `MySqlAccountRepository`. L
 | Tabla | Propósito |
 |-------|-----------|
 | `playercreateinfo` | Posición inicial por raza/clase |
-| `playercreateinfo_spell` / `playercreateinfo_skill` | Hechizos y skills iniciales (filtrados por nivel al login) |
+| `playercreateinfo_spell` / `playercreateinfo_skill` | Hechizos y skills iniciales (máscaras + filtro por nivel). Ver [Player Create Info](/wiki/es/docs/playercreateinfo/). |
 | `creature_template` | Plantillas NPC (`gossip_menu_id`, stats, flags) |
 | `creature` | Filas de spawn de criaturas |
 | `gossip_menu`, `gossip_menu_option`, … | Menús gossip |
@@ -104,6 +104,8 @@ Las tablas de misiones en characters alimentan las condiciones de fase. Ver [Sis
 Datos world regenerables con scripts de importación:
 
 ```bash
+python3 tools/sql/import_ref_playercreateinfo.py   # → migraciones 42/43
+python3 tools/sql/generate_playercreateinfo_dbc_spells.py # → migración 62
 python3 tools/sql/import_ref_gossip.py      # → migración 35
 python3 tools/sql/import_ref_npc_text.py    # → migración 34
 python3 tools/sql/import_ref_quest_gossip.py # → migración 38

@@ -160,7 +160,7 @@ In-game mail with optional item attachments (e.g. `.additem` overflow).
 | Table | Purpose |
 |-------|---------|
 | `playercreateinfo` | Starter position per race/class |
-| `playercreateinfo_spell` / `playercreateinfo_skill` | Starter spells and skills (level-gated on login) |
+| `playercreateinfo_spell` / `playercreateinfo_skill` | Starter spells and skills (masks + level filter at login). See [Player Create Info](/wiki/docs/playercreateinfo/). |
 | `creature_template` | NPC templates (`gossip_menu_id`, stats, flags) |
 | `creature` | Creature spawn rows |
 | `gossip_menu`, `gossip_menu_option`, `gossip_menu_option_action` | NPC gossip menus |
@@ -175,6 +175,8 @@ Character DB quest tables (`character_queststatus`, `character_queststatus_rewar
 World seed data can be regenerated with import scripts:
 
 ```bash
+python3 tools/sql/import_ref_playercreateinfo.py   # → migrations 42/43
+python3 tools/sql/generate_playercreateinfo_dbc_spells.py # → migration 62
 python3 tools/sql/import_ref_gossip.py      # → migration 35
 python3 tools/sql/import_ref_npc_text.py    # → migration 34
 python3 tools/sql/import_ref_quest_gossip.py # → migration 38
