@@ -17,6 +17,10 @@
 
 
 
+html {
+	overflow-x: clip;
+}
+
 body {
 	min-height: 100vh;
 	display: flex;
@@ -25,6 +29,7 @@ body {
 	margin: 0;
 	padding: 0;
 	text-align: left;
+	overflow-x: clip;
 	background-color: rgb(var(--obsidian));
 	background-image: 
 		linear-gradient(rgba(var(--obsidian), 0.85), rgba(var(--obsidian), 0.95)),
@@ -180,7 +185,6 @@ p {
     border-collapse: collapse;
     background: rgba(0,0,0,0.2);
     border-radius: 8px;
-    overflow: hidden;
     border: 1px solid rgba(var(--accent), 0.1);
 }
 
@@ -203,6 +207,51 @@ p {
     padding: 2rem;
     border: 1px solid rgba(255,255,255,0.1);
     box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+    overflow-x: auto;
+    max-width: 100%;
+    -webkit-overflow-scrolling: touch;
+}
+
+.prose :not(pre) > code {
+    word-break: break-word;
+    overflow-wrap: anywhere;
+}
+
+/* Mermaid diagrams (rehype-mermaid → inline SVG, wrapped in .mermaid-scroll) */
+.prose .mermaid-scroll {
+    margin: 2.5rem auto;
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    display: flex;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.35);
+    border: 1px solid rgba(var(--accent), 0.15);
+    border-radius: 12px;
+    /* Fade hint that diagram scrolls horizontally on narrow screens */
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0.45), transparent 12px),
+        linear-gradient(to left, rgba(0, 0, 0, 0.45), transparent 12px);
+    background-size: 16px 100%, 16px 100%;
+    background-position: left center, right center;
+    background-repeat: no-repeat;
+}
+
+.prose .mermaid-scroll svg[id^="mermaid-"] {
+    display: block;
+    width: auto;
+    max-width: none;
+    height: auto;
+    padding: 1.5rem;
+    margin: 0;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+}
+
+.prose .mermaid-scroll svg[id^="mermaid-"] foreignObject,
+.prose .mermaid-scroll svg[id^="mermaid-"] foreignObject div {
+    overflow: visible;
 }
 
 hr {
@@ -212,16 +261,59 @@ hr {
 	margin: 4em 0;
 }
 
-@media (max-width: 720px) {
+@media (max-width: 768px) {
 	body {
 		font-size: 16px;
 	}
+
 	main {
-		padding: 1em;
+		padding: 1.25rem 0.75rem;
 	}
-    .prose {
-        padding: 1.5rem;
-    }
+
+	.prose h1 {
+		font-size: 2rem;
+	}
+
+	.prose h2 {
+		font-size: 1.65rem;
+	}
+
+	.prose h3 {
+		font-size: 1.35rem;
+	}
+
+	.prose th,
+	.prose td {
+		padding: 0.65rem 0.75rem;
+		font-size: 0.9rem;
+	}
+
+	.prose pre {
+		padding: 1rem;
+		margin: 1.5rem 0;
+		font-size: 0.85rem;
+	}
+
+	.prose .mermaid-scroll {
+		margin: 1.5rem 0;
+	}
+
+	.prose .mermaid-scroll svg[id^="mermaid-"] {
+		padding: 1rem;
+	}
+
+	.prose table {
+		display: block;
+		overflow-x: auto;
+		-webkit-overflow-scrolling: touch;
+		max-width: 100%;
+	}
+}
+
+@media (max-width: 480px) {
+	main {
+		padding: 1rem 0.5rem;
+	}
 }
 
 .sr-only {

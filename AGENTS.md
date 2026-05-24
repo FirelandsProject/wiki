@@ -2,9 +2,13 @@
 
 ## Quick Start
 - Run `pnpm install` to install dependencies
+- Run `pnpm exec playwright install chromium` once (required for Mermaid diagram builds)
 - Run `pnpm dev` to start dev server at `localhost:4321`
 - Run `pnpm build` to build for production
 - Run `pnpm preview` to preview the built site
+
+## Mermaid diagrams
+Use fenced `mermaid` code blocks in `.md` / `.mdx` docs (see `phase-system.md`). Rendered at build time via `rehype-mermaid` + Playwright (`astro.config.mjs` → `markdown.rehypePlugins`). Wide SVGs are wrapped in `.mermaid-scroll` for horizontal pan on mobile.
 
 ## Key Facts
 - **Framework**: Astro with MDX and sitemap integrations

@@ -213,3 +213,79 @@ target_precompile_headers(<target_name> PRIVATE ${PROJECT_PCH_HEADERS})
 | Hilos | `std::thread` en código de negocio |
 | Commits | `type(scope): description` — tipos: `feat`, `fix`, `refactor`, `docs`, `test`, `chore`, `perf` |
 | TDD | Rojo → Verde → Refactor para comportamiento nuevo |
+
+## Diagrama arquitectónico
+
+Vista general de los **composition roots**, las **capas** hexagonales y los **sistemas externos**. Las flechas sólidas muestran cableado en tiempo de ejecución; las líneas punteadas muestran la **regla de dependencias** (cada capa solo depende de las inferiores — domain nunca importa infrastructure).
+
+```mermaid
+flowchart TB
+  subgraph ext [Sistemas externos]
+    CLIENT[Cliente WoW Cataclysm 4.3.4]
+    DB[(MySQL / MariaDB)]
+    DATA[Extractos DBC y scripts Lua]
+  end
+
+  subgraph exe [Composition roots]
+    AUTH_BIN[auth — TCP 3724 REST opcional]
+    WORLD_BIN[world — TCP 8085 consola]
+    DEV_BIN[FirelandsDevTools CLI]
+  end
+
+  subgraph infrastructure [FirelandsInfrastructure — adaptadores]
+    NET[AsyncNetworkServer AuthSession WorldSession RealmLink]
+    SQL[Repositorios MySql DatabaseMigrator]
+    LUA[LuaGameScriptHost]
+    DBC_ADP[SpellEntryDbcStore stub colisiones]
+  end
+
+  subgraph application [FirelandsApplication]
+    SVC[Servicios Auth Character World Command GmTicket...]
+    PORTS[Ports INetworkServer IGameScriptHost IMapCollisionQueries...]
+  end
+
+  subgraph domain [FirelandsDomain — núcleo de negocio]
+    ENT[Entidades Player Creature Map modelos...]
+    REPOS[Ports de repositorio ICharacterRepository IAccountRepository...]
+    COMBAT[CombatEngine DamageCalculator amenaza hechizos]
+  end
+
+  subgraph shared [FirelandsShared]
+    CORE[Config Logger Crypto ByteBuffer opcodes DbcReader]
+  end
+
+  CLIENT -->|login SRP lista de reinos| AUTH_BIN
+  CLIENT -->|paquetes de sesión de juego| WORLD_BIN
+  AUTH_BIN <-->|realm-link métricas en vivo| WORLD_BIN
+  DEV_BIN --> SQL
+
+  AUTH_BIN --> NET
+  AUTH_BIN --> SQL
+  WORLD_BIN --> NET
+  WORLD_BIN --> SQL
+  WORLD_BIN --> LUA
+  WORLD_BIN --> DBC_ADP
+
+  NET --> SVC
+  SQL --> SVC
+  LUA --> SVC
+  DBC_ADP --> SVC
+  SVC --> PORTS
+  PORTS --> ENT
+  SVC --> ENT
+  ENT --> REPOS
+  ENT --> COMBAT
+  REPOS --> CORE
+  COMBAT --> CORE
+  ENT --> CORE
+
+  SQL --> DB
+  DBC_ADP --> DATA
+  LUA --> DATA
+
+  infrastructure -.->|usa| application
+  application -.->|usa| domain
+  domain -.->|usa| shared
+```
+
+**Orden de enlace CMake (bibliotecas):** `FirelandsShared` → `FirelandsDomain` → `FirelandsApplication` → `FirelandsInfrastructure` → `auth` / `world` / `FirelandsDevTools`.

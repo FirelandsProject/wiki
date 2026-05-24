@@ -130,6 +130,22 @@ const posts = sortDocs(filterDocsByLocale(await getCollection("docs"), locale));
 			column-count: 2;
 		}
 	}
+	@media (max-width: 768px) {
+		.intro {
+			padding: 1.25rem 1rem;
+			margin-bottom: 2rem;
+		}
+
+		.intro-text {
+			font-size: 1rem;
+		}
+
+		.intro-hint {
+			font-size: 0.85rem;
+			padding: 0.6rem 1rem;
+		}
+	}
+
 	@media (max-width: 640px) {
 		section.masonry-wrapper {
 			column-count: 1;

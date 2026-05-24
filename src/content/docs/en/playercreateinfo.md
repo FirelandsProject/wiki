@@ -68,10 +68,13 @@ Restart the world server (or let the migrator apply pending files) so `playercre
 
 ## Code path
 
-```
-MySqlPlayerCreateInfoRepository::GetStarterSpells
-  → PlayerCreateInfoService::GetStarterSpells (strip riding)
-    → PlayerSpellbook::BuildKnownSpells (level + profession filters)
+```mermaid
+flowchart TD
+  A["MySqlPlayerCreateInfoRepository::GetStarterSpells"]
+  B["PlayerCreateInfoService::GetStarterSpells"]
+  C["PlayerSpellbook::BuildKnownSpells"]
+  A -->|strip riding| B
+  B -->|level + profession filters| C
 ```
 
 Profession and guild perk spells are blocked via `IsSpellFromExcludedSkillLine` (`SkillLineAbility.dbc` index loaded at world startup), not via starter table rows.

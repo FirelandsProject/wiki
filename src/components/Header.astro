@@ -131,9 +131,50 @@ const base = getBasePath();
 		filter: drop-shadow(0 0 8px rgb(var(--gold)));
 		transform: scale(1.1);
 	}
-	@media (max-width: 720px) {
+	@media (max-width: 768px) {
+		header {
+			padding: 0.75rem 1rem;
+		}
+
+		nav {
+			flex-wrap: wrap;
+			row-gap: 0.75rem;
+		}
+
+		.internal-links {
+			order: 3;
+			flex: 1 1 100%;
+			justify-content: center;
+			gap: 1rem;
+			flex-wrap: wrap;
+		}
+
+		.header-right {
+			margin-left: auto;
+		}
+
 		.social-links {
 			display: none;
+		}
+
+		nav a {
+			font-size: 0.85rem;
+			padding: 0.35em 0;
+		}
+
+		.logo-svg {
+			width: 36px;
+			height: 36px;
+		}
+	}
+
+	@media (max-width: 480px) {
+		.internal-links {
+			gap: 0.65rem 1rem;
+		}
+
+		nav a {
+			font-size: 0.8rem;
 		}
 	}
 </style>

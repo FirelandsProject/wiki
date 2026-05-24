@@ -65,10 +65,13 @@ Reinicia el world server para aplicar cambios en `playercreateinfo_*`.
 
 ## Flujo de código
 
-```
-MySqlPlayerCreateInfoRepository::GetStarterSpells
-  → PlayerCreateInfoService::GetStarterSpells (quita riding)
-    → PlayerSpellbook::BuildKnownSpells (nivel + filtros profesión)
+```mermaid
+flowchart TD
+  A["MySqlPlayerCreateInfoRepository::GetStarterSpells"]
+  B["PlayerCreateInfoService::GetStarterSpells"]
+  C["PlayerSpellbook::BuildKnownSpells"]
+  A -->|quita riding| B
+  B -->|nivel + filtros profesión| C
 ```
 
 Hechizos de profesión y perks de guild se bloquean con `IsSpellFromExcludedSkillLine` (índice `SkillLineAbility.dbc` al arrancar world), no con filas de starter.
